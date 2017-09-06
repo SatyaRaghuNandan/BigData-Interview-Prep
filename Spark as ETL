@@ -1,0 +1,13 @@
+
+
+Map reduce batch following processing .
+—2 stage processing plan.(map/reduce)
+—Data movement btween two states are tied to mapreduce suffled (partition,sort,distrubute).
+not all operation fit for map reduce.
+
+Apache Tez
+1. targeted at interective and batch processing both.
+—build on top of yarn.
+Tez API
+-DAG definition API.
+-run time library
