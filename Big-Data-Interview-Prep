@@ -98,3 +98,237 @@ Deutsche Bank ::
 4. How I will update data in hive files
 5. How to read csv file of 10 gb and store it in database as it is within few seconds
 -———————————————————————————————————————————-
+
+
+
+
+
+
+
+
+
+
+
+1. Write a mapreduce to find maximum dep salary Wordcount program and explanation in mapreduce .
+
+1. Hadoop Developer at Infosys was asked… 8 Aug 2015
+1. What is RDD (spark) What r the problem with In u place How do u use global sort in hive and partitioning logics Diff between bucketing and partitioning When will u use this.. Syntax for bucking and partitioning
+1. —>1. How hadoop works?
+2. How Mapreduce works ?
+3. How file of 100MB will be stored in Hadoop
+4. How I will update data in hive files
+5. How to read csv file of 10 gb and store it in database as it is within few seconds.
+1. hashset and hash map diffrence.-
+They are entirely different constructs. A HashMap is an implementation of Map. A Map maps keys to values. The key look up occurs using the hash.
+On the other hand, a HashSet is an implementation of Set. A Set is designed to match the mathematical model of a set.
+
+1. how we can remove reduce part??
+1. how more than one files can be access in mapreduce ?
+1. how to strt all services?
+1. what is xml files?
+hadoop tasktracker &
+
+1. If you are using Hadoop 2.2.0 which has YARN framework, there is no jobtracker in it. Its functionality is split and replaced by ResourceManager and ApplicationMaster. Here is expected jps prinout while running YARN1.
+
+Q.
+1. Why does Hadoop need classes like Text or IntWritable instead of String or Integer?
+In order to handle the Objects in Hadoop way. For example, hadoop uses Text instead of java’s String. The Text class in hadoop is similar to a java String, however, Text implements interfaces like Comparable, Writable and WritableComparable.
+
+1. These interfaces are all necessary for MapReduce; the Comparable interface is used for comparing when the reducer sorts the keys, and Writable can write the result to the local disk. It does not use the java Serializable because java Serializable is too big or too heavy for hadoop, Writable can serializable the hadoop Object in a very light way.
+
+—>For effectiveness of Hadoop, the serialization/de-serialization process should be optimized because huge number of remote calls happen between the nodes in the cluster. So the serialization format should be fast, compact, extensible and interoperable. Due to this reason, Hadoop framework has come up with one IO classes to replace java primitive data types. e.g. IntWritbale for int, LongWritable for long, Text for String etc.
+
+1. Below parameter points to default hive table location.It can be used for dev purpose, where you just want to perform some tests on internal tables.
+
+—warehouse-dir
+1. Below parameter points to some hdfs location, where you can mount external hive tables.This is useful in production environment, where you want every data to be available to some external dir and external table.
+
+In my last article I have explained how we can use – -target-dir to import data in particular directory. But the limitation of target-dir is that the given directory which we will pass it to the argument must not create earlier. If this directory already created then an error will be thrown by the SQOOP Tool.
+
+But when we pass particular directory with –warehouse-dir it will treat directory as parent directory and create sub directory inside the parent directory with the name of table name.
+
+The SerDe interface allows you to instruct Hive as to how a record should be processed. A SerDe is a combination of a Serializer and a Deserializer (hence, Ser-De). The Deserializer interface takes a string or binary representation of a record, and translates it into a Java object that Hive can manipulate. The Serializer, however, will take a Java object that Hive has been working with, and turn it into something that Hive can write to HDFS or another supported system. Commonly, Deserializers are used at query time to execute SELECT statements, and Serializers are used when writing data, such as through an INSERT-SELECT statement.
+
+http://www.hdfstutorial.com/blog/hadoop-scenario-based-interview-questions/
+1.What are the differences between -copyFromLocal and -put command?
+2.What is the default block size in Hadoop and can it be increased?
+ans: The default block size in Hadoop 1 is 64 MB while in Hadoop 2, it is 128MB.
+you can do it by setting fs.local.block.size in the configuration file easily.
+
+3.How to import RDBMS table in Hadoop using Sqoop when the table doesn’t have a primary key column?
+ans: –split-by or perform a sequential import with ‘-m 1’
+
+4.What is CBO in Hive?
+ans: CBO is cost-based optimization and applies to any database or any tool where optimization can be used.
+5.Can we use LIKE operator in Hive?
+WHERE table2.product LIKE concat(‘%’, table1.brand, ‘%’);
+6.Can you use IN/EXIST operator in Hive?
+No, Hive doesn’t support IN or EXIST operators. Instead, you can use left semi join here. Left Semi Join performs the same operation IN do in SQL.
+
+So if you have the below query in SQL-
+
+SELECT a.key, a.value
+FROM a
+WHERE a.key in
+(SELECT b.key
+FROM B);
+7. how to open configuraration file in hive?
+8.yes we can change location of internal table from /user/hive/warehouse to some other location
+by changing location in configuration file.
+9. When to use external and internal tables in Hive?
+
+Use EXTERNAL tables when:
+
+The data is also used outside of Hive. For example, the data files are read and processed by an existing program that doesn’t lock the files.
+Data needs to remain in the underlying location even after a DROP TABLE. This can apply if you are pointing multiple schemas (tables or views) at a single data set or if you are iterating through various possible schemas.
+Hive should not own data and control settings, dirs, etc., you may have another program or process that will do those things.
+You are not creating a table based on existing table (AS SELECT).
+Use INTERNAL tables when:
+
+The data is temporary
+You want Hive to completely manage the life cycle of the table and data
+10.We have a Hive partitioned table with partition column as country. We have 10 partition and data for now is jut for one country, If we will copy the data manually for other 9 partitions, whether those will be reflected if we will run a command.
+Ans: This is really a good question. As the data has been kept manually in all the other file directory and so directly it won’t be available.
+
+11.Data will be available directly for all partition when you will put it through command and not manually.
+Where the Mapper’s Intermediate data will be stored?
+
+Ans: The mapper output (which is intermediate data) is stored on the Local file system (not in HDFS) of each mapper nodes. This is a temporary directory location which can be setup in the configuration file by the Hadoop administrator. The intermediate data is cleaned up after the Hadoop Job completes.
+-———————————————————————————————————————————————————————-
+
+can we handle xml file with mapreduce?
+can u expain about couter in mapreduce?
+
+What is a SerDe?
+The SerDe interface allows you to instruct Hive as to how a record should be processed. The Deserializer interface takes a string or binary representation of a record, and translates it into a Java object that Hive can manipulate. The Serializer, however, will take a Java object that Hive has been working with, and turn it into something that Hive can write to HDFS or another supported system. Deserializers are used at query time to execute SELECT statements, and Serializers are used when writing data, such as through an INSERT-SELECT statement.
+--Collection Data types
+
+SRTUCT,MAP,ARRAY
+
+STRUCT
+STRUCT {first STRING; last STRING}, then
+the first name field can be referenced using name.first.
+struct(‘John’, ‘Doe’)
+
+CREATE TABLE employees (
+name STRING,
+salary FLOAT,
+subordinates ARRAY,
+deductions MAP<STRING, FLOAT>,
+address STRUCT<street:STRING, city:STRING, state:STRING, zip:INT>);
+
+Avro
+
+Avro is a serialization format developed to address some of the common problems associated with evolving other serialization formats.
+
+Some of the benefits are:
+rich data structures, fast binary format, support for remote procedure calls, and built-in schema evolution
+JSON
+JSON (JavaScript Object Notation) is a lightweight data serialization format used commonly in web-based applications.
+HDFS
+(HDFS) A distributed, resilient file system for data storage (optimized for scanning large contiguous blocks of data on hard disks.) Distribution across a cluster provides horizontal scaling of data storage.
+
+Blocks of HDFS files are replicated across the cluster (by default, three times) to prevent data loss when hard drives or whole servers fail.
+Modes
+Strict—these are used to protect large data in partitioned tables.Instead of extracting all data from partitioned table strict mode is safety measure which allows queries with where cause only on partitones.
+
+Oredrby/sortby/distributedby/clusterby
+Orderby-ascending or desc pushing all dat through one reducer
+
+Sortby-orders data at each of n reducers but each reducer can receive overlapping ranges of data.you end up with one or more sotrted files with overlapping ranges
+
+Distributeby-ensures each of n reducers gets non overlapping ranges of x,but doesnot sort the o/p of each reducer.u end with n or more unsorted files with non overlapping ranges
+
+Clusterby-ensures each of n reducers gets non overlapping ranges,then sorts by those changes at reducers.this gives global ordering and is same as doing distributed by and sort by.you end up with n or more sorted files with non overlapping ranges.
+Speculative execution is a feature of Hadoop that launches a certain number of duplicate tasks.
+While this consumes more resources computing duplicate copies of data.
+-———————————————————————————————————————————
+word count program using hive
+CREATE TABLE docs (line STRING);
+LOAD DATA INPATH ‘docs’ OVERWRITE INTO TABLE docs;
+CREATE TABLE word_counts AS
+SELECT word, count(1) AS count FROM
+(SELECT explode(split(line, ‘\\s’)) AS word FROM docs) w
+GROUP BY word
+ORDER BY word;
+-————————————————————————————-
+String_split
+SELECT SPLIT_STRING(‘apple, pear, melon’, ‘,’, 1)—apple
+-———————————————————————————————————————
+http://gandhigeet.blogspot.in/2012/12/hadoop-mapreduce-chaining.html
+https://intellipaat.com/interview-question/big-data-hadoop-interview-questions/
+https://www.linkedin.com/pulse/distributed-cache-hadoop-examples-gaurav-singh
+-————————————————————————————————————————————————-
+What is distributed cache and what are its benefits?
+Distributed Cache, in Hadoop, is a service by MapReduce framework to cache files when needed. Learn more in this MapReduce Tutorial now. Once a file is cached for a specific job, hadoop will make it available on each data node both in system and in memory, where map and reduce tasks are executing.Later, you can easily access and read the cache file and populate any collection (like array, hashmap) in your code.
+
+$ bin/hadoop fs -copyFromLocal mytgz.tgz /myapp/mytgz.tgz
+$ bin/hadoop fs -copyFromLocal mytargz.tar.gz /myapp/mytargz.tar.gz
+2. Setup the application’s JobConf: JobConf job = new JobConf(); DistributedCache.addCacheFile(new URI, job); DistributedCache.addCacheArchive(new URI; DistributedCache.addFileToClassPath(new Path(“/myapp/mylib.jar”), job); DistributedCache.addCacheArchive(new URI; DistributedCache.addCacheArchive(new URI; DistributedCache.addCacheArchive(new URI; 3. Use the cached files in the Mapper or Reducer: public static class MapClass extends MapReduceBase implements Mapper<K, V, K, V> { private Path[] localArchives; private Path[] localFiles; public void configure(JobConf job) { // Get the cached archives/files File f = new File(“./map.zip/some/file/in/zip.txt”); } public void map(K key, V value, OutputCollector<K, V> output, Reporter reporter) throws IOException { // Use data from the cached archives/files here // … // … output.collect(k, v); } }
+
+how to set replication factor —
+hadoop fs -setrep -w 3 /my/fact/filename;
+for all file:
+hadoop fs -setrep -w 3 -R /my/fact/;
+
+how to alter partitions into existing table ??
+
+You can use ALTER TABLE ADD PARTITION to add partitions to a table. Partition values should be quoted only if they are strings. The location must be a directory inside of which data files reside. (ADD PARTITION changes the table metadata, but does not load data. If the data does not exist in the partition’s location, queries will not return any results.) An error is thrown if the partition_spec for the table already exists. You can use IF NOT EXISTS to skip the error.
+https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-AlterPartition
+
+ALTER TABLE page_view ADD PARTITION (dt=‘2008-08-08’, country=‘us’) location ‘/path/to/us/part080808’
+PARTITION (dt=‘2008-08-09’, country=‘us’) location ‘/path/to/us/part080809’;
+
+ALTER TABLE table_name PARTITION partition_spec RENAME TO PARTITION partition_spec;
+ALTER TABLE table_name_2 EXCHANGE PARTITION (partition_spec, partition_spec2, …) WITH TABLE table_name_1;
+ALTER TABLE table_name DROP [IF EXISTS] PARTITION partition_spec IGNORE PROTECTION;
+-——————————————————————————————————————————————-
+Can Indexes be created in hive?
+
+CREATE INDEX table01_index ON TABLE table01 (column2) AS ‘COMPACT’;
+SHOW INDEX ON table01;
+DROP INDEX table01_index ON table01;
+-————————————————————————————————————————-
+How to change number of mappers
+
+Tuning the number of mappers and reducers used by your Hive request; this could be done by tuning the input size for each mapper mapreduce.input.fileinputformat.split.maxsize, and the input size for each reducer: hive.exec.reducers.bytes.per.reducer
+-——————————————————————————————————————————————————————————-
+Informatica BDE Hive dynamic Partitions
+-———————————————————————————————————————————————————————————-
+in incremental import we specify the last value ..so how do we know what is the last value..we need to go to hdfs/hive and see what was the last value imported…is there any other way﻿
+
+we can create a job using below cmd
+sqoop job \
+-create jobname1 \
+- \
+import \
+—connect jdbc:mysql://mysql.example.com/sqoop \
+—username sqoop \
+—password sqoop \
+—table visits \
+—incremental append \
+—check-column id \
+—last-value 0
+
+Once you have created this job with name jobname1. You can run this job by command: sqoop job —exec jobname1
+
+to see the current parameter for this job run cmd: sqoop job —show jobname1 it will print all the details on console.
+
+You can see all the sqoop jobs that are already created by command: sqoop job -list.﻿
+yes got it so in the job we specify last value as 0 and sqoop will automatically get the last value from the metastore..thanks﻿
+-———————————————————————————————————————————————————————————-
+http://dwbitechguru.blogspot.in/2015/08/difference-between-native-and-hive-mode.html
+http://dwbitechguru.blogspot.in/2015/08/what-is-informatica-big-data-edition.html
+http://dwbitechguru.blogspot.in/2015/10/limitation-of-hive-mode-in-informatica.html
+
+This mode is not stateful i.e., you cannot keep track of dataa in the previous records using stateful variables. Your transformations like sorters, sequence generators wont work fully or properly.
+
+Your update strategy transformation will not work in hive mode just because hive does not allow updates. You can only insert records to Hive database.
+
+In this mode the data gets read from source to temporary hive tables , transformed , and the target also gets loaded to temp hive tables before being inserted to final target which can be RDBMS database like oracle or Hive database. Hence the limition of hive also follows on to Hive mode in Informatica BDE.
+
+
+
+
+
+
