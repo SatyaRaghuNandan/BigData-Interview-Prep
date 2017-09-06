@@ -1,0 +1,100 @@
+
+
+Global logic ::
+1. All oops concepts in java asking with program
+2. All basic concepts of Hadoop
+
+KPIT technologies ::
+write map reduce program for word count and then about null values in a column
+Interview Questions
+Write a program to add all elements in a file .
+
+Infosys ::
+-————————————————————————————————————————
+Write a mapreduce to find maximum dep salary
+Wordcount program and explanation in mapreduce .
+Few project related questions
+replication factor zookeeper etc
+Infy Interview Hadoop – hive and pig
+
+Word count program in hive
+Steps
+Security enabling in hive – how to get other users not opting for it.
+Pig – user ID and page I’d User ID and age
+Get the aged 18 to 25 for top 5 visited websites
+Interview Questions
+What is RDD (spark)
+What r the problem with In u place
+How do u use global sort in hive and partitioning logics
+Diff between bucketing and partitioning
+When will u use this..
+Syntax for bucking and partitioning
+-—————————————————————————————-
+DELL EMC::
+
+Java, SQL and simple Stat Questions
+Find Second Max value in a Column of a SQL Table ?
+Core Java Questions.
+-———————————————————————————————-
+
+Solix Technologies::
+currently on which project u r working. about project the questions on hadoop and java questions.
+write program on mapreduce.
+write program on spark
+write sqoop command.
+hdfs questions and hive questions.
+
+DataMetica::
+hadoop architecture
+Difference Between local variable and global variable?
+whole big data was asked from me sqoop,pig,hive,java,hive architecture,joins ,input split s ,co group ,hive optimization,file formats , sequential vs orc,partition buckting , udfs and lot more .
+-————————————————————————————————————————-
+Tripod Technologies
+
+1.) Limitations of Hadoop
+2.) How do we do indexing in Hadoop
+3.) How to do performance tuning in hadoop
+4.) what are different types of joins in Hive
+5.) A hive program asking to find the no.of employees Dept wise.
+-————————————————————————————————————————
+Mindtree
+
+1. How many JVMs run on data Node – and what will they do
+2. Why do heep error come and how do u fix it
+3. What are diff b/w basic and bash profile.
+4. If we configure java 7 for spark and java 8 for hadoop, how do u set the environment variables in basic file
+Interview Questions
+Java:
+5. How many Design Patterns :
+6. How many Joins are there in MapReduce – when we will use which type of join and why
+7. what are sinks and sources in flume while using twitter data – which sink did you use..
+8. explore on sqoop
+9. what are challenges you face in day to day work and how did u fix it.
+10. we do register in UDF for PIG and jar files
+11. How many mappers and reducers run when we select * table_name where id=5;
+12. Can we have zero reducers. If so when.. If zero reducers where do sorting happen.
+13. What happens in hadoop when we dump and store.Significance of Dump and Store – how many map and reduces will run
+-——————————————————————————————————————————————————————-
+
+CGI ::
+
+Project Description, What is partitioning and bucketing?
+When do you go for bucketing?
+How do you write a UDF in Hive ?
+How do you pass credentials to sqoop while importing data into Hive/HDFS ?
+Scenario based questions to test my knowledge on SQL
+Concepts about Apache Spark
+Scenario based questions to test my knowledge on Apache Spark
+What is pair RDD?
+What is the difference between groupByKey and reduceByKey ?
+What is combineByKey?
+Scenario based questions to test my knowledge on PairRDD and functions
+Questions on Scala
+-————————————————————————————————————————————
+Deutsche Bank ::
+1. How hadoop works?
+2. How Mapreduce works ?
+3. How file of 100MB will be stored in Hadoop
+4. How I will update data in hive files
+5. How to read csv file of 10 gb and store it in database as it is within few seconds
+-———————————————————————————————————————————-
