@@ -29,9 +29,22 @@ https://github.com/sundeep1687/interview_prep
 
 
 https://github.com/ralger/scala-interview
+
+
+
+https://github.com/csjain/intuit
+
+
+
+
 https://github.com/manilabay/spark-notebooks-apps
 
 
+FL Insurance ....... 
+
+### https://github.com/brickyard/the_interview
+
+https://github.com/yatish0492/spark
 
 
 
@@ -56,6 +69,11 @@ https://github.com/teanoon/spark-interview-quiz
 
 
 https://github.com/bhaskarreddi26/PyHadoop/tree/99f223b1d2428901470d918895150cf4262ab0ef
+
+## https://github.com/GaalDornick/sales
+
+
+
 
 
 
