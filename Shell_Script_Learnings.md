@@ -23,10 +23,6 @@ https://github.com/Sreevenkateshn/ShellScript
 https://github.com/SmallMan90/PracticeShellScripts
 
 
-# Perfect 
-https://github.com/yular/ShellScript-File
-
-
 
 
 
