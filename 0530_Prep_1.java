@@ -300,3 +300,165 @@ class Solution {
     }
 }
 
+
+
+
+class Solution {
+
+    private boolean[] visited;
+    private boolean[] cycles;
+    //private final ArrayList<Integer> result = new ArrayList<>();
+    private int[] result;
+    private int resultPointer;
+
+    private List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
+        List<Integer>[] graph = new List[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            graph[i] = new ArrayList<Integer>();
+        }
+        for (int[] p : prerequisites) {
+            graph[p[1]].add(p[0]);
+        }
+        return graph;
+    }
+
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        var graph = buildGraph(numCourses, prerequisites);
+        result = new int[numCourses];
+        resultPointer = numCourses;
+        visited = new boolean[numCourses];
+        cycles = new boolean[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            if (hasCycleDFS(i, graph)) {
+                return new int[0];
+            }
+        }
+        return result;
+    }
+
+    public boolean hasCycleDFS(int current, List<Integer>[] graph) {
+        if (cycles[current]) {
+            return true;
+        }
+        if (visited[current]) {
+            return false;
+        }
+        cycles[current] = true;
+        visited[current] = true;
+        
+        for (int successor : graph[current]) {
+            if (hasCycleDFS(successor, graph)) {
+                return true;
+            }
+        }
+        result[--resultPointer] = current;
+
+        // Successors don't lead to cycles, so reset
+        cycles[current] = false;
+        return false;
+    }
+}
+
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        // first task is to create graph..
+        List<List<Integer>> graph = new ArrayList<>();
+        for(int i = 0 ; i < numCourses; i++){
+            graph.add(new ArrayList<>());
+        }
+        for(int i = 0 ; i < prerequisites.length; i++){
+            graph.get(prerequisites[i][1]).add(prerequisites[i][0]);
+        }
+
+        // create an indegree array for each node...
+        int[] indegree = new int[numCourses];
+        for(int i = 0; i < numCourses ; i++){
+            for(int node : graph.get(i)){
+                indegree[node]++;
+            }
+        }
+
+        // now adding node to q, which have indegree 0...
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i < indegree.length; i++){
+            if(indegree[i] == 0){
+                q.add(i);
+            }
+        }
+
+
+        // topological sorted array..
+        int[] ts = new int[numCourses];
+        int i = 0;
+        
+        while(!q.isEmpty()){
+            int node = q.remove();
+            ts[i++] = node;
+
+            for(int nbr : graph.get(node)){
+                indegree[nbr]--;
+                if(indegree[nbr] == 0){
+                    q.add(nbr);
+                }
+            }
+
+        }
+        if(i == 0 || i < numCourses) return new int[]{};
+        return ts;
+    }
+}
+
+
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        // first task is to create graph..
+        List<List<Integer>> graph = new ArrayList<>();
+        for(int i = 0 ; i < numCourses; i++){
+            graph.add(new ArrayList<>());
+        }
+        for(int i = 0 ; i < prerequisites.length; i++){
+            graph.get(prerequisites[i][1]).add(prerequisites[i][0]);
+        }
+
+        // create an indegree array for each node...
+        int[] indegree = new int[numCourses];
+        for(int i = 0; i < numCourses ; i++){
+            for(int node : graph.get(i)){
+                indegree[node]++;
+            }
+        }
+
+        // now adding node to q, which have indegree 0...
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i < indegree.length; i++){
+            if(indegree[i] == 0){
+                q.add(i);
+            }
+        }
+
+
+        // topological sorted array..
+        int[] ts = new int[numCourses];
+        int i = 0;
+        
+        while(!q.isEmpty()){
+            int node = q.remove();
+            ts[i++] = node;
+
+            for(int nbr : graph.get(node)){
+                indegree[nbr]--;
+                if(indegree[nbr] == 0){
+                    q.add(nbr);
+                }
+            }
+
+        }
+        if(i == 0 || i < numCourses) return new int[]{};
+        return ts;
+    }
+}
+
+
+
+
+
