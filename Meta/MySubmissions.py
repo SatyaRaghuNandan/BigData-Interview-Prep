@@ -369,3 +369,178 @@ class Solution:
         return ans
 
 
+
+
+
+""" 
+| Metric                  | Value  | Explanation                            |
+| ----------------------- | ------ | -------------------------------------- |
+| ⏱ **Time Complexity**   | `O(n)` | You traverse the array once            |
+| \U0001f5c2 **Space Complexity** | `O(n)` | Because of the extra `arr[]` list used |
+"""
+class Solution(object):
+    def maxSubArray(self, nums):
+        # Create an array...
+        arr = []
+        arr.append(nums[0])
+        # Initialize the max sum...
+        maxSum = arr[0]
+        # Traverse all the element through the loop...
+        for i in range(1, len(nums)):
+            # arr[i] represents the largest sum of all subarrays ending with index i...
+            # then its value should be the larger one between nums[i]...
+            # arr[i-1] + nums[i] (largest sum plus current number with using prefix)...
+            # calculate arr[0], arr[1]…, arr[n] while comparing each one with current largest sum...
+            arr.append(max(arr[i-1] + nums[i], nums[i]))
+            # if arr[i] > maxSum then maxSum = arr[i].
+            if arr[i] > maxSum:
+                maxSum = arr[i]
+        return maxSum       # Return the contiguous subarray which has the largest sum...
+
+
+
+
+"""
+
+
+| Metric              | Value                            |
+| ------------------- | -------------------------------- |
+| ⏱ Time Complexity   | `O(n)`                           |
+| \U0001f5c2 Space Complexity | `O(1)` ✅ ← **Preferred at Meta** |
+
+
+
+class Solution:
+    def maxSubArray(self, nums):
+        current_sum = max_sum = nums[0]  # Start with the first element
+        for num in nums[1:]:
+            # Either start fresh or add to previous sum
+            current_sum = max(num, current_sum + num)
+            max_sum = max(max_sum, current_sum)
+        return max_sum
+
+"""        
+
+
+
+
+class MovingAverage:
+
+    def __init__(self, size: int):
+        """
+        Initialize your data structure here.
+        """
+        self.size:int = size
+        self.queue:int = []
+        self.length:int = 0
+        self.total:int = 0
+        
+    def next(self, val: int) -> float:
+        if self.length < self.size:
+            self.queue.append(val)
+            self.total += val
+            self.length += 1
+            return self.total/self.length
+        else:
+            subtract = self.queue.pop(0)
+            self.queue.append(val)
+            self.total = self.total - subtract + val
+            return self.total/self.size
+# Your MovingAverage object will be instantiated and called as such:
+# obj = MovingAverage(size)
+# param_1 = obj.next(val)
+
+
+""" 
+| Metric                  | Value  | Explanation                            |
+| ----------------------- | ------ | -------------------------------------- |
+| ⏱ **Time Complexity**   | `O(n)` | You traverse the array once            |
+| \U0001f5c2 **Space Complexity** | `O(n)` | Because of the extra `arr[]` list used |
+"""
+class Solution(object):
+    def maxSubArray(self, nums):
+        # Create an array...
+        arr = []
+        arr.append(nums[0])
+        # Initialize the max sum...
+        maxSum = arr[0]
+        # Traverse all the element through the loop...
+        for i in range(1, len(nums)):
+            # arr[i] represents the largest sum of all subarrays ending with index i...
+            # then its value should be the larger one between nums[i]...
+            # arr[i-1] + nums[i] (largest sum plus current number with using prefix)...
+            # calculate arr[0], arr[1]…, arr[n] while comparing each one with current largest sum...
+            arr.append(max(arr[i-1] + nums[i], nums[i]))
+            # if arr[i] > maxSum then maxSum = arr[i].
+            if arr[i] > maxSum:
+                maxSum = arr[i]
+        return maxSum       # Return the contiguous subarray which has the largest sum...
+
+
+
+
+"""
+
+
+| Metric              | Value                            |
+| ------------------- | -------------------------------- |
+| ⏱ Time Complexity   | `O(n)`                           |
+| \U0001f5c2 Space Complexity | `O(1)` ✅ ← **Preferred at Meta** |
+
+
+
+class Solution:
+    def maxSubArray(self, nums):
+        current_sum = max_sum = nums[0]  # Start with the first element
+        for num in nums[1:]:
+            # Either start fresh or add to previous sum
+            current_sum = max(num, current_sum + num)
+            max_sum = max(max_sum, current_sum)
+        return max_sum
+
+"""        
+
+
+
+""" 
+| Metric                  | Value  | Explanation                            |
+| ----------------------- | ------ | -------------------------------------- |
+| ⏱ **Time Complexity**   | `O(n)` | You traverse the array once            |
+| \U0001f5c2 **Space Complexity** | `O(n)` | Because of the extra `arr[]` list used |
+"""
+class Solution(object):
+    def maxSubArray(self, nums):
+        # Create an array...
+        arr = []
+        arr.append(nums[0])
+        # Initialize the max sum...
+        maxSum = arr[0]
+        # Traverse all the element through the loop...
+        for i in range(1, len(nums)):
+            # arr[i] represents the largest sum of all subarrays ending with index i...
+            # then its value should be the larger one between nums[i]...
+            # arr[i-1] + nums[i] (largest sum plus current number with using prefix)...
+            # calculate arr[0], arr[1]…, arr[n] while comparing each one with current largest sum...
+            arr.append(max(arr[i-1] + nums[i], nums[i]))
+            # if arr[i] > maxSum then maxSum = arr[i].
+            if arr[i] > maxSum:
+                maxSum = arr[i]
+        return maxSum       # Return the contiguous subarray which has the largest sum...
+
+
+
+
+"""
+class Solution:
+    def maxSubArray(self, nums):
+        current_sum = max_sum = nums[0]  # Start with the first element
+        for num in nums[1:]:
+            # Either start fresh or add to previous sum
+            current_sum = max(num, current_sum + num)
+            max_sum = max(max_sum, current_sum)
+        return max_sum
+
+"""        
+
+
+
