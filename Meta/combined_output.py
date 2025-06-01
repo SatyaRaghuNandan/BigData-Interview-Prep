@@ -1,3397 +1,4075 @@
-# ---- File: 1004_max_consecutive_ones_3\python\first_variant_1004_python.py ----
+# ---- File: 1004. Max Consecutive Ones III\longestOnes.py ----
+# https://leetcode.com/problems/max-consecutive-ones-iii/
+
+# https://www.youtube.com/watch?v=OPV49AuP9lQ
+
+# https://www.youtube.com/watch?v=97oTiOCuxho
+
+# Given a binary array nums and an integer k, return the maximum number of consecutive 1's in the array if you can flip at most k 0's.
+
+ 
+
+# Example 1:
+
+# Input: nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
+# Output: 6
+# Explanation: [1,1,1,0,0,1,1,1,1,1,1]
+# Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
+
+# Example 2:
+
+# Input: nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
+# Output: 10
+# Explanation: [0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1]
+# Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
+
+ 
+
+# Constraints:
+
+#     1 <= nums.length <= 105
+#     nums[i] is either 0 or 1.
+#     0 <= k <= nums.length
+
 from typing import List
 
-def longestOnes_first_variant_1004_python(days: List[str], pto: int) -> int:
-    max_vacation = 0
-    left = 0
-    for right in range(len(days)):
-        if days[right] == 'W':
-            pto -= 1
+# Approach 1:
 
-        while pto < 0:
-            if days[left] == 'W':
-                pto += 1
-            left += 1
-
-        max_vacation = max(max_vacation, right - left + 1)
-    return max_vacation
-
-if __name__ == '__main__':
-    days = ['W', 'H', 'H', 'W', 'W', 'H', 'W']
-    pto = 2
-    assert longestOnes_first_variant_1004_python(days, pto) == 5
-
-    days = ['W', 'W', 'H', 'H', 'W', 'W', 'W']
-    pto = 0
-    assert longestOnes_first_variant_1004_python(days, pto) == 2
-
-    days = ['W', 'W', 'H', 'H', 'W', 'W', 'W']
-    pto = 5
-    assert longestOnes_first_variant_1004_python(days, pto) == 7
-
-    days = ['W', 'W', 'H', 'H', 'W', 'W', 'W']
-    pto = 10
-    assert longestOnes_first_variant_1004_python(days, pto) == 7
-
-    days = ['H', 'H', 'H', 'H', 'H', 'H', 'H']
-    pto = 0
-    assert longestOnes_first_variant_1004_python(days, pto) == 7
-
-    days = ['W', 'H', 'W', 'W', 'W', 'H', 'W', 'H']
-    pto = 1
-    assert longestOnes_first_variant_1004_python(days, pto) == 3
-
-
-# ---- File: 1004_max_consecutive_ones_3\python\fourth_variant_decimal_pto.py ----
-from typing import List
-
-class Variant:
-    def getMaxVacations(self, days: List[str], pto: float) -> float:
-        max_vacation = 0.0
-        whole_pto, partial_pto = int(pto), pto - int(pto)
+class Solution:
+    def longestOnes(self, nums: List[int], k: int) -> int:
         left = 0
-        for right in range(len(days)):
-            if days[right] == 'W':
-                whole_pto -= 1
+        maxLen = 0
 
-            while whole_pto < 0:
-                if days[left] == 'W':
-                    whole_pto += 1
+        for right, num in enumerate(nums):
+            k -= 1 - num
+            if k < 0:
+                k += 1 - nums[left]
+                left += 1
+            maxLen = max(maxLen, right - left + 1)
+        return maxLen
+
+
+# Approach 2:
+    
+class Solution:
+    def longestOnes(self, nums: List[int], k: int) -> int:
+        left = 0
+        right = 0
+
+        while right < len(nums):
+            if nums[right] == 0:
+                k -= 1
+            if k < 0:
+                if nums[left] == 0:
+                    k += 1
+
                 left += 1
 
-            extension = 0.0
-            if left > 0 and days[left - 1] == 'W' or \
-               right < len(days) - 1 and days[right + 1] == 'W':
-               extension = partial_pto
+            right += 1
+        return right - left
 
-            max_vacation = max(max_vacation, right - left + 1 + extension)
 
-        return max_vacation
+# ---- File: 1047. Remove All Adjacent Duplicates In String\removeDuplicates.py ----
+# https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/
 
-# ---- File: 1004_max_consecutive_ones_3\python\original_1004_python.py ----
-from typing import List
+# https://www.youtube.com/watch?v=Ec2SJvjxYEs
 
-def longestOnes_1004_python(nums: List[int], k: int) -> int:
-    max_ = 0
-    left = 0
-    for right in range(len(nums)):
-        if nums[right] == 0:
-            k -= 1
+# You are given a string s consisting of lowercase English letters. A duplicate removal consists of choosing two adjacent and equal letters and removing them.
 
-        while k < 0:
-            if nums[left] == 0:
-                k += 1
-            left += 1
+# We repeatedly make duplicate removals on s until we no longer can.
 
-        max_ = max(max_, right - left + 1)
-    return max_
+# Return the final string after all such duplicate removals have been made. It can be proven that the answer is unique.
 
-# ---- File: 1004_max_consecutive_ones_3\python\second_variant_1004_python.py ----
-from typing import List
+ 
 
-def longestOnes_second_variant_1004_python(year: List[bool], pto: int) -> int:
-    max_vacation = 0
-    left = 0
-    for right in range(len(year)):
-        if not year[right]:
-            pto -= 1
+# Example 1:
 
-        while pto < 0:
-            if not year[left]:
-                pto += 1
-            left += 1
+# Input: s = "abbaca"
+# Output: "ca"
+# Explanation: 
+# For example, in "abbaca" we could remove "bb" since the letters are adjacent and equal, and this is the only possible move.  The result of this move is that the string is "aaca", of which only "aa" is possible, so the final string is "ca".
 
-        max_vacation = max(max_vacation, right - left + 1)
-    return max_vacation
+# Example 2:
 
-if __name__ == '__main__':
-    year = [False, True, True, False, False, True, False]
-    pto = 2
-    assert longestOnes_second_variant_1004_python(year, pto) == 5
+# Input: s = "azxxzy"
+# Output: "ay"
 
-    year = [False, False, True, True, False, False, False]
-    pto = 0
-    assert longestOnes_second_variant_1004_python(year, pto) == 2
+ 
 
-    year = [False, False, True, True, False, False, False]
-    pto = 5
-    assert longestOnes_second_variant_1004_python(year, pto) == 7
+# Constraints:
 
-    year = [False, False, True, True, False, False, False]
-    pto = 10
-    assert longestOnes_second_variant_1004_python(year, pto) == 7
-
-    year = [True, True, True, True, True, True, True]
-    pto = 0
-    assert longestOnes_second_variant_1004_python(year, pto) == 7
-
-    year = [False, True, False, False, False, True, False, True]
-    pto = 1
-    assert longestOnes_second_variant_1004_python(year, pto) == 3
-
-
-# ---- File: 1004_max_consecutive_ones_3\python\third_variant_2d_matrix_1004.py ----
-from typing import List
-
-class Variant:
-    def shrink_window(self, days: List[List[str]], left: List[int]) -> List[int]:
-        row, col = left[0], left[1]
-        if col == len(days[0]) - 1:
-            return [row + 1, 0]
-        return [row, col + 1]
-
-    def getMaxVacations(self, days: List[List[str]], pto: int) -> int:
-        max_vacation = 0
-        curr_vacation = 0
-        left = [0, 0]
-        for row in range(len(days)):
-            for col in range(len(days[0])):
-                if days[row][col] == 'W':
-                    pto -= 1
-                curr_vacation += 1
-
-                while pto < 0:
-                    if days[left[0]][left[1]] == 'W':
-                        pto += 1
-                    left = self.shrink_window(days, left)
-                    curr_vacation -= 1
-
-                max_vacation = max(curr_vacation, max_vacation)
-
-        return max_vacation
-
-# ---- File: 1047_remove_all_adjacent_duplicates_in_string\python\original_1047_python.py ----
-def removeDuplicates(s):
-    result = []
-    for ch in s:
-        if not result or result[-1] != ch:
-            result.append(ch)
-        else:
-            result.pop()
-
-    return ''.join(result)
-
-
-# ---- File: 1047_remove_all_adjacent_duplicates_in_string\python\variant_remove_all_1047_python.py ----
-def remove_all_adjacent_duplicates_variant_1047_python(s):
-    letters = []
-    for ch in s:
-        if not letters:
-            letters.append({'val': ch, 'freq': 1})
-            continue
-        if letters[-1]['val'] == ch:
-            letters[-1]['freq'] += 1
-            continue
-
-        if letters[-1]['freq'] > 1:
-            letters.pop()
-
-        if not letters or letters[-1]['val'] != ch:
-            letters.append({'val': ch, 'freq': 1})
-        elif letters[-1]['val'] == ch:
-            letters[-1]['freq'] += 1
-
-    if letters and letters[-1]['freq'] > 1:
-        letters.pop()
-
-    result = ''.join([letter['val'] for letter in letters])
-    return result
-
-if __name__ == '__main__':
-    s = "azxxxzy"
-    assert remove_all_adjacent_duplicates_variant_1047_python(s) == "ay"
-
-    s = "abbaxx"
-    assert remove_all_adjacent_duplicates_variant_1047_python(s) == ""
-
-    s = "aabbccdd"
-    assert remove_all_adjacent_duplicates_variant_1047_python(s) == ""
-
-    s = "aaabbaad"
-    assert remove_all_adjacent_duplicates_variant_1047_python(s) == "d"
-
-    s = "abcdefg"
-    assert remove_all_adjacent_duplicates_variant_1047_python(s) == "abcdefg"
-
-    s = "abbcddeff"
-    assert remove_all_adjacent_duplicates_variant_1047_python(s) == "ace"
-
-    s = "abcdeffedcba"
-    assert remove_all_adjacent_duplicates_variant_1047_python(s) == ""
-
-    s = "aabccddeeffbbbbbbbbbf"
-    assert remove_all_adjacent_duplicates_variant_1047_python(s) == "f"
-
-    s = "abbbacca"; # Cannot pick and choose duplicates in the middle to delete first
-    assert remove_all_adjacent_duplicates_variant_1047_python(s) == "a"
-
-
-# ---- File: 121_best_time_to_buy_and_sell_stock\python\original_121_python.py ----
-def maxProfit(prices):
-    min_buying_price = prices[0]
-    max_profit = 0
-    
-    for price in prices[1:]:
-        max_profit = max(max_profit, price - min_buying_price)
-        
-        if price < min_buying_price:
-            min_buying_price = price
-    
-    return max_profit
-
-
-# ---- File: 121_best_time_to_buy_and_sell_stock\python\variant_121_python.py ----
-def find_cheapest_tickets(departures, returns):
-    min_departure_cost = departures[0]
-    min_cost = float('inf')
-    
-    for i in range(1, len(departures)):
-        min_cost = min(min_cost, min_departure_cost + returns[i])
-
-        if departures[i] < min_departure_cost:
-            min_departure_cost = departures[i]
-    
-    return min_cost
-
-if __name__ == "__main__":
-    departures = [8, 3, 6, 10]
-    returns = [10, 9, 5, 8]
-    assert find_cheapest_tickets(departures, returns) == 8
-
-    departures = [10, 3, 10, 9, 3]
-    returns = [4, 20, 6, 7, 10]
-    assert find_cheapest_tickets(departures, returns) == 9
-
-    departures = [1, 3, 10, 9, 3]
-    returns = [1, 20, 6, 7, 10]
-    assert find_cheapest_tickets(departures, returns) == 7
-
-    departures = [1, 3, 10, 9, 3]
-    returns = [1, 1, 6, 7, 10]
-    assert find_cheapest_tickets(departures, returns) == 2
-
-    departures = [1, 3, 10, 9, 3]
-    returns = [10, 9, 8, 7, 6]
-    assert find_cheapest_tickets(departures, returns) == 7
-
-    departures = [12, 33, 44, 9, 23]
-    returns = [100, 90, 80, 70, 15]
-    assert find_cheapest_tickets(departures, returns) == 24
-
-    departures = [4, 3, 5, 11, 2]
-    returns = [1, 6, 10, 2, 9]
-    assert find_cheapest_tickets(departures, returns) == 5
-
-# ---- File: 125_valid_palindrome\mock\mock_125.py ----
-def isPalindrome(s: str) -> bool:
-    l, r = 0, len(s) - 1
-
-    while l < r:
-        while l < r and not s[l].isalnum():
-            l += 1
-        while l < r and not s[r].isalnum():
-            r -= 1
-
-        if s[l].lower() != s[r].lower():
-            return False
-
-        l += 1
-        r -= 1
-
-    return True
-
-# ---- File: 125_valid_palindrome\python\original_125.py ----
-class Solution:
-    def isPalindrome(self, s: str) -> bool:
-        d = [c for c in s.lower() if c.isalnum()]
-        left, right = 0, len(d) - 1
-        while left < right:
-            if d[left] != d[right]:
-                return False
-            left += 1
-            right -= 1
-        return True
-
-
-# ---- File: 125_valid_palindrome\python\variant_125.py ----
-class Solution:
-    def isPalindrome(self, s: str, include: list[str]) -> bool:
-        include_set = set(include)
-        left, right = 0, len(s) - 1
-        while left < right:
-            while s[left] not in include_set and left < right:
-                left += 1
-            while s[right] not in include_set and left < right:
-                right -= 1
-            if s[left] != s[right]:
-                return False
-            left += 1
-            right -= 1
-        return True
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    assert not solution.isPalindrome("racecarX", ["r", "X"])
-    assert solution.isPalindrome("Yo, banana boY!", ["Y", "o", "b", "a", "n"])
-    assert solution.isPalindrome("yo banana boy!", ["y", "o", "b", "a", "n"])
-    assert solution.isPalindrome("a b c d e d c b a", ["a", " ", "b", "c", "d", "e"])
-    assert solution.isPalindrome("a b c d e d c b a", ["a", "b", "c", "d", "e"])
-    assert solution.isPalindrome("a b c d e d c b a", ["a", "b", "e"])
-    assert not solution.isPalindrome("Wow", ["W", "o", "w"])
-    assert solution.isPalindrome("WwoWWWWWWWWWWWWWow", ["o", "w"])
-    assert solution.isPalindrome("__________________", ["1", "2"])
-    assert not solution.isPalindrome("________133__________", ["1", "3"])
-    assert not solution.isPalindrome("____1____133_______________", ["1", "3", "_"])
-    assert solution.isPalindrome("", ["1", "3", "_"])
-    assert solution.isPalindrome("", [])
-    assert solution.isPalindrome("MadaM", [])
-    assert solution.isPalindrome("MadaM", ["z", "M", "d"])
-    assert not solution.isPalindrome("MadaMM", ["z", "M", "d"])
-    assert not solution.isPalindrome("racecarX", ["r", "X"])
-
-
-# ---- File: 129_sum_root_to_leaf_nodes\python\first_variant_129.py ----
-from typing import Optional
+#     1 <= s.length <= 105
+#     s consists of lowercase English letters.
 
 class Solution:
-    class TreeNode:
-        def __init__(self, val=0, left=None, right=None):
-            self.val = val
-            self.left = left
-            self.right = right
+    def removeDuplicates(self, s: str) -> str:
+        stack = []
 
-    def sumNumbers(self, root: Optional[TreeNode]) -> int:
-        def getPlaces(num: int):
-            if not num:
-                return 10
-                
-            places = 1
-            while num > 0:
-                num = num // 10
-                places *= 10
-            return places
-        
-        def preorder(node: Solution.TreeNode, curr_number: int):
-            nonlocal root_to_leaf
-            if node:
-                places = getPlaces(node.val)
-                curr_number = (curr_number * places) + node.val
-                if not (node.left or node.right):
-                    root_to_leaf += curr_number
-                preorder(node.left, curr_number)
-                preorder(node.right, curr_number)
-
-        root_to_leaf = 0
-        preorder(root, 0)
-        return root_to_leaf
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    root = Solution.TreeNode(3)
-    root.left = Solution.TreeNode(79, right=Solution.TreeNode(111))
-    root.right = Solution.TreeNode(2)
-    assert solution.sumNumbers(root) == 379143
-
-    root = Solution.TreeNode(1)
-    root.left = Solution.TreeNode(2)
-    root.left.left = Solution.TreeNode(90)
-    root.right = Solution.TreeNode(42)
-    root.right.left = Solution.TreeNode(511)
-    assert solution.sumNumbers(root) == 1290 + 142511
-
-    root = Solution.TreeNode(1)
-    root.left = Solution.TreeNode(2)
-    root.left.left = Solution.TreeNode(912)
-    root.left.left.left = Solution.TreeNode(3)
-    root.left.left.right = Solution.TreeNode(4)
-    root.right = Solution.TreeNode(46)
-    root.right.left = Solution.TreeNode(5)
-    root.right.right = Solution.TreeNode(61)
-    assert solution.sumNumbers(root) == 129123 + 129124 + 1465 + 14661
-
-    root = Solution.TreeNode(1)
-    root.left = Solution.TreeNode(2)
-    root.right = Solution.TreeNode(3)
-    assert solution.sumNumbers(root) == 12 + 13
-
-    root = Solution.TreeNode(10)
-    root.left = Solution.TreeNode(200)
-    root.right = Solution.TreeNode(3000)
-    assert solution.sumNumbers(root) == 10200 + 103000
-
-    root = Solution.TreeNode(10)
-    root.left = Solution.TreeNode(0)
-    root.right = Solution.TreeNode(0)
-    assert solution.sumNumbers(root) == 200
-
-    root = None
-    assert solution.sumNumbers(root) == 0
-
-
-# ---- File: 129_sum_root_to_leaf_nodes\python\original_129.py ----
-from typing import Optional
-
-from ...utils.treenode import TreeNode
-
-class Solution:
-    def sumNumbers(self, root: Optional[TreeNode]) -> int:
-        def preorder(node: TreeNode, curr_number: int):
-            nonlocal root_to_leaf
-            if node:
-                curr_number = curr_number * 10 + node.val
-                if not (node.left or node.right):
-                    root_to_leaf += curr_number
-
-                preorder(node.left, curr_number)
-                preorder(node.right, curr_number)
-
-        root_to_leaf = 0
-        preorder(root, 0)
-        return root_to_leaf
-
-# ---- File: 129_sum_root_to_leaf_nodes\python\second_variant_129.py ----
-class Solution:
-    class TreeNode:
-        def __init__(self, val=0, left=None, right=None):
-            self.val = val
-            self.left = left
-            self.right = right
-
-    def sumNumbers(self, root: TreeNode) -> int:
-        def helper(node, curr_sum, num_negatives):
-            if node is None:
-                return 0
-
-            curr_sum = (curr_sum * 10) + abs(node.val)
-            if node.val < 0:
-                num_negatives += 1
-
-            if node.left is None and node.right is None:
-                sign = -1 if num_negatives % 2 == 1 else 1
-                return curr_sum * sign
-
-            left_sum = helper(node.left, curr_sum, num_negatives)
-            right_sum = helper(node.right, curr_sum, num_negatives)
-
-            return left_sum + right_sum
-
-        return helper(root, 0, 0)
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    root = Solution.TreeNode(1, 
-            left=Solution.TreeNode(-2), 
-            right=Solution.TreeNode(3))
-    assert solution.sumNumbers(root) == 1
-
-    root = Solution.TreeNode(-1, 
-            left=Solution.TreeNode(-2, 
-                left=Solution.TreeNode(-9)), 
-            right=Solution.TreeNode(4, 
-                left=Solution.TreeNode(-5)))
-    assert solution.sumNumbers(root) == -129 + 145
-
-    root = Solution.TreeNode(-1, 
-            left=Solution.TreeNode(-2, 
-                left=Solution.TreeNode(-9, 
-                    left=Solution.TreeNode(3), 
-                        right=Solution.TreeNode(-3))),
-            right=Solution.TreeNode(4, 
-                left=Solution.TreeNode(-5), 
-                    right=Solution.TreeNode(6)))
-    assert solution.sumNumbers(root) == -1293 + 1293 + 145 + -146
-
-    root = Solution.TreeNode(1, 
-            left=Solution.TreeNode(2), 
-            right=Solution.TreeNode(3))
-    assert solution.sumNumbers(root) == 12 + 13
-
-    root = Solution.TreeNode(-1, 
-            left=Solution.TreeNode(-2), 
-            right=Solution.TreeNode(-3))
-    assert solution.sumNumbers(root) == 12 + 13
-
-    root = Solution.TreeNode(-1, 
-            left=Solution.TreeNode(-2, 
-                left=Solution.TreeNode(-3)))
-    assert solution.sumNumbers(root) == -123
-
-    root = None
-    assert solution.sumNumbers(root) == 0
-
-# ---- File: 138_copy_list_with_random_pointer\python\original_138.py ----
-from typing import Optional
-
-class Solution:
-    class Node:
-        def __init__(self, x: int, next: "Node" = None, random: "Node" = None):
-            self.val = int(x)
-            self.next = next
-            self.random = random
-
-    def copyRandomList(self, head: "Optional[Node]") -> "Optional[Node]":
-        visited = {}
-
-        def dfs(head):
-            if head is None:
-                return None
-            if head in visited:
-                return visited[head]
-            node = Node(head.val)
-            visited[head] = node
-            node.next = dfs(head.next)
-            node.random = dfs(head.random)
-            return node
-
-        return dfs(head)
-
-
-# ---- File: 138_copy_list_with_random_pointer\python\variant_138.py ----
-from typing import Optional
-
-class Node:
-    def __init__(self, val=0, left=None, right=None, random=None):
-        self.val = val
-        self.left = left
-        self.right = right
-        self.random = random
-
-class NodeCopy:
-    def __init__(self, val=0, left=None, right=None, random=None):
-        self.val = val
-        self.left = left
-        self.right = right
-        self.random = random
-
-class Solution:
-    def copyRandomBinaryTree(self, root: "Optional[Node]") -> "Optional[NodeCopy]":
-        visited = {}
-
-        def dfs(root) -> "Optional[NodeCopy]":
-            if root is None:
-                return None
-            if root in visited:
-                return visited[root]
-            copy = NodeCopy(root.val)
-            visited[root] = copy
-            copy.left = dfs(root.left)
-            copy.right = dfs(root.right)
-            copy.random = dfs(root.random)
-            return copy
-
-        return dfs(root)
-
-
-# ---- File: 1570_dot_product_of_two_sparse_vectors\python\original_1570.py ----
-from collections import namedtuple
-
-class SparseVector:
-    def __init__(self, nums: list[int]):
-        Pair = namedtuple("Pair", "index value")
-        self.pairs = [Pair(index, value) for index, value in enumerate(nums) if value != 0]
-
-    def dotProduct(self, vec: 'SparseVector') -> int:
-        result = 0
-        i, j = 0, 0
-        while i < len(self.pairs) and j < len(vec.pairs):
-            if self.pairs[i].index == vec.pairs[j].index:
-                result += self.pairs[i].value * vec.pairs[j].value
-                i += 1
-                j += 1
-            elif self.pairs[i].index < vec.pairs[j].index:
-                i += 1
+        for char in s:
+            if not stack or char != stack[-1]:
+                stack.append(char)
             else:
-                j += 1
-        return result
+                stack.pop()
+        return "".join(stack)
+    
+    # T and S : O(N)
+    
 
-# ---- File: 1570_dot_product_of_two_sparse_vectors\python\variant_binary_search_1570.py ----
-from collections import namedtuple
-from bisect import bisect_left
+# ---- File: 1091. Shortest Path in Binary Matrix\shortestPathBinaryMatrix.py ----
+# https://leetcode.com/problems/shortest-path-in-binary-matrix/description/
 
+# https://www.youtube.com/watch?v=Y2F8EGP3OA4
 
-class SparseVectorVariant:
-    def __init__(self, nums: list[int]):
-        Pair = namedtuple("Pair", "index value")
-        self.pairs = [
-            Pair(index, value) for index, value in enumerate(nums) if value != 0
-        ]
+# Given an n x n binary matrix grid, return the length of the shortest clear path in the matrix. If there is no clear path, return -1.
 
-    def dotProduct(self, vec: "SparseVectorVariant") -> int:
-        result = 0
-        shorter, longer = (
-            (self.pairs, vec.pairs)
-            if len(self.pairs) < len(vec.pairs)
-            else (vec.pairs, self.pairs)
-        )
-        for pair in shorter:
-            matched_idx = bisect_left(longer, (pair.index,))
-            if matched_idx >= len(longer) or longer[matched_idx].index != pair.index:
-                continue
-            result += pair.value * longer[matched_idx].value
+# A clear path in a binary matrix is a path from the top-left cell (i.e., (0, 0)) to the bottom-right cell (i.e., (n - 1, n - 1)) such that:
 
-        return result
+#     All the visited cells of the path are 0.
+#     All the adjacent cells of the path are 8-directionally connected (i.e., they are different and they share an edge or a corner).
 
+# The length of a clear path is the number of visited cells of this path.
 
-# ---- File: 162_find_peak_element\python\original_162_python.py ----
-def findPeakElement_python(nums):
-    left = 0
-    right = len(nums) - 1
-    while left <= right:
-        mid = (right - left) // 2 + left
+ 
 
-        if (mid == len(nums) - 1 or nums[mid + 1] < nums[mid]) and \
-           (mid == 0 or nums[mid - 1] < nums[mid]):
-            return mid
+# Example 1:
 
-        if nums[mid + 1] > nums[mid]:
-            left = mid + 1
-        else:
-            right = mid - 1
+# Input: grid = [[0,1],[1,0]]
+# Output: 2
 
-    return -1  # Unreachable
+# Example 2:
 
+# Input: grid = [[0,0,0],[1,1,0],[1,1,0]]
+# Output: 4
 
-# ---- File: 162_find_peak_element\python\variant_find_valley_element_162_python.py ----
-def findValleyElement(nums):
-    left = 0
-    right = len(nums) - 1
-    while left <= right:
-        mid = (right - left) // 2 + left
+# Example 3:
 
-        if (mid == len(nums) - 1 or nums[mid + 1] > nums[mid]) and \
-           (mid == 0 or nums[mid - 1] > nums[mid]):
-            return mid
+# Input: grid = [[1,0,0],[1,1,0],[1,1,0]]
+# Output: -1
 
-        if nums[mid + 1] < nums[mid]:
-            left = mid + 1
-        else:
-            right = mid - 1
+ 
 
-    return -1  # Unreachable
+# Constraints:
 
-if __name__ == "__main__":
-    nums = [1, 2, 3, 1]
-    assert findValleyElement(nums) == 0  # Left pos infinity yields valley
-
-    nums = [1, 2, 3, 5, 3, 4, 3, 1, 6]
-    assert findValleyElement(nums) == 4
-
-    nums = [3, 2, 3, 4, 3, 2]
-    assert findValleyElement(nums) == 1
-
-    nums = [1, 2, 3, 4, 3, 2]
-    assert findValleyElement(nums) == 0
-
-    nums = [1, 2, 3, 2, 1, 0]
-    assert findValleyElement(nums) == 5  # Right pos infinity yields valley
-
-    nums = [1, 2, 3, 2, 1, 6]
-    assert findValleyElement(nums) == 4
-
-# ---- File: 163_missing_ranges\python\original_163.py ----
-class Solution:
-    def findMissingRanges(
-        self, nums: list[int], lower: int, upper: int
-    ) -> list[list[int]]:
-        n = len(nums)
-        missing_ranges = []
-        if n == 0:
-            missing_ranges.append([lower, upper])
-            return missing_ranges
-
-        # Check for any missing numbers between the lower bound and nums[0].
-        if lower < nums[0]:
-            missing_ranges.append([lower, nums[0] - 1])
-
-        # Check for any missing numbers between successive elements of nums.
-        for i in range(n - 1):
-            if nums[i + 1] - nums[i] <= 1:
-                continue
-            missing_ranges.append([nums[i] + 1, nums[i + 1] - 1])
-
-        # Check for any missing numbers between the last element of nums and the upper bound.
-        if upper > nums[-1]:
-            missing_ranges.append([nums[-1] + 1, upper])
-
-        return missing_ranges
-
-
-# ---- File: 163_missing_ranges\python\variant_163.py ----
-class Solution:
-    def findMissingRangesVariant(self, nums, lower, upper):
-        curr_lower = lower
-        missing_ranges = []
-        nums.append(upper + 1)
-        
-        for num in nums:
-            if num - curr_lower > 2:
-                missing_ranges.append(f"{curr_lower}-{num - 1}")
-            elif num - curr_lower == 2:
-                missing_ranges.append(str(curr_lower))
-                missing_ranges.append(str(curr_lower + 1))
-            elif num - curr_lower == 1:
-                missing_ranges.append(str(curr_lower))
-            
-            curr_lower = num + 1
-        
-        return missing_ranges
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    assert solution.findMissingRangesVariant([5, 8, 9, 15, 16, 18, 20], 2, 87) == [
-        "2-4",
-        "6",
-        "7",
-        "10-14",
-        "17",
-        "19",
-        "21-87",
-    ]
-
-    solution = Solution()
-    # Empty vector cases
-    assert solution.findMissingRangesVariant([], 0, 0) == ["0"]
-    assert solution.findMissingRangesVariant([], 5, 35) == ["5-35"]
-    assert solution.findMissingRangesVariant([], 0, 35) == ["0-35"]
-
-    # Valid cases
-    assert solution.findMissingRangesVariant([5, 8, 9, 15, 16, 18, 20], 2, 87) == [
-        "2-4",
-        "6",
-        "7",
-        "10-14",
-        "17",
-        "19",
-        "21-87",
-    ]
-
-    # Upper bound with dash
-    assert solution.findMissingRangesVariant([5, 8, 9, 15, 16, 18, 20], 1, 800) == [
-        "1-4",
-        "6",
-        "7",
-        "10-14",
-        "17",
-        "19",
-        "21-800",
-    ]
-
-    # Upper bound with one missing number
-    assert solution.findMissingRangesVariant([5, 8, 9, 15, 16, 18, 20], 1, 21) == [
-        "1-4",
-        "6",
-        "7",
-        "10-14",
-        "17",
-        "19",
-        "21",
-    ]
-
-    # Upper bound with two missing numbers
-    assert solution.findMissingRangesVariant([5, 8, 9, 15, 16, 18, 20], 1, 22) == [
-        "1-4",
-        "6",
-        "7",
-        "10-14",
-        "17",
-        "19",
-        "21",
-        "22",
-    ]
-
-    # Upper bound with no missing numbers
-    assert solution.findMissingRangesVariant([5, 8, 9, 15, 16, 18, 20], 1, 20) == [
-        "1-4",
-        "6",
-        "7",
-        "10-14",
-        "17",
-        "19",
-    ]
-
-    # No missing ranges with one element
-    assert solution.findMissingRangesVariant([0], 0, 0) == []
-
-    # No missing ranges with one element V2
-    assert solution.findMissingRangesVariant([6], 6, 6) == []
-
-    # Lower bound with dash
-    assert solution.findMissingRangesVariant([0, 8, 9, 15, 16, 18, 20], 0, 20) == [
-        "1-7",
-        "10-14",
-        "17",
-        "19",
-    ]
-
-    # Lower bound with no missing numbers
-    assert solution.findMissingRangesVariant([5, 8, 9, 15, 16, 18, 20], 5, 20) == [
-        "6",
-        "7",
-        "10-14",
-        "17",
-        "19",
-    ]
-
-    # Lower bound with two missing numbers
-    assert solution.findMissingRangesVariant([5, 8, 9, 15, 16, 18, 20], 3, 20) == [
-        "3",
-        "4",
-        "6",
-        "7",
-        "10-14",
-        "17",
-        "19",
-    ]
-
-    # Lower bound with one missing number
-    assert solution.findMissingRangesVariant([5, 8, 9, 15, 16, 18, 20], 4, 20) == [
-        "4",
-        "6",
-        "7",
-        "10-14",
-        "17",
-        "19",
-    ]
-
-    # Upper bound with no dash
-    assert solution.findMissingRangesVariant([5, 8, 9, 15, 16, 18, 20], 5, 22) == [
-        "6",
-        "7",
-        "10-14",
-        "17",
-        "19",
-        "21",
-        "22",
-    ]
-
-    # One element with two ranges missing
-    assert solution.findMissingRangesVariant([10], 5, 22) == ["5-9", "11-22"]
-
-
-# ---- File: 199_binary_tree_right_side_view\python\first_variant_left_right_side_view_199.py ----
-from typing import Optional
-from collections import deque
-
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
+#     n == grid.length
+#     n == grid[i].length
+#     1 <= n <= 100
+#     grid[i][j] is 0 or 1
 
 class Solution:
-    def leftRightSideViewVariant(self, root: Optional[TreeNode]) -> list[int]:
-        if not root:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+
+        if grid[0][0] or grid[n - 1][n - 1]:
+            return -1
+
+        queue = [(0, 0, 1)]  # row, column, and length
+        grid[0][0] = 1
+
+        for r, c, l in queue:
+            if r == n - 1 and c == n - 1:
+                return l
+
+            directions = [
+                (r - 1, c), (r - 1, c - 1), (r - 1, c + 1),
+                (r, c - 1), (r, c + 1),
+                (r + 1, c), (r + 1, c - 1), (r + 1, c + 1)
+            ]
+
+            for x, y in directions:
+                if 0 <= x < n and 0 <= y < n and grid[x][y] == 0:
+                    grid[x][y] = 1
+                    queue.append([x, y, l + 1])
+        return -1
+
+# T - O(N)
+# S - O(N)
+    
+# Follow-up: If asked to print the path, rather than the length:
+    
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> List[List[int]]:
+        n = len(grid)
+
+        if grid[0][0] or grid[n - 1][n - 1]:
             return []
 
-        left_side = []
-        right_side = []
-        q = deque([root])
-        while q:
-            size = len(q)
-            for i in range(size):
-                node = q.popleft()
-
-                if i == 0:
-                    left_side.append(node.val)
-                if size == i + 1:
-                    right_side.append(node.val)
-
-                if node.left:
-                    q.append(node.left)
-                if node.right:
-                    q.append(node.right)
-
-        result = []
-        result.extend(reversed(left_side))
-        result.extend(right_side[1:])
-        return result
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    # Test Case 1: Based on the example in the problem
-    # Tree structure:
-    #       1
-    #      / \
-    #     2   3
-    #    /     \
-    #   5       4
-    root1 = TreeNode(1)
-    root1.left = TreeNode(2)
-    root1.right = TreeNode(3)
-    root1.left.left = TreeNode(5)
-    root1.right.right = TreeNode(4)
-    assert solution.leftRightSideViewVariant(root1) == [5, 2, 1, 3, 4]
-    # Test Case 2: Based on the second example
-    # Tree structure:
-    #       1
-    #      / \
-    #     2   3
-    #    / \
-    #   4   5
-    root2 = TreeNode(1)
-    root2.left = TreeNode(2)
-    root2.right = TreeNode(3)
-    root2.left.left = TreeNode(4)
-    root2.left.right = TreeNode(5)
-    assert solution.leftRightSideViewVariant(root2) == [4, 2, 1, 3, 5]
-
-    root1 = TreeNode(1)
-    root1.left = TreeNode(2)
-    root1.right = TreeNode(3)
-    root1.right.right = TreeNode(7)
-    root1.right.left = TreeNode(6)
-    root1.right.right.left = TreeNode(8)
-    root1.left.left = TreeNode(4)
-    root1.left.right = TreeNode(5)
-    assert solution.leftRightSideViewVariant(root1) == [8, 4, 2, 1, 3, 7, 8]
-
-    root2 = TreeNode(1)
-    assert solution.leftRightSideViewVariant(root2) == [1]
-
-    root3 = TreeNode(1)
-    root3.left = TreeNode(2)
-    root3.left.left = TreeNode(3)
-    assert solution.leftRightSideViewVariant(root3) == [3, 2, 1, 2, 3]
-
-    root4 = None
-    assert solution.leftRightSideViewVariant(root4) == []
-
-    root5 = TreeNode(1)
-    root5.left = TreeNode(2)
-    root5.right = TreeNode(3)
-    root5.right.left = TreeNode(5)
-    root5.right.left.right = TreeNode(6)
-    root5.right.left.right.right = TreeNode(7)
-    root5.left.right = TreeNode(4)
-    assert solution.leftRightSideViewVariant(root5) == [7, 6, 4, 2, 1, 3, 5, 6, 7]
-
-
-# ---- File: 199_binary_tree_right_side_view\python\original_199.py ----
-from ...utils.treenode import TreeNode
-from typing import Optional
-from collections import deque
-
-
-class Solution:
-    def rightSideView(self, root: Optional[TreeNode]) -> list[int]:
-        if root is None:
-            return []
-
-        rightside = []
-        queue = deque([root])
+        queue = [(0, 0, [(0, 0)])]  # row, column, and path
+        grid[0][0] = 1
 
         while queue:
-            level_length = len(queue)
-            for i in range(level_length):
-                curr = queue.popleft()
-                if i == level_length - 1:
-                    rightside.append(curr.val)
-                if curr.left:
-                    queue.append(curr.left)
-                if curr.right:
-                    queue.append(curr.right)
-
-        return rightside
-
-
-# ---- File: 199_binary_tree_right_side_view\python\second_variant_print_left_right_side_views_199.py ----
-from typing import Optional
-from collections import deque
-
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-
-class Solution:
-    def leftRightSideViewVariantPrint(self, root: Optional[TreeNode]):
-        if not root:
-            return []
-
-        left_side = []
-        right_side = []
-        q = deque([root])
-        while q:
-            size = len(q)
-            for i in range(size):
-                node = q.popleft()
-
-                if i == 0:
-                    left_side.append(node.val)
-                if size == i + 1:
-                    right_side.append(node.val)
-
-                if node.left:
-                    q.append(node.left)
-                if node.right:
-                    q.append(node.right)
-
-        for left_value in left_side[-1:0:-1]:
-            print(left_value)
-        for right_value in right_side:
-            print(right_value)
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    # Test Case 1: Based on the example in the problem
-    # Tree structure:
-    #       1
-    #      / \
-    #     2   3
-    #    /     \
-    #   5       4
-    root1 = TreeNode(1)
-    root1.left = TreeNode(2)
-    root1.right = TreeNode(3)
-    root1.left.left = TreeNode(5)
-    root1.right.right = TreeNode(4)
-    solution.leftRightSideViewVariantPrint(root1)  # Should print 5, 2, 1, 3, 4 in order
-    print("-")
-    # Test Case 2: Based on the second example
-    # Tree structure:
-    #       1
-    #      / \
-    #     2   3
-    #    / \
-    #   4   5
-    root2 = TreeNode(1)
-    root2.left = TreeNode(2)
-    root2.right = TreeNode(3)
-    root2.left.left = TreeNode(4)
-    root2.left.right = TreeNode(5)
-    solution.leftRightSideViewVariantPrint(root2)  # Should print 4, 2, 1, 3, 5 in order
-    print("-")
-
-    # Tree structure:
-    #       1
-    #      / \
-    #     2   3
-    #    /     \
-    #   5       4
-    root1 = TreeNode(1)
-    root1.left = TreeNode(2)
-    root1.right = TreeNode(3)
-    root1.left.left = TreeNode(5)
-    root1.right.right = TreeNode(4)
-    solution.leftRightSideViewVariantPrint(root1)  # Expected output: 5 2 1 3 4
-    print("-")
-
-    root2 = TreeNode(1)
-    solution.leftRightSideViewVariantPrint(root2)  # Expected output: 1
-    print("-")
-
-    root3 = None
-    solution.leftRightSideViewVariantPrint(root3)  # Expected output: (nothing)
-    print("-")
-
-    # Tree structure:
-    #       1
-    #      /
-    #     2
-    #    /
-    #   3
-    root4 = TreeNode(1)
-    root4.left = TreeNode(2)
-    root4.left.left = TreeNode(3)
-    solution.leftRightSideViewVariantPrint(root4)  # Expected output: 3 2 1 2 3
-
-
-# ---- File: 19_remove_nth_node_from_end\python\original_19.py ----
-from utils.ListNode import ListNode
-
-class Solution_19:
-    def removeNthFromEnd(self, head, n):
-        dummy = ListNode()
-        dummy.next = head
-
-        r = dummy
-        for _ in range(n):
-            r = r.next
-
-        l = dummy
-        while r.next is not None:
-            r = r.next
-            l = l.next
-
-        l.next = l.next.next
-        return dummy.next
-
-
-# ---- File: 19_remove_nth_node_from_end\python\variant_19_ith_from_beginning.py ----
-from utils.ListNode import ListNode
-
-class Solution_19_Variant:
-    def removeIthFromBeginning(self, head, n):
-        dummy = ListNode()
-        dummy.next = head
-
-        i = dummy
-        for _ in range(n):
-            if i.next is None:
-                return dummy.next
-            i = i.next
-
-        if i.next is None:
-            return dummy.next
-
-        i.next = i.next.next
-        return dummy.next
-
-# ---- File: 215_kth_largest_element\python\first_variant_kth_largest_215.py ----
-from heapq import heappush, heappop
-
-class Solution:
-    def findKthPluseOneLargest(self, nums: list[int], k: int) -> int:
-        if k + 1 > len(nums):
-            return 0
-        k = k + 1
-        min_heap = []
-        for num in nums:
-            heappush(min_heap, num)
-            if len(min_heap) > k:
-                heappop(min_heap)
-        return min_heap[0]
-
-if __name__ == "__main__":
-    solution = Solution()
-    # Distinct elements in nums
-    nums = [1, 2, 3, 4, 5]
-    k = 0
-    assert solution.findKthPluseOneLargest(nums, k) == 5
-    k = 1
-    assert solution.findKthPluseOneLargest(nums, k) == 4
-    k = 2
-    assert solution.findKthPluseOneLargest(nums, k) == 3
-    k = 3
-    assert solution.findKthPluseOneLargest(nums, k) == 2
-    k = 4
-    assert solution.findKthPluseOneLargest(nums, k) == 1
-    
-    nums = [1]
-    k = 0
-    assert solution.findKthPluseOneLargest(nums, k) == 1
-    
-    # Out of range indices
-    nums = [1, 2, 3, 4, 5]
-    try:
-        solution.findKthPluseOneLargest(nums, 5)
-        assert False, "Expected an out_of_range exception"
-    except AssertionError:
-        pass
-    try:
-        solution.findKthPluseOneLargest(nums, 50)
-        assert False, "Expected an out_of_range exception"
-    except AssertionError:
-        pass
-
-    nums = [1]
-    k = 1
-    try:
-        solution.findKthPluseOneLargest(nums, k)
-        assert False, "Expected an out_of_range exception"
-    except AssertionError:
-        pass
-
-    # Edge Case: Empty list
-    nums = []
-    k = 0
-    try:
-        solution.findKthPluseOneLargest(nums, k)
-        assert False, "Expected an out_of_range exception"
-    except AssertionError:
-        pass
-    
-    k = 1
-    try:
-        solution.findKthPluseOneLargest(nums, k)
-        assert False, "Expected an out_of_range exception"
-    except AssertionError:
-        pass
-
-    k = 2
-    try:
-        solution.findKthPluseOneLargest(nums, k)
-        assert False, "Expected an out_of_range exception"
-    except AssertionError:
-        pass
-
-# ---- File: 215_kth_largest_element\python\original_215.py ----
-from heapq import heappush, heappop
-
-
-class Solution:
-    def findKthLargest(self, nums: list[int], k: int) -> int:
-        min_heap = []
-        for num in nums:
-            heappush(min_heap, num)
-            if len(min_heap) > k:
-                heappop(min_heap)
-        return min_heap[0]
-
-
-# ---- File: 215_kth_largest_element\python\second_variant_kth_smallest_215.py ----
-from heapq import heappush, heappop
-
-
-class Solution:
-    def findKthSmallest(self, nums: list[int], k: int) -> int:
-        max_heap = []
-        for num in nums:
-            heappush(max_heap, -num)
-            if len(max_heap) > k:
-                heappop(max_heap)
-        return -max_heap[0]
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    assert solution.findKthSmallest([2, 10, 8, 3, 7, 9], 2) == 3
-    assert solution.findKthSmallest([2, 10, 8, 3, 7, 9], 4) == 8
-
-    assert solution.findKthSmallest([3, 8, 4, 1, 10], 1) == 1
-    assert solution.findKthSmallest([3, 8, 4, 1, 10], 2) == 3
-    assert solution.findKthSmallest([3, 8, 4, 1, 10], 3) == 4
-    assert solution.findKthSmallest([3, 8, 4, 1, 10], 4) == 8
-    assert solution.findKthSmallest([3, 8, 4, 1, 10], 5) == 10
-
-    assert solution.findKthSmallest([1, 1, 1, 1, 2], 1) == 1
-    assert solution.findKthSmallest([1, 1, 1, 1, 2], 2) == 1
-    assert solution.findKthSmallest([1, 1, 1, 1, 2], 3) == 1
-    assert solution.findKthSmallest([1, 1, 1, 1, 2], 4) == 1
-    assert solution.findKthSmallest([1, 1, 1, 1, 2], 5) == 2
-
-    assert solution.findKthSmallest([-1, -5, -2, -3, -4], 1) == -5
-    assert solution.findKthSmallest([-1, -5, -2, -3, -4], 2) == -4
-    assert solution.findKthSmallest([-1, -5, -2, -3, -4], 3) == -3
-    assert solution.findKthSmallest([-1, -5, -2, -3, -4], 4) == -2
-    assert solution.findKthSmallest([-1, -5, -2, -3, -4], 5) == -1
-
-
-# ---- File: 21_merge_two_sorted_lists\python\first_variant_21_python.py ----
-from typing import List
-
-def merge_3_sorted_lists_first_variant_21_python(listA: List[int], 
-                                                 listB: List[int], 
-                                                 listC: List[int]) -> List[int]:
-    result = []
-    a, b, c = 0, 0, 0
-    while a < len(listA) or b < len(listB) or c < len(listC):
-        a_val = listA[a] if a < len(listA) else float('inf')
-        b_val = listB[b] if b < len(listB) else float('inf')
-        c_val = listC[c] if c < len(listC) else float('inf')
-
-        min_val = min(a_val, b_val, c_val)
-        result.append(min_val)
-
-        if a_val == min_val:
-            a += 1
-        elif b_val == min_val:
-            b += 1
-        else:
-            c += 1
-
-    return result
-
-if __name__ == '__main__':
-    a = [1, 1, 1, 3, 4, 5]
-    b = [3, 3, 4, 5, 6]
-    c = [1, 1, 3, 3, 8, 8, 8, 10]
-    expected = [1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 4, 4, 5, 5, 6, 8, 8, 8, 10]
-    assert expected == merge_3_sorted_lists_first_variant_21_python(a, b, c)
-
-    a = []
-    b = [3, 3, 4, 5, 6]
-    c = [1, 1, 3, 3, 8, 8, 8, 10]
-    expected = [1, 1, 3, 3, 3, 3, 4, 5, 6, 8, 8, 8, 10]
-    assert expected == merge_3_sorted_lists_first_variant_21_python(a, b, c)
-
-    a = []
-    b = []
-    c = []
-    expected = []
-    assert expected == merge_3_sorted_lists_first_variant_21_python(a, b, c)
-
-    a = [1]
-    b = [2]
-    c = [3, 4, 5, 6, 7]
-    expected = [1, 2, 3, 4, 5, 6, 7]
-    assert expected == merge_3_sorted_lists_first_variant_21_python(a, b, c)
-
-    a = [1, 2, 3]
-    b = [1, 2, 3]
-    c = [1, 2, 3]
-    expected = [1, 1, 1, 2, 2, 2, 3, 3, 3]
-    assert expected == merge_3_sorted_lists_first_variant_21_python(a, b, c)
-
-    a = [2, 2]
-    b = [2]
-    c = [0]
-    expected = [0, 2, 2, 2]
-    assert expected == merge_3_sorted_lists_first_variant_21_python(a, b, c)
-
-# ---- File: 21_merge_two_sorted_lists\python\second_variant_21_python.py ----
-from typing import List
-
-def merge_3_sorted_lists_second_variant_21(listA: List[int], 
-                                           listB: List[int], 
-                                           listC: List[int]) -> List[int]:
-    result = []
-    a, b, c = 0, 0, 0
-    while a < len(listA) or b < len(listB) or c < len(listC):
-        a_val = listA[a] if a < len(listA) else float('inf')
-        b_val = listB[b] if b < len(listB) else float('inf')
-        c_val = listC[c] if c < len(listC) else float('inf')
-
-        min_val = min(a_val, b_val, c_val)
-
-        if not result or result[-1] != min_val:
-            result.append(min_val)
-
-        if a_val == min_val:
-            a += 1
-        elif b_val == min_val:
-            b += 1
-        else:
-            c += 1
-
-    return result
-
-if __name__ == '__main__':
-    a = [1, 1, 1, 3, 4, 5]
-    b = [3, 3, 4, 5, 6]
-    c = [1, 1, 3, 3, 8, 8, 8, 10]
-    expected = [1, 3, 4, 5, 6, 8, 10]
-    assert expected == merge_3_sorted_lists_second_variant_21(a, b, c)
-
-    a = []
-    b = [3, 3, 4, 5, 6]
-    c = [1, 1, 3, 3, 8, 8, 8, 10]
-    expected = [1, 3, 4, 5, 6, 8, 10]
-    assert expected == merge_3_sorted_lists_second_variant_21(a, b, c)
-
-    a = []
-    b = []
-    c = []
-    expected = []
-    assert expected == merge_3_sorted_lists_second_variant_21(a, b, c)
-
-    a = [1]
-    b = [2]
-    c = [3, 4, 5, 6, 7]
-    expected = [1, 2, 3, 4, 5, 6, 7]
-    assert expected == merge_3_sorted_lists_second_variant_21(a, b, c)
-
-    a = [1, 2, 3]
-    b = [1, 2, 3]
-    c = [1, 2, 3]
-    expected = [1, 2, 3]
-    assert expected == merge_3_sorted_lists_second_variant_21(a, b, c)
-
-    a = [2, 2]
-    b = [2]
-    c = [0]
-    expected = [0, 2]
-    assert expected == merge_3_sorted_lists_second_variant_21(a, b, c)
-
-
-# ---- File: 236_lowest_common_ancestor\python\first_variant_236_nary_tree.py ----
-class TreeNode:
-    def __init__(self, val=None, children=[]):
-        self.val = val
-        self.children = children
-
-class Solution:
-    def lowestCommonAncestor(self, root: "TreeNode", p: "TreeNode", q: "TreeNode") -> "TreeNode":
-        parent = {root: None}
-        stack = [root]
-        while p not in parent or q not in parent:
-            node = stack.pop()
-            for child in node.children:
-                parent[child] = node
-                stack.append(child)
-
-        ancestors = set()
-        while p:
-            ancestors.add(p)
-            p = parent[p]
-
-        while q not in ancestors:
-            q = parent[q]
-
-        return q
-
-
-if __name__ == "__main__":
-    # Tree structure:
-    #       1
-    #    /  |  \
-    #   3   2   4
-    #  / \
-    # 5   6
-    root1 = TreeNode(1)
-    node3 = TreeNode(3)
-    node2 = TreeNode(2)
-    node4 = TreeNode(4)
-    node5 = TreeNode(5)
-    node6 = TreeNode(6)
-
-    root1.children = [node3, node2, node4]
-    node3.children = [node5, node6]
-    solution = Solution()
-    assert solution.lowestCommonAncestor(root1, node5, node2) == root1
-    assert solution.lowestCommonAncestor(root1, node5, node6) == node3
-
-    # Test Case 2: More complex tree
-    # Tree structure:
-    #        10
-    #     /  |  \  \
-    #    5   1   7  8
-    #   / \  |      |
-    #  2  4  3      9
-    #    /
-    #   6
-    root2 = TreeNode(10)
-    node5_2 = TreeNode(5)
-    node1 = TreeNode(1)
-    node7 = TreeNode(7)
-    node8 = TreeNode(8)
-    node2_2 = TreeNode(2)
-    node4_2 = TreeNode(4)
-    node3_2 = TreeNode(3)
-    node9 = TreeNode(9)
-    node6_2 = TreeNode(6)
-
-    root2.children = [node5_2, node1, node7, node8]
-    node5_2.children = [node2_2, node4_2]
-    node1.children = [node3_2]
-    node8.children = [node9]
-    node4_2.children = [node6_2]
-    assert solution.lowestCommonAncestor(root2, node6_2, node3_2) == root2
-    assert solution.lowestCommonAncestor(root2, node6_2, node2_2) == node5_2
-
-    # Tree structure:
-    #       1
-    #    /  |  \
-    #   2   3   4
-    #  / \     / | \
-    # 5   6   7  8  9
-    root = TreeNode(1)
-    node2 = TreeNode(2)
-    node3 = TreeNode(3)
-    node4 = TreeNode(4)
-    node5 = TreeNode(5)
-    node6 = TreeNode(6)
-    node7 = TreeNode(7)
-    node8 = TreeNode(8)
-    node9 = TreeNode(9)
-    root.children = [node2, node3, node4]
-    node2.children = [node5, node6]
-    node4.children = [node7, node8, node9]
-    solution = Solution()
-    # Root as the LCA
-    assert solution.lowestCommonAncestor(root, node5, node7) == root
-    assert solution.lowestCommonAncestor(root, node5, node8) == root
-    assert solution.lowestCommonAncestor(root, node5, node9) == root
-    assert solution.lowestCommonAncestor(root, node6, node7) == root
-    assert solution.lowestCommonAncestor(root, node6, node8) == root
-    assert solution.lowestCommonAncestor(root, node6, node9) == root
-
-    assert solution.lowestCommonAncestor(root, node2, node9) == root
-
-    assert solution.lowestCommonAncestor(root, node2, node4) == root
-    assert solution.lowestCommonAncestor(root, node2, node3) == root
-
-    # Node 4 as the LCA
-    assert solution.lowestCommonAncestor(root, node7, node8) == node4
-    assert solution.lowestCommonAncestor(root, node7, node9) == node4
-
-    # Node 2 as the LCA
-    assert solution.lowestCommonAncestor(root, node5, node6) == node2
-
-    # Same tree structure for the second test case:
-    #       1
-    #    /  |  \
-    #   2   3   4
-    #  / \     / | \
-    # 5   6   7  8  9
-    root = TreeNode(1)
-    node2 = TreeNode(2)
-    node3 = TreeNode(3)
-    node4 = TreeNode(4)
-    node5 = TreeNode(5)
-    node6 = TreeNode(6)
-    node7 = TreeNode(7)
-    node8 = TreeNode(8)
-    node9 = TreeNode(9)
-
-    root.children = [node2, node3, node4]
-    node2.children = [node5, node6]
-    node4.children = [node7, node8, node9]
-
-    solution = Solution()
-    # Root as the LCA
-    assert solution.lowestCommonAncestor(root, root, node2) == root
-    assert solution.lowestCommonAncestor(root, root, node3) == root
-    assert solution.lowestCommonAncestor(root, root, node4) == root
-    assert solution.lowestCommonAncestor(root, root, node5) == root
-    assert solution.lowestCommonAncestor(root, root, node6) == root
-    assert solution.lowestCommonAncestor(root, root, node7) == root
-    assert solution.lowestCommonAncestor(root, root, node8) == root
-    assert solution.lowestCommonAncestor(root, root, node9) == root
-
-    # Node 4 as the LCA
-    assert solution.lowestCommonAncestor(root, node4, node8) == node4
-    assert solution.lowestCommonAncestor(root, node4, node9) == node4
-
-    # Node 2 as the LCA
-    assert solution.lowestCommonAncestor(root, node2, node6) == node2
-
-
-# ---- File: 236_lowest_common_ancestor\python\original_236.py ----
-from ...utils.treenode import TreeNode
-
-
-class Solution:
-    def lowestCommonAncestor(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
-        parent = {root: None}
-        stack = [root]
-        while p not in parent or q not in parent:
-            curr = stack.pop()
-            if curr.left:
-                parent[curr.left] = curr
-                stack.append(curr.left)
-            if curr.right:
-                parent[curr.right] = curr
-                stack.append(curr.right)
-
-        ancestors = set()
-        while p:
-            ancestors.add(p)
-            p = parent[p]
-
-        while q not in ancestors:
-            q = parent[q]
-
-        return q
-
-
-# ---- File: 31_next_permutation\python\original_31.py ----
-class Solution:
-    def nextPermutation(self, nums: list[int]) -> None:
-        valley = None
-        for i in range(len(nums) - 1, 0, -1):
-            # Iterate from end
-            if nums[i - 1] < nums[i]:
-                valley = i - 1
-                break
-
-        if valley is None:
-            nums.reverse()
-            return
-
-        next_higher = len(nums) - 1
-        while nums[next_higher] <= nums[valley]:
-            next_higher -= 1
-
-        nums[valley], nums[next_higher] = nums[next_higher], nums[valley]
-
-        left = valley + 1
-        right = len(nums) - 1
-
-        while left < right:
-            nums[left], nums[right] = nums[right], nums[left]
-            left += 1
-            right -= 1
-
-
-# ---- File: 31_next_permutation\python\variant_31_previous_permutation.py ----
-class Solution:
-    def previousPermutation(self, nums: list[int]) -> None:
-        peak = None
-        for i in range(len(nums) - 1, 0, -1):
-            if nums[i - 1] > nums[i]:
-                peak = i - 1
-                break
-
-        if peak is None:
-            nums.reverse()
-            return
-
-        next_lower = len(nums) - 1
-        while nums[next_lower] >= nums[peak]:
-            next_lower -= 1
-
-        nums[peak], nums[next_lower] = nums[next_lower], nums[peak]
-
-        left = peak + 1
-        right = len(nums) - 1
-
-        while left < right:
-            nums[left], nums[right] = nums[right], nums[left]
-            left += 1
-            right -= 1
-
-
-if __name__ == "__main__":
-    # Basic cases
-    solution = Solution()
-    nums = [9, 4, 8, 3, 5, 5, 8, 9]
-    solution.previousPermutation(nums)
-    assert nums == [9, 4, 5, 9, 8, 8, 5, 3]
-    solution.previousPermutation(nums)
-    assert nums == [9, 4, 5, 9, 8, 8, 3, 5]
-    nums = [3, 2, 1]
-    solution.previousPermutation(nums)
-    assert nums == [3, 1, 2]
-    nums = [1, 2, 3]
-    solution.previousPermutation(nums)
-    assert nums == [3, 2, 1]
-    nums = [9, 6, 5, 4, 3, 2]
-    solution.previousPermutation(nums)
-    assert nums == [9, 6, 5, 4, 2, 3]
-    nums = [4, 5, 1, 1, 3, 7]
-    solution.previousPermutation(nums)
-    assert nums == [4, 3, 7, 5, 1, 1]
-    nums = [1, 5, 8, 5, 1, 3, 4, 6, 7]
-    solution.previousPermutation(nums)
-    assert nums == [1, 5, 8, 4, 7, 6, 5, 3, 1]
-    nums = [9, 4, 8, 3, 5, 5, 8, 9]
-    solution.previousPermutation(nums)
-    assert nums == [9, 4, 5, 9, 8, 8, 5, 3]
-
-    # Single digit case
-    nums = [5]
-    solution.previousPermutation(nums)
-    assert nums == [5]
-
-    # Duplicate digits case
-    nums = [1, 1, 1]
-    solution.previousPermutation(nums)
-    assert nums == [1, 1, 1]
-
-    # Already smallest case (loops around)
-    nums = [1, 2, 3, 4, 5, 6]
-    solution.previousPermutation(nums)
-    assert nums == [6, 5, 4, 3, 2, 1]
-
-
-# ---- File: 339_nested_list_weight_sum\python\original_339.py ----
-from typing import List
-"""
-This is the interface that allows for creating nested lists.
-You should not implement it, or speculate about its implementation
-"""
-class NestedInteger:
-   def __init__(self, value=None):
-       """
-       If value is not specified, initializes an empty list.
-       Otherwise initializes a single integer equal to value.
-       """
-
-   def isInteger(self):
-       """
-       @return True if this NestedInteger holds a single integer, rather than a nested list.
-       :rtype bool
-       """
-
-   def add(self, elem):
-       """
-       Set this NestedInteger to hold a nested list and adds a nested integer elem to it.
-       :rtype void
-       """
-
-   def setInteger(self, value):
-       """
-       Set this NestedInteger to hold a single integer equal to value.
-       :rtype void
-       """
-
-   def getInteger(self):
-       """
-       @return the single integer that this NestedInteger holds, if it holds a single integer
-       The result is undefined if this NestedInteger holds a nested list
-       :rtype int
-       """
-
-   def getList(self):
-       """
-       @return the nested list that this NestedInteger holds, if it holds a nested list
-       The result is undefined if this NestedInteger holds a single integer
-       :rtype List[NestedInteger]
-       """
-
-class Solution:
-    def depthSum(self, nestedList: List[NestedInteger]) -> int:
-        def dfs(nestedList, depth):
-            sum = 0
-            for nested in nestedList:
-                if nested.isInteger():
-                    sum += nested.getInteger() * depth
-                else:
-                    sum += dfs(nested.getList(), depth + 1)
-            return sum
-        
-        return dfs(nestedList, 1)
-
-# ---- File: 339_nested_list_weight_sum\python\variant_339_bfs.py ----
-from collections import deque
-from typing import List, Union
-
-# VARIANT: What if you had to define your own schema for NestedList and implement BFS?
-class Object:
-    def __init__(self):
-        self.value: List['Object' | int]
-
-class Solution:
-    def depthSum(self, objs: List[Object]) -> int:
-        queue = deque(objs)
-        level = 1
-        sum = 0
-        while queue:
-            for _ in range(len(queue)):
-                obj = queue.popleft()
-                if isinstance(obj, int):
-                    sum += obj * level
-                else:
-                    queue.extend(obj.value)
-            level += 1
-
-        return sum
-
-# ---- File: 339_nested_list_weight_sum\python\variant_339_dfs.py ----
-from collections import deque
-from typing import List, Union
-
-# VARIANT: What if you had to define your own schema for NestedList and implement DFS?
-class Object:
-    def __init__(self):
-        self.value: List['Object' | int]
-
-class Solution:
-    def depthSum(self, objs: List[Object]) -> int:
-        def dfs(objs, depth):
-            sum = 0
-            for obj in objs:
-                if isinstance(obj, int):
-                    sum += obj * depth
-                else:
-                    sum += dfs(obj.value, depth + 1)
-            return sum
-        return dfs(objs, 1)
-
-# ---- File: 346_moving_average_from_data_stream\python\original_346_python.py ----
-from queue import Queue
-
-class MovingAverage_346:
-    def __init__(self, size: int):
-        self.size = size
-        self.queue = Queue()
-        self.window_sum = 0
-
-    def next(self, val: int) -> float:
-        self.window_sum += val
-        self.queue.put(val)
-
-        if self.queue.qsize() > self.size:
-            self.window_sum -= self.queue.get()
-
-        return self.window_sum / self.queue.qsize()
-
-# ---- File: 346_moving_average_from_data_stream\python\variant_sliding_window_346_python.py ----
-from typing import List
-def compute_running_sum_variant_346(nums: List[int], size: int) -> List[int]:
-    result = []
-    window_sum = 0
-    for right in range(len(nums)):
-        window_sum += nums[right]
-
-        left = right - size
-        if left >= 0:
-            window_sum -= nums[left]
-
-        if right >= size - 1:
-            result.append(window_sum // size)
-
-    return result
-
-if __name__ == '__main__':
-    nums = [5, 2, 8, 14, 3]
-    size = 3
-    assert compute_running_sum_variant_346(nums, size) == [5, 8, 8]
-
-    nums = [6]
-    size = 1
-    assert compute_running_sum_variant_346(nums, size) == [6]
-
-    nums = [1, 2, 3]
-    size = 1
-    assert compute_running_sum_variant_346(nums, size) == [1, 2, 3]
-
-    nums = [2, 4, 6, 8, 10, 12]
-    size = 2
-    assert compute_running_sum_variant_346(nums, size) == [3, 5, 7, 9, 11]
-
-    nums = [2, 4, 6, 8, 10, 12]
-    size = 6
-    assert compute_running_sum_variant_346(nums, size) == [(2+4+6+8+10+12)/size]
-
-    nums = [1, 2, 3, 4, 5]
-    size = 4
-    assert compute_running_sum_variant_346(nums, size) == [2, 3]
-
-    nums = [1, 2, 1, 2]
-    size = 2
-    assert compute_running_sum_variant_346(nums, size) == [1, 1, 1]
-
-
-
-
-
-
-# ---- File: 34_find_first_and_last_position_of_element_in_array\python\first_variant_34.py ----
-class Solution:
-    def countElements(self, nums: list[int], target: int) -> int:
-        if len(nums) == 0:
-            return 0
-        if target > nums[-1] or target < nums[0]:
-            return 0
-
-        def upper(arr, target):
-            left, right = 0, len(arr) - 1
-            while left <= right:
-                mid = (left + right) // 2
-                if arr[mid] <= target:
-                    left = mid + 1
-                else:
-                    right = mid - 1
-            return right
-
-        def lower(arr, target):
-            left, right = 0, len(arr) - 1
-            while left <= right:
-                mid = (left + right) // 2
-                if arr[mid] >= target:
-                    right = mid - 1
-                else:
-                    left = mid + 1
-            return left
-
-        first = lower(nums, target)
-        if nums[first] != target:
-            return 0
-        last = upper(nums, target)
-        return last - first + 1
-
-if __name__ == "__main__":
-    # Valid cases
-    solution = Solution()
-    nums = [5, 7, 7, 8, 8, 10]
-    target = 8
-    assert solution.countElements(nums, target) == 2
-    target = 6
-    assert solution.countElements(nums, target) == 0
-    nums = [2, 2, 3, 3, 3, 9, 9, 9, 9, 9, 10, 12, 12]
-    target = 9
-    assert solution.countElements(nums, target) == 5
-    target = 2
-    assert solution.countElements(nums, target) == 2
-    target = 3
-    assert solution.countElements(nums, target) == 3
-    target = 10
-    assert solution.countElements(nums, target) == 1
-    target = 12
-    assert solution.countElements(nums, target) == 2
-    nums = [1, 2, 3, 4, 5]
-    target = 1
-    assert solution.countElements(nums, target) == 1
-    target = 2
-    assert solution.countElements(nums, target) == 1
-    target = 3
-    assert solution.countElements(nums, target) == 1
-    target = 4
-    assert solution.countElements(nums, target) == 1
-    target = 5
-    assert solution.countElements(nums, target) == 1
-    nums = [1, 1, 1, 1, 1, 1, 1, 1, 1]
-    target = 1
-    assert solution.countElements(nums, target) == 9
-    nums = [-3, -2, -1, 0, 1, 2, 3]
-    target = -3
-    assert solution.countElements(nums, target) == 1
-    target = -2
-    assert solution.countElements(nums, target) == 1
-    target = -1
-    assert solution.countElements(nums, target) == 1
-    target = 0
-    assert solution.countElements(nums, target) == 1
-    target = 1
-    assert solution.countElements(nums, target) == 1
-    target = 2
-    assert solution.countElements(nums, target) == 1
-    target = 3
-    assert solution.countElements(nums, target) == 1
-
-    # Target not found cases
-    nums = [5, 7, 7, 8, 8, 10]
-    target = 9  # Not Found
-    assert solution.countElements(nums, target) == 0
-    target = 6  # Not Found
-    assert solution.countElements(nums, target) == 0
-    target = -5  # Too low
-    assert solution.countElements(nums, target) == 0
-    target = 60  # Too high
-    assert solution.countElements(nums, target) == 0
-
-    nums = []  # Empty list
-    target = -5  # Empty vector
-    assert solution.countElements(nums, target) == 0
-    target = 50  # Empty vector
-    assert solution.countElements(nums, target) == 0
-
-    nums = [2, 2, 3, 3, 3, 9, 9, 9, 9, 9, 10, 12, 12]
-    target = 1  # Too low
-    assert solution.countElements(nums, target) == 0
-    target = 4  # Not found
-    assert solution.countElements(nums, target) == 0
-    target = 15  # Too high
-    assert solution.countElements(nums, target) == 0
-
-    nums = [1, 2, 3, 4, 5]
-    target = 0
-    assert solution.countElements(nums, target) == 0
-    target = 6
-    assert solution.countElements(nums, target) == 0
-
-# ---- File: 34_find_first_and_last_position_of_element_in_array\python\original_34.py ----
-class Solution:
-    def searchRange(self, nums: list[int], target: int) -> list[int]:
-        if len(nums) == 0:
-            return [-1, -1]
-        if target > nums[-1] or target < nums[0]:
-            return [-1, -1]
-
-        def upper(arr, target):
-            left, right = 0, len(arr) - 1
-            while left <= right:
-                mid = (left + right) // 2
-                if arr[mid] <= target:
-                    left = mid + 1
-                else:
-                    right = mid - 1
-            return right
-
-        def lower(arr, target):
-            left, right = 0, len(arr) - 1
-            while left <= right:
-                mid = (left + right) // 2
-                if arr[mid] >= target:
-                    right = mid - 1
-                else:
-                    left = mid + 1
-            return left
-
-        first = lower(nums, target)
-        if nums[first] != target:
-            return [-1, -1]
-        last = upper(nums, target)
-        return [first, last]
-
-
-# ---- File: 34_find_first_and_last_position_of_element_in_array\python\second_variant_34.py ----
-class Solution:
-    def countUnique(self, nums: list[int]) -> int:
-        # Should run in O(k * log(N)) complexity, where k is # of unique elements
-        if len(nums) == 0:
-            return 0
-
-        def upper(arr, target):
-            left, right = 0, len(arr) - 1
-            while left <= right:
-                mid = (left + right) // 2
-                if arr[mid] <= target:
-                    left = mid + 1
-                else:
-                    right = mid - 1
-            return right
-
-        start = 0
-        count = 0
-        while start < len(nums):
-            end = upper(nums, nums[start])
-            start = end + 1
-            count += 1
-
-        return count
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    # Nonzero Count cases
-    nums = [2, 2, 3, 3, 3, 9, 9, 9, 9, 9, 10, 12, 12]
-    assert solution.countUnique(nums) == 5
-    nums = [-3, -2, -1, 0, 1, 2, 3]
-    assert solution.countUnique(nums) == 7
-    nums = [-3, -3, -3, -2, -2, -2, -1, -1, -1, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3]
-    assert solution.countUnique(nums) == 7
-    nums = [1, 1, 1, 1, 2, 2, 2, 2, 5, 5, 5, 7, 7, 8, 8, 10]
-    assert solution.countUnique(nums) == 6
-    nums = [19, 19, 19, 19]
-    assert solution.countUnique(nums) == 1
-    nums = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    assert solution.countUnique(nums) == 1
-    nums = [9001]
-    assert solution.countUnique(nums) == 1
-    nums = [5, 7, 7, 8, 8, 10]
-    assert solution.countUnique(nums) == 4
-    nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    assert solution.countUnique(nums) == 10
-
-    # Zero Count case
-    nums = []
-    assert solution.countUnique(nums) == 0
-
-
-# ---- File: 415_add_strings\python\original_415.py ----
-class Solution:
-    def addStrings(self, num1: str, num2: str) -> str:
-        res = []
-        carry = 0
-        p1, p2 = len(num1) - 1, len(num2) - 1
-        while p1 >= 0 or p2 >= 0:
-            x1 = ord(num1[p1]) - ord("0") if p1 >= 0 else 0
-            x2 = ord(num2[p2]) - ord("0") if p2 >= 0 else 0
-            value = (x1 + x2 + carry) % 10
-            carry = (x1 + x2 + carry) // 10
-            res.append(value)
-            p1 -= 1
-            p2 -= 1
-
-        if carry:
-            res.append(carry)
-
-        return "".join(str(x) for x in res[::-1])
-
-
-# ---- File: 415_add_strings\python\variant_415.py ----
-class Solution:
-    def add_string_decimals_415(self, num1: str, num2: str) -> str:
-        nums1 = num1.split('.')
-        nums2 = num2.split('.')
-        decimals1 = nums1[1] if len(nums1) > 1 else ''
-        decimals2 = nums2[1] if len(nums2) > 1 else ''
-
-        max_len = max(len(decimals1), len(decimals2))
-        decimals1 = decimals1.ljust(max_len, '0')
-        decimals2 = decimals2.ljust(max_len, '0')
-
-        carry = [0]
-        result = []
-        
-        def add_strings_415(num1: str, num2: str, carry: list) -> str:
-            n1 = len(num1) - 1
-            n2 = len(num2) - 1
-            result = []
-            while n1 >= 0 or n2 >= 0:
-                sum = 0
-                if n1 >= 0:
-                    sum += int(num1[n1])
-                    n1 -= 1
-                if n2 >= 0:
-                    sum += int(num2[n2])
-                    n2 -= 1
-                sum += carry[0]
-
-                result.append(str(sum % 10))
-                carry[0] = sum // 10
-            
-            return ''.join(result)
-
-        result.append(add_strings_415(decimals1, decimals2, carry))
-
-        if decimals1 or decimals2:
-            result.append('.')
-        
-        result.append(add_strings_415(nums1[0], nums2[0], carry))
-        if carry[0]:
-            print(carry)
-            result.append(str(carry[0]))
-        return "".join(result)[::-1]
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    # Only Whole Numbers
-    assert solution.add_string_decimals_415("11", "123") == "134"
-    assert solution.add_string_decimals_415("456", "77") == "533"
-    assert solution.add_string_decimals_415("0", "0") == "0"
-    assert solution.add_string_decimals_415("0", "2983435243982343") == "2983435243982343"
-    assert solution.add_string_decimals_415("99999999", "2983435243982343") == "2983435343982342"
-    assert solution.add_string_decimals_415("99999999", "99999999999") == "100099999998"
-
-    # Both Decimals With And Without Carry
-    assert solution.add_string_decimals_415("123.53", "11.2") == "134.73"
-    assert solution.add_string_decimals_415("687345.3434321", "389457248.24374657243") == "390144593.58717867243"
-    assert solution.add_string_decimals_415(".56", ".12") == ".68"
-    assert solution.add_string_decimals_415(".5995495049556", ".12") == ".7195495049556"
-    assert solution.add_string_decimals_415(".9479823748932", ".716400040030") == "1.6643824149232"
-    assert solution.add_string_decimals_415(".00009479823748932", ".000000716400040030") == ".000095514637529350"
-    assert solution.add_string_decimals_415(".00009479823748932", ".00000071640004003000000") == ".00009551463752935000000"
-    assert solution.add_string_decimals_415("110.12", "9.") == "119.12"
-    assert solution.add_string_decimals_415("111111110.0013430430433434454001", "9.") == "111111119.0013430430433434454001"
-    assert solution.add_string_decimals_415("111111110.0013430430433434454001", "993483400013438854.") == "993483400124549964.0013430430433434454001"
-    assert solution.add_string_decimals_415("910.99999", "999.9999") == "1910.99989"
-    assert solution.add_string_decimals_415("999999.99999", "999999.9999") == "1999999.99989"
-    assert solution.add_string_decimals_415("123.525", "11.2") == "134.725"
-    assert solution.add_string_decimals_415("1234540458475845.", "8348736.") == "1234540466824581"
-
-    # # One Decimal, One Whole Number
-    assert solution.add_string_decimals_415("110.75", "9") == "119.75"
-    assert solution.add_string_decimals_415("110.75", "9999999") == "10000109.75"
-    assert solution.add_string_decimals_415("150423434.00000000000", "9999999.") == "160423433.00000000000"
-    assert solution.add_string_decimals_415("150423434.0000009184837483", "9999999.") == "160423433.0000009184837483"
-    assert solution.add_string_decimals_415("110.9010479382798527", "9999999.") == "10000109.9010479382798527"
-
-
-# ---- File: 50_pow_x_n\python\follow_up_50.py ----
-class Solution:
-    def myPow(self, x: float, n: int) -> float:
-        if n < 0:
-            x = 1 / x
-            n = abs(n)
-
-        result = 1.0
-        doubling_val = x
-        while n != 0:
-            if n % 2 == 1:
-                result *= doubling_val
-            doubling_val *= doubling_val
-            n //= 2
-
-        return result
-
-# ---- File: 50_pow_x_n\python\original_50.py ----
-class Solution:
-    def myPow(self, x: float, n: int) -> float:
-        if n < 0:
-            return 1.0 / self.myPow(x, abs(n))
-        if n == 0:
-            return 1
-
-        result = self.myPow(x, n // 2)
-
-        if n % 2 == 1:
-            return x * result * result
-        return result * result
-
-
-# ---- File: 543_diameter_of_a_binary_tree\python\original_543.py ----
-from ...utils.treenode import TreeNode
-
-def getDiameter(root: TreeNode | None):
-    diameter = 0
-    def longestPath(root: TreeNode | None):
-        nonlocal diameter
-        if not root:
-            return 0
-        right = longestPath(root.right)
-        left = longestPath(root.left)
-        diameter = max(diameter, left + right)
-        return max(left, right) + 1
-    longestPath(root)
-    return diameter
-
-# ---- File: 543_diameter_of_a_binary_tree\python\variant_543.py ----
-from typing import Optional, List
-
-class Node:
-    def __init__(self, val: Optional[int] = None, children: Optional[List['Node']] = None):
-        self.val = val
-        self.children = children if children is not None else []
-
-class Solution:
-    def diameter(self, root: 'Node') -> int:
-        """
-        :type root: 'Node'
-        :rtype: int
-        """
-        diameter = 0
-
-        def longest_path(node: 'Node'):
-            if node is None:
-                return 0
-
-            max_height = 0
-            second_max_height = 0
-            for child in node.children:
-                height = longest_path(child)
-                if height > max_height:
-                    second_max_height = max_height
-                    max_height = height
-                elif height > second_max_height:
-                    second_max_height = height
-            nonlocal diameter
-            diameter = max(diameter, max_height + second_max_height)
-            return max_height + 1
-
-        longest_path(root)
-
-        return diameter
-
-# ---- File: 560_subarray_sum_equals_k\mock\mock_560.py ----
-class Solution:
-    def has_valid_subarray(self, nums: list[int], target: int) -> bool:
-        left = 0
-        sum = 0
-        for right in range(len(nums)):
-            sum += nums[right]
-
-            while sum > target:
-                sum -= nums[left]
-                left += 1
-
-            if sum == target:
-                return True
-
-        return False
-    
-if __name__ == "__main__":
-    solution = Solution()
-    assert solution.has_valid_subarray([1, 1, 1], 2)
-    assert solution.has_valid_subarray([1, 2, 3], 3)
-    # SubarraySum_SecondVariant True
-    assert solution.has_valid_subarray([1, 1, 1], 2) == True
-    assert solution.has_valid_subarray([1, 2, 3], 3) == True
-    assert solution.has_valid_subarray([1, 2, 3, 1, 1, 1], 5) == True
-    assert solution.has_valid_subarray([1, 2, 3, 1, 1, 1], 9) == True
-    assert solution.has_valid_subarray([5], 5) == True
-    assert solution.has_valid_subarray([5], 10) == False
-    assert solution.has_valid_subarray([23, 5, 4, 7, 2, 11], 20) == True
-    assert solution.has_valid_subarray([1, 3, 5, 23, 2], 8) == True
-    assert solution.has_valid_subarray([4, 2, 5, 2, 6, 1], 9) == True
-    assert solution.has_valid_subarray([1, 1, 1, 1, 1, 1], 1) == True
-    assert solution.has_valid_subarray([1], 1) == True
-
-    # SubarraySum_SecondVariant False
-    assert solution.has_valid_subarray([1, 1, 1], 4) == False
-    assert solution.has_valid_subarray([1, 2, 3, 4, 5, 6, 7], 100) == False
-    assert solution.has_valid_subarray([100, 101, 102, 103], 2) == False
-    assert solution.has_valid_subarray([1, 3, 5, 23, 2], 7) == False
-
-
-# ---- File: 560_subarray_sum_equals_k\python\first_variant_560.py ----
-class Solution:
-    def subarraySumExists(self, nums: list[int], k: int) -> bool:
-        cumulative = 0
-        prefix_sums = set([0])
-        for num in nums:
-            cumulative += num
-            if (cumulative - k) in prefix_sums:
-                return True
-            prefix_sums.add(cumulative)
-        return False
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    assert solution.subarraySumExists([1, 1, 1], 2)
-    assert not solution.subarraySumExists([1, 4, 7], 3)
-
-    # SubarraySum_FirstVariant True
-    assert solution.subarraySumExists([1, 1, 1], 2) == True
-    assert solution.subarraySumExists([-1, 2, 3, -4], 0) == True
-    assert solution.subarraySumExists([1, 2, 3, 1, 1, 1], 5) == True
-    assert solution.subarraySumExists([1, 2, 3, 1, 1, 1], 9) == True
-    assert solution.subarraySumExists([3, 4, 7, 2, -3, 1, 4, 2, 1, -14], 7) == True
-    assert solution.subarraySumExists([1, 2, 3, -3, 1, 1], 0) == True
-    assert solution.subarraySumExists([1, -3, 3, -3, 3, -3], 0) == True
-    assert solution.subarraySumExists([1, -3, 3, -6, 8, -3, 4, 5, 6], 8) == True
-    assert solution.subarraySumExists([1, -3, 3, -6, 8, -3, 4, 5, 6], -1) == True
-    assert solution.subarraySumExists([5], 5) == True
-    assert solution.subarraySumExists([5], 10) == False
-    assert solution.subarraySumExists([-1, -2, -3, -4], -5) == True
-    assert solution.subarraySumExists([-1, -2, -3, -4], -10) == True
-    assert solution.subarraySumExists([0, 0, 0, 0, 0], 0) == True
-    assert solution.subarraySumExists([8, 3, 6, 1, -5, 10], 10) == True
-
-    # SubarraySum_FirstVariant False
-    assert solution.subarraySumExists([1, 1, 1], 4) == False
-    assert solution.subarraySumExists([3, 4, 7, 2, -3, 1, 4, 2, 1, -14], -10) == False
-    assert solution.subarraySumExists([-1, -2, -3, -4], -15) == False
-
-
-# ---- File: 560_subarray_sum_equals_k\python\original_560.py ----
-from collections import defaultdict
-
-
-class Solution:
-    def subarraySum(self, nums: list[int], k: int) -> int:
-        count, cumulative = 0, 0
-        prefix_sums = defaultdict(int)
-        prefix_sums[0] = 1
-        for num in nums:
-            cumulative += num
-            if (cumulative - k) in prefix_sums:
-                count += prefix_sums[cumulative - k]
-            prefix_sums[cumulative] += 1
-        return count
-
-
-# ---- File: 560_subarray_sum_equals_k\python\second_variant_560.py ----
-class Solution:
-    def subarraySumExistsPositiveNums(self, nums: list[int], k: int) -> bool:
-        left, right = 0, 0
-        window_sum = 0
-        for right in range(len(nums)):
-            window_sum += nums[right]
-
-            while window_sum > k:
-                window_sum -= nums[left]
-                left += 1
-
-            if window_sum == k:
-                return True
-            
-        return False
-
-if __name__ == "__main__":
-    solution = Solution()
-    assert solution.subarraySumExistsPositiveNums([1, 1, 1], 2)
-    assert solution.subarraySumExistsPositiveNums([1, 2, 3], 3)
-
-    # SubarraySum_SecondVariant True
-    assert solution.subarraySumExistsPositiveNums([1, 1, 1], 2) == True
-    assert solution.subarraySumExistsPositiveNums([1, 2, 3], 3) == True
-    assert solution.subarraySumExistsPositiveNums([1, 2, 3, 1, 1, 1], 5) == True
-    assert solution.subarraySumExistsPositiveNums([1, 2, 3, 1, 1, 1], 9) == True
-    assert solution.subarraySumExistsPositiveNums([5], 5) == True
-    assert solution.subarraySumExistsPositiveNums([5], 10) == False
-    assert solution.subarraySumExistsPositiveNums([23, 5, 4, 7, 2, 11], 20) == True
-    assert solution.subarraySumExistsPositiveNums([1, 3, 5, 23, 2], 8) == True
-    assert solution.subarraySumExistsPositiveNums([4, 2, 5, 2, 6, 1], 9) == True
-    assert solution.subarraySumExistsPositiveNums([1, 1, 1, 1, 1, 1], 1) == True
-    assert solution.subarraySumExistsPositiveNums([1], 1) == True
-
-    # SubarraySum_SecondVariant False
-    assert solution.subarraySumExistsPositiveNums([1, 1, 1], 4) == False
-    assert solution.subarraySumExistsPositiveNums([1, 2, 3, 4, 5, 6, 7], 100) == False
-    assert solution.subarraySumExistsPositiveNums([100, 101, 102, 103], 2) == False
-    assert solution.subarraySumExistsPositiveNums([1, 3, 5, 23, 2], 7) == False
-
-
-# ---- File: 56_merge_intervals\python\original_56_python.py ----
-from typing import List
-
-def merge_56_python(intervals: List[List[int]]) -> List[List[int]]:
-    intervals.sort(key=lambda x: x[0])
-
-    result = []
-    for curr_interval in intervals:
-        if not result or curr_interval[0] > result[-1][1]:
-            result.append(curr_interval)
-        else:
-            result[-1][1] = max(curr_interval[1], result[-1][1])
-
-    return result
-
-# ---- File: 56_merge_intervals\python\variant_merge_two_lists_56_python.py ----
-from typing import List
-
-def try_merge(result: List[List[int]], curr_interval: List[int]):
-    if not result or curr_interval[0] > result[-1][1]:
-        result.append(curr_interval)
-    else:
-        result[-1][1] = max(curr_interval[1], result[-1][1])
-
-def merge_2_interval_lists_56_variant_python(A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
-    result = []
-    i, j = 0, 0
-    while i < len(A) and j < len(B):
-        if A[i][0] <= B[j][0]:
-            curr_interval = A[i]
-            i += 1
-        else:
-            curr_interval = B[j]
-            j += 1
-
-        try_merge(result, curr_interval)
-
-    if i < len(A):
-        while i < len(A):
-            try_merge(result, A[i])
-            i += 1
-    else:
-        while j < len(B):
-            try_merge(result, B[j])
-            j += 1
-
-    return result
-
-if __name__ == "__main__":
-    A = [[3, 11], [14, 15], [18, 22], [23, 24], [25, 26]]
-    B = [[2, 8], [13, 20]]
-    expected = [[2, 11], [13, 22], [23, 24], [25, 26]]
-    assert expected == merge_2_interval_lists_56_variant_python(A, B)
-
-    A = []
-    B = [[2, 8], [13, 20]]
-    expected = [[2, 8], [13, 20]]
-    assert expected == merge_2_interval_lists_56_variant_python(A, B)
-
-    A = [[1, 5], [10, 15], [20, 25]]
-    B = [[5, 10], [15, 20]]
-    expected = [[1, 25]]
-    assert expected == merge_2_interval_lists_56_variant_python(A, B)
-
-    A = [[1, 5], [11, 15], [21, 25]]
-    B = [[6, 10], [16, 20]]
-    expected = [[1, 5], [6, 10], [11, 15], [16, 20], [21, 25]]
-    assert expected == merge_2_interval_lists_56_variant_python(A, B)
-
-# ---- File: 65_valid_number\python\original_65.py ----
-class Solution(object):
-    def isNumber(self, s: str):
-        seen_digit, seen_dot, seen_exponent = [False, False, False]
-        for i in range(len(s)):
-            if s[i].isdigit():
-                seen_digit = True
-            elif s[i] in {"+", "-"}:
-                if i != 0 and s[i - 1] not in {"E", "e"}:
-                    return False
-            elif s[i] == ".":
-                if seen_dot or seen_exponent:
-                    return False
-                seen_dot = True
-            elif s[i] in {"e", "E"}:
-                if seen_exponent or not seen_digit:
-                    return False
-                seen_exponent = True
-                seen_digit = False
-            else:
-                return False
-
-        if not seen_digit:
-            return False
-        return True
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    assert solution.isNumber("0089")
-    assert solution.isNumber("-0.1")
-    assert solution.isNumber("+3.14")
-    assert solution.isNumber("4.")
-    assert solution.isNumber("-.9")
-    assert solution.isNumber("2e10")
-    assert solution.isNumber("-90E3")
-    assert solution.isNumber("3e+7")
-    assert solution.isNumber("+6e-1")
-    assert solution.isNumber("53.5e93")
-    assert solution.isNumber("-123.456e789")
-    assert not solution.isNumber("abc")
-    assert not solution.isNumber("1a")
-    assert not solution.isNumber("1e")
-    assert not solution.isNumber("e3")
-    assert not solution.isNumber("99e2.5")
-    assert not solution.isNumber("--6")
-    assert not solution.isNumber("-+3")
-    assert not solution.isNumber("95a54e53")
-
-
-# ---- File: 65_valid_number\python\variant_65.py ----
-class Solution(object):
-    def isNumber(self, s: str):
-        seen_digit, seen_dot = [False, False]
-        for i in range(len(s)):
-            if s[i].isdigit():
-                seen_digit = True
-            elif s[i] in {"+", "-"}:
-                if i != 0:
-                    return False
-            elif s[i] == ".":
-                if seen_dot:
-                    return False
-                seen_dot = True
-            else:
-                return False
-
-        if not seen_digit:
-            return False
-        return True
-
-
-if __name__ == "__main__":
-    solution = Solution()
-    assert solution.isNumber("0089")
-    assert solution.isNumber("-0.1")
-    assert solution.isNumber("+3.14")
-    assert solution.isNumber("4.")
-    assert solution.isNumber("-.9")
-    assert solution.isNumber("420")
-    assert solution.isNumber("+3")
-    assert solution.isNumber("-10")
-    assert solution.isNumber("2")
-    # Exponents not valid anymore
-    assert not solution.isNumber("3e+7")
-    assert not solution.isNumber("+6e-1")
-    assert not solution.isNumber("53.5e93")
-    assert not solution.isNumber("-123.456e789")
-    assert not solution.isNumber("abc")
-    assert not solution.isNumber("2e10")
-    assert not solution.isNumber("-90E3")
-    assert not solution.isNumber("1a")
-    assert not solution.isNumber("1e")
-    assert not solution.isNumber("e3")
-    assert not solution.isNumber("99e2.5")
-    assert not solution.isNumber("--6")
-    assert not solution.isNumber("-+3")
-    assert not solution.isNumber("95a54e53")
-    assert not solution.isNumber("7..")
-    assert not solution.isNumber(".")
-    assert not solution.isNumber("3-")
-    assert not solution.isNumber("+7e5")
-    assert not solution.isNumber("7E5")
-    assert not solution.isNumber("7ee")
-    assert not solution.isNumber("7e")
-    assert not solution.isNumber("8e1.2")
-    assert not solution.isNumber("+20e-5")
-    assert not solution.isNumber("Abc")
-
-
-# ---- File: 670_maximum_swap\python\original_670.py ----
-class Solution:
-    def maximumSwap(self, num: int) -> int:
-        right_most = [-1 for _ in range(10)]
-        n = list(str(num))
-
-        for i, dig in enumerate(n):
-            right_most[int(dig)] = i
-
-        for i, dig in enumerate(n):
-            for j in range(9, int(dig), -1):
-                if right_most[j] > i:
-                    n[right_most[j]], n[i] = n[i], n[right_most[j]]
-                    return int("".join(n))
-
-        return num
-
-
-# ---- File: 670_maximum_swap\python\variant_670.py ----
-class Solution:
-    def buildSecondLargestNumber(self, num: list[int]) -> list[int]:
-        if not num or len(num) == 1:
-            return []
-        
-        freqs = [0 for _ in range(10)]
-        for digit in num:
-            freqs[digit] += 1
-
-        largest_num = []
-        for i in range(9, -1, -1):
-            for _ in range(freqs[i]):
-                largest_num.append(i)
-
-        for i in range(len(largest_num) - 1, 0, -1):
-            if largest_num[i - 1] != largest_num[i]:
-                largest_num[i - 1], largest_num[i] = largest_num[i], largest_num[i - 1]
-                return largest_num
+            r, c, path = queue.pop(0)
+
+            if r == n - 1 and c == n - 1:
+                return path
+
+            directions = [
+                (r - 1, c), (r - 1, c - 1), (r - 1, c + 1),
+                (r, c - 1), (r, c + 1),
+                (r + 1, c), (r + 1, c - 1), (r + 1, c + 1)
+            ]
+
+            for x, y in directions:
+                if 0 <= x < n and 0 <= y < n and grid[x][y] == 0:
+                    grid[x][y] = 1
+                    queue.append((x, y, path + [(x, y)]))
 
         return []
 
+# ---- File: 1249. Minimum Remove to Make Valid Parentheses\minRemoveToMakeValid.py ----
+# https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/
 
-if __name__ == "__main__":
-    solution = Solution()
-    assert solution.buildSecondLargestNumber([2, 7, 3, 6]) == [7, 6, 2, 3]
-    assert solution.buildSecondLargestNumber([1, 2, 1, 1, 1]) == [1, 2, 1, 1, 1]
+# https://www.youtube.com/watch?v=FTo1kDyE-h4
 
-    # MaximumSwap_Variant_BuildSecondLargest True
-    assert solution.buildSecondLargestNumber([]) == []
-    assert solution.buildSecondLargestNumber([1]) == []
-    assert solution.buildSecondLargestNumber([2]) == []
-    assert solution.buildSecondLargestNumber([3]) == []
-    assert solution.buildSecondLargestNumber([4]) == []
-    assert solution.buildSecondLargestNumber([5]) == []
-    assert solution.buildSecondLargestNumber([6]) == []
-    assert solution.buildSecondLargestNumber([7]) == []
-    assert solution.buildSecondLargestNumber([8]) == []
-    assert solution.buildSecondLargestNumber([9]) == []
-    assert solution.buildSecondLargestNumber([0]) == []
+# Given a string s of '(' , ')' and lowercase English characters.
 
-    # Distinct Digits And One Swap
-    assert solution.buildSecondLargestNumber([2, 7, 3, 6]) == [7, 6, 2, 3]
-    assert solution.buildSecondLargestNumber([2, 3, 4, 1, 8]) == [8, 4, 3, 1, 2]
+# Your task is to remove the minimum number of parentheses ( '(' or ')', in any positions ) so that the resulting parentheses string is valid and return any valid string.
 
-    # All Duplicate Digits Cannot Build Second Largest
-    assert solution.buildSecondLargestNumber([5, 5, 5, 5, 5, 5, 5, 5, 5, 5]) == []
-    assert solution.buildSecondLargestNumber([2, 2]) == []
-    assert solution.buildSecondLargestNumber([0, 0, 0, 0, 0, 0]) == []
+# Formally, a parentheses string is valid if and only if:
 
-    # Duplicate Digits And Looped Swap
-    assert solution.buildSecondLargestNumber([1, 2, 1, 1, 1]) == [1, 2, 1, 1, 1]
-    assert solution.buildSecondLargestNumber([5, 9, 7, 6, 6, 3, 9, 6, 6]) == [9, 9, 7, 6, 6, 6, 6, 3, 5]
-    assert solution.buildSecondLargestNumber([5, 9, 7, 6, 6, 3, 9, 6, 6, 3, 3]) == [9, 9, 7, 6, 6, 6, 6, 3, 5, 3, 3]
-    assert solution.buildSecondLargestNumber([4, 4, 4, 4, 9, 9, 9, 9, 9]) == [9, 9, 9, 9, 4, 9, 4, 4, 4]
+#     It is the empty string, contains only lowercase characters, or
+#     It can be written as AB (A concatenated with B), where A and B are valid strings, or
+#     It can be written as (A), where A is a valid string.
 
-    # Zeroes
-    assert solution.buildSecondLargestNumber([0, 0, 0, 0, 0, 6, 0]) == [0, 6, 0, 0, 0, 0, 0]
-    assert solution.buildSecondLargestNumber([0, 0, 1, 2, 3, 3]) == [3, 3, 2, 0, 1, 0]
-    assert solution.buildSecondLargestNumber([0, 0, 8, 4, 9, 9, 6, 7]) == [9, 9, 8, 7, 6, 0, 4, 0]
+ 
 
-# ---- File: 680_valid_palindrome_2\python\original_680_python.py ----
+# Example 1:
 
-def validPalindrome(s: str) -> bool:
-    def check_remaining(s, left, right):
-        while left < right:
-            if s[left] == s[right]:
-                left += 1
-                right -= 1
-                continue
-            return False
+# Input: s = "lee(t(c)o)de)"
+# Output: "lee(t(c)o)de"
+# Explanation: "lee(t(co)de)" , "lee(t(c)ode)" would also be accepted.
 
-        return True
+# Example 2:
 
-    left = 0
-    right = len(s) - 1
-    while left < right:
-        if s[left] == s[right]:
-            left += 1
-            right -= 1
-            continue
+# Input: s = "a)b(c)d"
+# Output: "ab(c)d"
 
-        return check_remaining(s, left, right - 1) or check_remaining(s, left + 1, right)
+# Example 3:
 
-    return True
+# Input: s = "))(("
+# Output: ""
+# Explanation: An empty string is also valid.
 
+ 
 
+# Constraints:
 
-# ---- File: 71_simplify_path\python\first_variant_cwd_cd_71.py ----
+#     1 <= s.length <= 105
+#     s[i] is either'(' , ')', or lowercase English letter.
+
 class Solution:
-    def changeDirectory(self, cwd: str, cd: str) -> str:
-        if not cd:
-            return cwd
-        
-        if cd[0] == '/':
-            cwd = ''
-        
-        tokens = []
-        for token in cwd.split('/'):
-            if token:
-                tokens.append(token)
-        
-        for token in cd.split('/'):
-            if not token:
-                continue
-            if token == '.':
-                continue
-            elif token == '..':
-                if tokens:
-                    tokens.pop()
-            else:
-                tokens.append(token)
-        
-        if not tokens:
-            return '/'
-        
-        return '/' + '/'.join(tokens)
-
-if __name__ == "__main__":
-    solution = Solution()
-    assert solution.changeDirectory("/a/b/c", "/d/./e") == "/d/e"
-    assert solution.changeDirectory("", "/d/./e") == "/d/e"
-    assert solution.changeDirectory("/a/b/c", "") == "/a/b/c"
-    assert solution.changeDirectory("/a/b", ".//c/../../d/f") == "/a/d/f"
-    assert solution.changeDirectory("/", "foo") == "/foo"
-    assert solution.changeDirectory("/", "foo/bar/././xyz///") == "/foo/bar/xyz"
-    assert solution.changeDirectory("/baz", "/bar") == "/bar"
-    assert solution.changeDirectory("/foo/bar", "../../../../..") == "/"
-    assert solution.changeDirectory("/x/y", "../p/../q") == "/x/q"
-    assert solution.changeDirectory("/x/y", "/p/./q") == "/p/q"
-    assert solution.changeDirectory("/facebook/anin", "../abc/def") == "/facebook/abc/def"
-    assert solution.changeDirectory("/facebook/instagram", "../../../../.") == "/"
-
-
-# ---- File: 71_simplify_path\python\original_71.py ----
-class Solution:
-    def simplifyPath(self, path: str) -> str:
+    def minRemoveToMakeValid(self, s: str) -> str:
         stack = []
-        for directory in path.split("/"):
-            if directory == "..":
-                if len(stack) > 0:
+        S = list(s)
+
+        for i in range(len(S)):
+            if S[i] == "(":
+                stack.append(i)
+            elif S[i] == ")":
+                if stack:
                     stack.pop()
-            elif directory and directory != ".":
-                stack.append(directory)
-        return "/" + "/".join(stack)
-
-
-# ---- File: 721_accounts_merge\python\original_721.py ----
-from typing import List
-
-from collections import defaultdict
-
-
-class Solution:
-    def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
-        # Create adjacency list
-        adj = defaultdict(list)
-        for account in accounts:
-            emails = account[1:]
-            canonical = emails[0]
-            for email in emails[1:]:
-                adj[canonical].append(email)
-                adj[email].append(canonical)
-
-        visited = set()
-
-        def dfs(email, same_emails: List[str]):
-            visited.add(email)
-            same_emails.append(email)
-            for nei in adj[email]:
-                if nei not in visited:
-                    dfs(nei, same_emails)
-
-        # Merge
-        merged = []
-        for account in accounts:
-            emails = account[1:]
-            if emails[0] in visited:
-                continue
-            same_emails = []
-            dfs(emails[0], same_emails)
-            merged.append([account[0]] + sorted(same_emails))
-
-        return merged
-
-
-# ---- File: 721_accounts_merge\python\variant_721.py ----
-from collections import defaultdict
-
-class Solution:
-    def accountsMerge(self, accounts):
-        def dfs_variant_721(adjs, email_to_id, visited, curr_email, id):
-            visited.add(curr_email)
-            email_to_id[curr_email] = id
-            for adj in adjs.get(curr_email, []):
-                if adj not in visited:
-                    dfs_variant_721(adjs, email_to_id, visited, adj, id)
-
-        # Create adjacency list
-        adjs = {}
-        for id, emails in accounts.items():
-            first_email = emails[0]
-            for email in emails[1:]:
-                if first_email not in adjs:
-                    adjs[first_email] = []
-                if email not in adjs:
-                    adjs[email] = []
-                adjs[first_email].append(email)
-                adjs[email].append(first_email)
-
-        # Helper structures
-        email_to_id = {}
-        visited = set()
-        result = {}
-
-        # Perform DFS and group by connected components
-        for id, emails in accounts.items():
-            first_email = emails[0]
-            if first_email in visited:
-                same_id = email_to_id[first_email]
-                if same_id not in result:
-                    result[same_id] = []
-                result[same_id].append(id)
-            else:
-                result[id] = []
-                dfs_variant_721(adjs, email_to_id, visited, first_email, id)
-
-        # Prepare result as a list of lists
-        result_v2 = []
-        for id, same_ids in result.items():
-            same = [id] + same_ids
-            result_v2.append(same)
-
-        return result_v2
-
-
-if __name__ == "__main__":
-    # Happy Case
-    solution = Solution()
-    input_data = {
-        "C1": ["a", "b"],
-        "C2": ["c"],
-        "C3": ["b", "d"],
-        "C4": ["d"],
-        "C5": ["e"],
-        "C6": ["c"],
-        "C7": ["a"]
-    }
-    result = solution.accountsMerge(input_data)
-    assert len(result) == 3
-    assert sorted(result[0]) == sorted(["C1", "C3", "C7", "C4"])
-    assert sorted(result[1]) == sorted(["C6", "C2"])
-    assert sorted(result[2]) == sorted(["C5"])
-
-    # Actual Email Strings
-    input_data = {
-        "ID1": ["aa@gmail.com", "bb@gmail.com"],
-        "ID2": ["cc@gmail.com"],
-        "ID3": ["bb@gmail.com", "dd@gmail.com"],
-        "ID4": ["dd@gmail.com"],
-        "ID5": ["ee@gmail.com"],
-        "ID6": ["cc@gmail.com"],
-        "ID7": ["aa@gmail.com"]
-    }
-    result = solution.accountsMerge(input_data)
-    assert len(result) == 3
-    assert sorted(result[0]) == sorted(["ID3", "ID7", "ID4", "ID1"])
-    assert sorted(result[1]) == sorted(["ID2", "ID6"])
-    assert sorted(result[2]) == sorted(["ID5"])
-
-    # No Edges
-    input_data = {
-        "C1": ["a", "b"],
-        "C2": ["c"],
-        "C3": ["d", "e", "f"],
-        "C4": ["g"],
-        "C5": ["h"],
-        "C6": ["i"],
-        "C7": ["j", "k", "l", "m", "n"]
-    }
-    result = solution.accountsMerge(input_data)
-    assert len(result) == 7
-    assert sorted(result[0]) == sorted(["C1"])
-    assert sorted(result[1]) == sorted(["C2"])
-    assert sorted(result[2]) == sorted(["C3"])
-    assert sorted(result[3]) == sorted(["C4"])
-    assert sorted(result[4]) == sorted(["C5"])
-    assert sorted(result[5]) == sorted(["C6"])
-    assert sorted(result[6]) == sorted(["C7"])
-
-    # One Connected Component Via One Email
-    input_data = {
-        "C1": ["a", "b"],
-        "C2": ["a"],
-        "C3": ["d", "a", "f"],
-        "C4": ["a"],
-        "C5": ["a"],
-        "C6": ["a"],
-        "C7": ["j", "a", "l", "m", "n"]
-    }
-    result = solution.accountsMerge(input_data)
-    assert len(result) == 1
-    assert sorted(result[0]) == sorted(["C6", "C1", "C5", "C3", "C7", "C2", "C4"])
-
-    # One Connected Component Via Two Emails
-    input_data = {
-        "C1": ["a", "b"],
-        "C2": ["a"],
-        "C3": ["d", "a", "f"],
-        "C4": ["a", "x", "y", "z"],
-        "C5": ["a"],
-        "C6": ["a", "o", "p", "b"],
-        "C7": ["j", "a", "l", "m", "n"]
-    }
-    result = solution.accountsMerge(input_data)
-    assert len(result) == 1
-    assert sorted(result[0]) == sorted(["C6", "C1", "C5", "C3", "C7", "C2", "C4"])
-
-    # One Id One Email
-    input_data = {
-        "C1": ["a"]
-    }
-    result = solution.accountsMerge(input_data)
-    assert len(result) == 1
-    assert sorted(result[0]) == sorted(["C1"])
-
-    # One Id Multiple Emails
-    input_data = {
-        "C1": ["a@gmail.com", "b@gmail.com", "c@gmail.com"]
-    }
-    result = solution.accountsMerge(input_data)
-    assert len(result) == 1
-    assert sorted(result[0]) == sorted(["C1"])
-
-    # Separate Connected Components
-    input_data = {
-        "C1": ["a", "b", "c", "d"],
-        "C2": ["q", "r", "s", "t"],
-        "C10": ["x", "y", "z"]
-    }
-    result = solution.accountsMerge(input_data)
-    assert len(result) == 3
-    assert sorted(result[0]) == sorted(["C1"])
-    assert sorted(result[1]) == sorted(["C2"])
-    assert sorted(result[2]) == sorted(["C10"])
-
-
-
-# ---- File: 791_custom_sort_string\python\follow_up_791.py ----
-class Solution:
-    def customSortString(self, order: list[str], s: str) -> str:
-        freqs = [0] * 26
-        for ch in s:
-            freqs[ord(ch) - ord('a')] += 1
-        
-        result = ""
-        for ch in order:
-            result += ch * freqs[ord(ch) - ord('a')]
-            freqs[ord(ch) - ord('a')] = 0
-        
-        for i in range(26):
-            result += chr(i + ord('a')) * freqs[i]
-        
-        return result
-
-
-# ---- File: 791_custom_sort_string\python\original_791.py ----
-from collections import Counter
-
-
-class Solution:
-    def customSortString(self, order: str, s: str) -> str:
-        freq = Counter(s)
-        result = []
-        for char in order:
-            if char in freq:
-                result.extend([char] * freq[char])
-                freq[char] = 0
-
-        for remaining_char, f in freq.items():
-            if f > 0:
-                result += [remaining_char] * f
-
-        return "".join(result)
-
-
-# ---- File: 791_custom_sort_string\python\variant_791.py ----
-class Solution:
-    def customSortString(self, order: str, s: str) -> str:
-        freq = [0 for _ in range(26)]
-
-        def get_index(char: str):
-            """Returns index in freq"""
-            return ord(char) - ord("a")
-
-        for char in s:
-            freq[get_index(char)] += 1
-
-        result = []
-        for char in order:
-            i = get_index(char)
-            if freq[i] > 0:
-                result.extend([char] * freq[i])
-                freq[i] = 0
-
-        for i, f in enumerate(freq):
-            if f > 0:
-                result += [chr(ord("a") + i)] * f
-
-        return "".join(result)
-
-
-# ---- File: 88_merged_sorted_array\python\original_88.py ----
-class Solution:
-    def mergeSortedArray(self, nums1: list[int], nums2: list[int], m: int, n: int):
-        p1 = m - 1
-        p2 = n - 1
-        for p in range(m + n - 1, -1, -1):
-            if p2 < 0:
-                break
-            if p1 >= 0 and nums1[p1] > nums2[p2]:
-                nums1[p] = nums1[p1]
-                p1 -= 1
-            else:
-                nums1[p] = nums2[p2]
-                p2 -= 1
-
-
-# ---- File: 88_merged_sorted_array\python\variant_without_sizes_88.py ----
-class Solution:
-    def mergeSortedArray(self, nums1: list[int], nums2: list[int]):
-        a = len(nums1) // 2 - 1
-        b = len(nums2) - 1
-        i = len(nums1) - 1
-        
-        while b >= 0:
-            if a >= 0 and nums1[a] >= nums2[b]:
-                nums1[i] = nums1[a]
-                a -= 1
-            else:
-                nums1[i] = nums2[b]
-                b -= 1
-            i -= 1
-
-if __name__ == "__main__":
-    solution = Solution()
-    list_a = [1, 3, 0, 0]
-    list_b = [4, 10]
-    expected = [1, 3, 4, 10]
-    solution.mergeSortedArray(list_a, list_b)
-    assert list_a == expected
-
-    list_a = [5, 6, 7, 8, 0, 0, 0, 0]
-    list_b = [1, 2, 3, 4]
-    expected = [1, 2, 3, 4, 5, 6, 7, 8]
-    solution.mergeSortedArray(list_a, list_b)
-    assert list_a == expected
-
-    list_a = [0]
-    list_b = [99]
-    expected = [99]
-    solution.mergeSortedArray(list_a, list_b)
-    assert list_a == expected
-
-    list_a = [1, 10, 0, 0]
-    list_b = [2, 11]
-    expected = [1, 2, 10, 11]
-    solution.mergeSortedArray(list_a, list_b)
-    assert list_a == expected
-
-
-# ---- File: 921_minimum_add_to_make_parentheses_valid\python\original_921.py ----
-class Solution:
-    def minimumAddToMakeValid(self, s: str) -> int:
-        extra_right = 0
-        left_open = 0
-        for c in s:
-            if c == '(':
-                left_open += 1
-            elif c == ')':
-                if left_open == 0:
-                    extra_right += 1
-                    continue
-                left_open -= 1
-        return left_open + extra_right
-
-
-# ---- File: 921_minimum_add_to_make_parentheses_valid\python\variant_921.py ----
-class Solution:
-    def minimumAddToMakeValid(self, s: str) -> str:
-        result = []
-        extra_opens = 0
-        for c in s:
-            if c == '(':
-                extra_opens += 1
-            elif c == ')':
-                if extra_opens == 0:
-                    result.append("(")
                 else:
-                    extra_opens -= 1
-            result.append(c)
+                    S[i] = ""
 
-        
-        result += [')'] * extra_opens
-        return "".join(result)
-    
-if __name__ == "__main__":
-    solution = Solution()
-    assert solution.minimumAddToMakeValid("(())((") == "(())(())"
-    assert solution.minimumAddToMakeValid("))(") == "()()()"
-    assert solution.minimumAddToMakeValid(")))") == "()()()"
-    assert solution.minimumAddToMakeValid("(((") == "((()))"
-    assert solution.minimumAddToMakeValid("") == ""
-    assert solution.minimumAddToMakeValid("(())") == "(())"
-    assert solution.minimumAddToMakeValid(")))(((") == "()()()((()))"
-    assert solution.minimumAddToMakeValid("abcxyz") == "abcxyz"
-    assert solution.minimumAddToMakeValid("(()()))((") == "(()())()(())"
-    assert solution.minimumAddToMakeValid("((a)()))((xyz") == "((a)())()((xyz))"
+        for j in stack:
+            S[j] = ""
 
-# ---- File: 938_range_of_sum_bst\python\first_variant_average_938.py ----
-from typing import Optional
+        return "".join(S)
 
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
 
-class Solution:
-    def rangeAverageBST(self, root: Optional[TreeNode], low: int, high: int) -> float:
-        result = 0
-        count = 0
-        stack = [root]
-        while stack:
-            curr = stack.pop()
-            if low <= curr.val <= high:
-                result += curr.val
-                count += 1
-            if curr.right and curr.val < high:
-                stack.append(curr.right)
-            if curr.left and curr.val > low:
-                stack.append(curr.left)
-        return result / count
+# ---- File: 125. Valid Palindrome\#1 isPalindrome.py ----
+# A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
 
-if __name__ == "__main__":
-    solution = Solution()
-    root = TreeNode(10)
-    root.left = TreeNode(5)
-    root.left.left = TreeNode(3)
-    root.left.right = TreeNode(7)
+# Given a string s, return true if it is a palindrome, or false otherwise.
 
-    root.right = TreeNode(15)
-    root.right.right = TreeNode(18)
+ 
 
-    assert solution.rangeAverageBST(root, 7, 15) == 32.0 / 3.0
-    assert solution.rangeAverageBST(root, 0, 9000) == 58.0 / 6.0
-    assert solution.rangeAverageBST(root, 7, 7) == 7.0
-    assert solution.rangeAverageBST(root, 14, 18) == 33.0 / 2.0
-    assert solution.rangeAverageBST(root, 3, 6) == 4.0
+# Example 1:
 
-# ---- File: 938_range_of_sum_bst\python\original_938.py ----
-from typing import Optional
+# Input: s = "A man, a plan, a canal: Panama"
+# Output: true
+# Explanation: "amanaplanacanalpanama" is a palindrome.
 
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
+# Example 2:
+
+# Input: s = "race a car"
+# Output: false
+# Explanation: "raceacar" is not a palindrome.
+
+# Example 3:
+
+# Input: s = " "
+# Output: true
+# Explanation: s is an empty string "" after removing non-alphanumeric characters.
+# Since an empty string reads the same forward and backward, it is a palindrome.
+
+ 
+
+# Constraints:
+
+#     1 <= s.length <= 2 * 105
+#     s consists only of printable ASCII characters.
+
+import re
 
 class Solution:
-    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
-        result = 0
-        stack = [root]
-        while stack:
-            curr = stack.pop()
-            if low <= curr.val <= high:
-                result += curr.val
-            if curr.right and curr.val < high:
-                stack.append(curr.right)
-            if curr.left and curr.val > low:
-                stack.append(curr.left)
-        return result
+    def isPalindrome(self, s: str) -> bool:
+        s = s.lower()
+        s = re.sub(r'[^a-z0-9]', '', s)
 
+        s_reversed = s[::-1]
 
-# ---- File: 938_range_of_sum_bst\python\second_variant_many_invocations_938.py ----
-from typing import Optional
-from itertools import accumulate
-from bisect import bisect_left
-
-
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-
-class Solution:
-    def __init__(self, root):
-        self.vals = []
-        self.prefix_sums = []
-        self.inorder(root)
-    
-    def inorder(self, root):
-        if root is None:
-            return
-        self.inorder(root.left)
-        self.vals.append(root.val)
-        if not self.prefix_sums:
-            self.prefix_sums.append(root.val)
-        else:
-            self.prefix_sums.append(self.prefix_sums[-1] + root.val)
-        self.inorder(root.right)
-    
-    def find_right_boundary(self, left, right, upper):
-        while left <= right:
-            mid = (right - left) // 2 + left
-            if self.vals[mid] <= upper:
-                left = mid + 1
-            else:
-                right = mid - 1
-        return right
-    
-    def find_left_boundary(self, left, right, lower):
-        while left <= right:
-            mid = (right - left) // 2 + left
-            if self.vals[mid] >= lower:
-                right = mid - 1
-            else:
-                left = mid + 1
-        return left
-    
-    def calculate(self, lower, upper):
-        right_boundary = self.find_right_boundary(0, len(self.vals) - 1, upper)
-        left_boundary = self.find_left_boundary(0, len(self.vals) - 1, lower)
-        
-        if left_boundary == 0:
-            return self.prefix_sums[right_boundary]
-        
-        return self.prefix_sums[right_boundary] - self.prefix_sums[left_boundary - 1]
-
-
-if __name__ == "__main__":
-    root = TreeNode(10)
-    root.left = TreeNode(5)
-    root.left.left = TreeNode(3)
-    root.left.left.left = TreeNode(1)
-    root.left.right = TreeNode(7)
-    root.left.right.left = TreeNode(6)
-
-    root.right = TreeNode(15)
-    root.right.left = TreeNode(13)
-    root.right.right = TreeNode(18)
-
-    solution = Solution(root)
-    assert solution.calculate(5, 16) == 56
-    assert solution.calculate(0, 9000) == 1 + 3 + 5 + 6 + 7 + 10 + 13 + 15 + 18
-    assert solution.calculate(7, 7) == 7
-    assert solution.calculate(14, 18) == 33
-    assert solution.calculate(3, 6) == 14
-
-# ---- File: Unknowns\1_draw_circle\python\1_draw_circle.py ----
-import math
-
-class DrawCircle:
-    def draw_circle(self, radius, n):
-        result = []
-        steps = n // 2
-
-        for i in range(steps):
-            x = (i / steps) * radius
-            y = math.sqrt(radius**2 - x**2)
-
-            x = round(x, 2)
-            y = round(y, 2)
-
-            result.extend([
-                (x, y),
-                (x, -y)
-            ])
-
-        if n % 2 == 1:
-            result.append((radius, 0))
-            
-        return result
-
-# ---- File: Unknowns\2_skip_list\python\2_skip_list.py ----
-from typing import Optional
-
-class Node:
-    def __init__(self, val):
-        self.val = val
-        self.prev = None
-        self.next = None
-        self.top = None
-        self.bottom = None
-
-class SkipList:
-    def search(self, root: Optional['Node'], target: int) -> bool:
-        if root is None:
-            return False
-        if root.val == target:
+        if (s == s_reversed):
             return True
-        
-        c = root
-        while c is not None:
-            while c.next is not None and c.next.val <= target:
-                c = c.next
-                if c.val == target:
-                    return True
-            c = c.bottom
-
         return False
 
-# ---- File: Unknowns\2_skip_list\python\2_skip_list_variant.py ----
+# ---- File: 125. Valid Palindrome\#2 isPalindrome.py ----
+# A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
+
+# Given a string s, return true if it is a palindrome, or false otherwise.
+
+ 
+
+# Example 1:
+
+# Input: s = "A man, a plan, a canal: Panama"
+# Output: true
+# Explanation: "amanaplanacanalpanama" is a palindrome.
+
+# Example 2:
+
+# Input: s = "race a car"
+# Output: false
+# Explanation: "raceacar" is not a palindrome.
+
+# Example 3:
+
+# Input: s = " "
+# Output: true
+# Explanation: s is an empty string "" after removing non-alphanumeric characters.
+# Since an empty string reads the same forward and backward, it is a palindrome.
+
+ 
+
+# Constraints:
+
+#     1 <= s.length <= 2 * 105
+#     s consists only of printable ASCII characters.
+
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        s_new = ""
+
+        for c in s:
+            if c.isalnum():
+                s_new += c.lower()
+        return s_new == s_new[::-1]
+
+
+# ---- File: 125. Valid Palindrome\#3 isPalindrome.py ----
+# A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.
+
+# Given a string s, return true if it is a palindrome, or false otherwise.
+
+ 
+
+# Example 1:
+
+# Input: s = "A man, a plan, a canal: Panama"
+# Output: true
+# Explanation: "amanaplanacanalpanama" is a palindrome.
+
+# Example 2:
+
+# Input: s = "race a car"
+# Output: false
+# Explanation: "raceacar" is not a palindrome.
+
+# Example 3:
+
+# Input: s = " "
+# Output: true
+# Explanation: s is an empty string "" after removing non-alphanumeric characters.
+# Since an empty string reads the same forward and backward, it is a palindrome.
+
+ 
+
+# Constraints:
+
+#     1 <= s.length <= 2 * 105
+#     s consists only of printable ASCII characters.
+
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        # Initialize two pointers at the beginning and end of the string
+        l, r = 0, len(s) - 1
+
+        # Iterate until the two pointers meet
+        while l < r:
+            # Move the left pointer to the next alphanumeric character
+            while l < r and not self.isAlphaNum(s[l]):
+                l += 1
+
+            # Move the right pointer to the next alphanumeric character
+            while r > l and not self.isAlphaNum(s[r]):
+                r -= 1
+
+            # Check if the corresponding characters are equal (case-insensitive)
+            if s[l].lower() != s[r].lower():
+                return False
+
+            # Move the pointers towards each other
+            l += 1
+            r -= 1
+
+        # If the loop completes, the string is a palindrome
+        return True
+
+    def isAlphaNum(self, c):
+        # Check if a character is alphanumeric (letters or digits)
+        return (
+            ord('A') <= ord(c) <= ord('Z')
+            or ord('0') <= ord(c) <= ord('9')
+            or ord('a') <= ord(c) <= ord('z')
+        )
+
+
+# ---- File: 129. Sum Root to Leaf Numbers\sumNumbers.py ----
+# https://leetcode.com/problems/sum-root-to-leaf-numbers/
+
+# https://www.youtube.com/watch?v=Jk16lZGFWxE
+
+# You are given the root of a binary tree containing digits from 0 to 9 only.
+
+# Each root-to-leaf path in the tree represents a number.
+
+#     For example, the root-to-leaf path 1 -> 2 -> 3 represents the number 123.
+
+# Return the total sum of all root-to-leaf numbers. Test cases are generated so that the answer will fit in a 32-bit integer.
+
+# A leaf node is a node with no children.
+
+ 
+
+# Example 1:
+
+# Input: root = [1,2,3]
+# Output: 25
+# Explanation:
+# The root-to-leaf path 1->2 represents the number 12.
+# The root-to-leaf path 1->3 represents the number 13.
+# Therefore, sum = 12 + 13 = 25.
+
+# Example 2:
+
+# Input: root = [4,9,0,5,1]
+# Output: 1026
+# Explanation:
+# The root-to-leaf path 4->9->5 represents the number 495.
+# The root-to-leaf path 4->9->1 represents the number 491.
+# The root-to-leaf path 4->0 represents the number 40.
+# Therefore, sum = 495 + 491 + 40 = 1026.
+
+ 
+
+# Constraints:
+
+#     The number of nodes in the tree is in the range [1, 1000].
+#     0 <= Node.val <= 9
+#     The depth of the tree will not exceed 10.
+
+class Solution:
+    def sumNumbers(self, root: Optional[TreeNode]) -> int:
+
+        def dfs(curr, sum):
+            if not curr:
+                return 0
+
+            sum = sum * 10 + curr.val
+
+            if not curr.left and not curr.right:
+                return sum
+
+            left = dfs(curr.left, sum)
+            right = dfs(curr.right, sum)
+
+            return left + right
+
+        return dfs(root, 0)
+
+
+# ---- File: 133. Clone Graph\cloneGraph.py ----
+# https://leetcode.com/problems/clone-graph/
+
+# https://www.youtube.com/watch?v=vXkT2nYSde0
+
+# Given a reference of a node in a connected undirected graph.
+
+# Return a deep copy (clone) of the graph.
+
+# Each node in the graph contains a value (int) and a list (List[Node]) of its neighbors.
+
+# class Node {
+#     public int val;
+#     public List<Node> neighbors;
+# }
+
+ 
+
+# Test case format:
+
+# For simplicity, each node's value is the same as the node's index (1-indexed). For example, the first node with val == 1, the second node with val == 2, and so on. The graph is represented in the test case using an adjacency list.
+
+# An adjacency list is a collection of unordered lists used to represent a finite graph. Each list describes the set of neighbors of a node in the graph.
+
+# The given node will always be the first node with val = 1. You must return the copy of the given node as a reference to the cloned graph.
+
+ 
+
+# Example 1:
+
+# Input: adjList = [[2,4],[1,3],[2,4],[1,3]]
+# Output: [[2,4],[1,3],[2,4],[1,3]]
+# Explanation: There are 4 nodes in the graph.
+# 1st node (val = 1)'s neighbors are 2nd node (val = 2) and 4th node (val = 4).
+# 2nd node (val = 2)'s neighbors are 1st node (val = 1) and 3rd node (val = 3).
+# 3rd node (val = 3)'s neighbors are 2nd node (val = 2) and 4th node (val = 4).
+# 4th node (val = 4)'s neighbors are 1st node (val = 1) and 3rd node (val = 3).
+
+# Example 2:
+
+# Input: adjList = [[]]
+# Output: [[]]
+# Explanation: Note that the input contains one empty list. The graph consists of only one node with val = 1 and it does not have any neighbors.
+
+# Example 3:
+
+# Input: adjList = []
+# Output: []
+# Explanation: This an empty graph, it does not have any nodes.
+
+ 
+
+# Constraints:
+
+#     The number of nodes in the graph is in the range [0, 100].
+#     1 <= Node.val <= 100
+#     Node.val is unique for each node.
+#     There are no repeated edges and no self-loops in the graph.
+#     The Graph is connected and all nodes can be visited starting from the given node.
+
+import collections
+
+# Definition for a Node.
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+
+# Using BFS, #T and #S: O(N)
+class Solution:
+    def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        if not node:
+            return None
+        
+        # 1st: It maps old value to new cloned values
+        # 2nd: Also acts as a visited set
+        cloned_map = {}
+        cloned_map[node] = Node(node.val, [])
+
+        queue = collections.deque([node])
+
+        while queue:
+            curr = queue.popleft()
+
+            for neighbor in curr.neighbors:
+                if neighbor not in cloned_map:
+                    cloned_map[neighbor] = Node(neighbor.val, [])
+                    queue.append(neighbor)
+                cloned_map[curr].neighbors.append(cloned_map[neighbor]) # initially [] empty
+        return cloned_map[node]
+
+# ---- File: 138. Copy List with Random Pointer\copyRandomList.py ----
+# https://leetcode.com/problems/copy-list-with-random-pointer/
+
+# https://www.youtube.com/watch?v=g7U-FPBR_gQ
+
+# A linked list of length n is given such that each node contains an additional random pointer, which could point to any node in the list, or null.
+
+# Construct a deep copy of the list. The deep copy should consist of exactly n brand new nodes, where each new node has its value set to the value of its corresponding original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list such that the pointers in the original list and copied list represent the same list state. None of the pointers in the new list should point to nodes in the original list.
+
+# For example, if there are two nodes X and Y in the original list, where X.random --> Y, then for the corresponding two nodes x and y in the copied list, x.random --> y.
+
+# Return the head of the copied linked list.
+
+# The linked list is represented in the input/output as a list of n nodes. Each node is represented as a pair of [val, random_index] where:
+
+#     val: an integer representing Node.val
+#     random_index: the index of the node (range from 0 to n-1) that the random pointer points to, or null if it does not point to any node.
+
+# Your code will only be given the head of the original linked list.
+
+ 
+
+# Example 1:
+
+# Input: head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+# Output: [[7,null],[13,0],[11,4],[10,2],[1,0]]
+
+# Example 2:
+
+# Input: head = [[1,1],[2,1]]
+# Output: [[1,1],[2,1]]
+
+# Example 3:
+
+# Input: head = [[3,null],[3,0],[3,null]]
+# Output: [[3,null],[3,0],[3,null]]
+
+ 
+
+# Constraints:
+
+#     0 <= n <= 1000
+#     -104 <= Node.val <= 104
+#     Node.random is null or is pointing to some node in the linked list.
+
+
 from typing import Optional
 
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+
+# Mid-Efficient approach would be using a Hashmap (O(N) space) and do two passes:
+# i) generate a new list / has old -> new
+# ii) update the new list with new nodes for random
+
+# Efficient Approach : O(1) Space - USING INTERWEAVING NODES
+class Solution:
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        dummy = Node(-1)
+        dummy.next = head
+        curr = head
+
+        # Step One: Interweave (Connect) Nodes
+        while curr:
+            tmp = Node(curr.val)
+            tmp.next = curr.next
+            curr.next = tmp
+            curr = tmp.next
+        curr = head
+
+        # Step Two: Update Random
+        while curr:
+            if curr.random:
+                curr.next.random = curr.random.next
+            curr = curr.next.next
+        
+        curr = dummy
+        old = head
+        # Step Three: Remove Old Nodes
+        while old:
+            curr.next = old.next
+            curr = old
+            old = curr.next
+        return dummy.next
+
+# ---- File: 146. LRU Cache\LRUCache.py ----
+# https://leetcode.com/problems/lru-cache/description/
+
+# https://www.youtube.com/watch?v=7ABFKPK2hD4
+
+# Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+
+# Implement the LRUCache class:
+
+#     LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+#     int get(int key) Return the value of the key if the key exists, otherwise return -1.
+#     void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.
+
+# The functions get and put must each run in O(1) average time complexity.
+
+ 
+
+# Example 1:
+
+# Input
+# ["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
+# [[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+# Output
+# [null, null, null, 1, null, -1, null, -1, 3, 4]
+
+# Explanation
+# LRUCache lRUCache = new LRUCache(2);
+# lRUCache.put(1, 1); // cache is {1=1}
+# lRUCache.put(2, 2); // cache is {1=1, 2=2}
+# lRUCache.get(1);    // return 1
+# lRUCache.put(3, 3); // LRU key was 2, evicts key 2, cache is {1=1, 3=3}
+# lRUCache.get(2);    // returns -1 (not found)
+# lRUCache.put(4, 4); // LRU key was 1, evicts key 1, cache is {4=4, 3=3}
+# lRUCache.get(1);    // return -1 (not found)
+# lRUCache.get(3);    // return 3
+# lRUCache.get(4);    // return 4
+
+ 
+
+# Constraints:
+
+#     1 <= capacity <= 3000
+#     0 <= key <= 104
+#     0 <= value <= 105
+#     At most 2 * 105 calls will be made to get and put.
+
+class Node:
+
+    def __init__(self, key, val):
+        self.key = key
+        self.val = val
+        self.prev = self.next = None
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.cap = capacity
+        self.cache = {} # key to node (not val, it's a reference)
+
+        # left = LRU, right = MRU
+        self.left, self.right = Node(0, 0), Node(0, 0)
+        self.left.next, self.right.prev = self.right, self.left
+    
+    # remove node from the list
+    def remove(self, node):
+        prev, nxt = node.prev, node.next
+        prev.next, nxt.prev = nxt, prev
+
+    # add node to the right
+    def insert(self, node):
+        prev, nxt = self.right.prev, self.right
+        prev.next = nxt.prev = node
+        node.next, node.prev = nxt, prev
+        
+    def get(self, key: int) -> int:
+        if key in self.cache:
+            self.remove(self.cache[key])
+            self.insert(self.cache[key])
+            return self.cache[key].val
+        return -1
+        
+    def put(self, key: int, value: int) -> None:
+        if key in self.cache:
+            self.remove(self.cache[key])
+        self.cache[key] = Node(key, value)
+        self.insert(self.cache[key])
+
+        # to check if it exceeds capacity
+        if len(self.cache) > self.cap:
+            # remove LRU
+            lru = self.left.next
+            self.remove(lru)
+            del self.cache[lru.key]
+        
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+
+# ---- File: 15. 3Sum\threeSum.py ----
+# Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+
+# Notice that the solution set must not contain duplicate triplets.
+
+ 
+
+# Example 1:
+
+# Input: nums = [-1,0,1,2,-1,-4]
+# Output: [[-1,-1,2],[-1,0,1]]
+# Explanation: 
+# nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.
+# nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.
+# nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.
+# The distinct triplets are [-1,0,1] and [-1,-1,2].
+# Notice that the order of the output and the order of the triplets does not matter.
+
+# Example 2:
+
+# Input: nums = [0,1,1]
+# Output: []
+# Explanation: The only possible triplet does not sum up to 0.
+
+# Example 3:
+
+# Input: nums = [0,0,0]
+# Output: [[0,0,0]]
+# Explanation: The only possible triplet sums up to 0.
+
+ 
+
+# Constraints:
+
+#     3 <= nums.length <= 3000
+#     -105 <= nums[i] <= 105
+
+from typing import List
+
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        nums.sort()
+
+        for i, num in enumerate(nums):
+            if i > 0 and num == nums[i - 1]:
+                continue
+
+            l = i + 1
+            r = len(nums) - 1
+
+            while l < r:
+                threeSum = num + nums[l] + nums[r]
+                if threeSum < 0:
+                    l += 1
+                elif threeSum > 0:
+                    r -= 1
+                else:
+                    res.append([num, nums[l], nums[r]])
+                    l += 1
+                    while nums[l] == nums[l - 1] and l < r:
+                        l += 1
+        return res
+
+
+# ---- File: 1539. Kth Missing Positive Number\findKthPositive.py ----
+# https://leetcode.com/problems/kth-missing-positive-number/
+
+# https://www.youtube.com/watch?v=R15876l3tSE
+
+# Given an array arr of positive integers sorted in a strictly increasing order, and an integer k.
+
+# Return the kth positive integer that is missing from this array.
+
+ 
+
+# Example 1:
+
+# Input: arr = [2,3,4,7,11], k = 5
+# Output: 9
+# Explanation: The missing positive integers are [1,5,6,8,9,10,12,13,...]. The 5th missing positive integer is 9.
+
+# Example 2:
+
+# Input: arr = [1,2,3,4], k = 2
+# Output: 6
+# Explanation: The missing positive integers are [5,6,7,...]. The 2nd missing positive integer is 6.
+
+ 
+
+# Constraints:
+
+#     1 <= arr.length <= 1000
+#     1 <= arr[i] <= 1000
+#     1 <= k <= 1000
+#     arr[i] < arr[j] for 1 <= i < j <= arr.length
+
+ 
+
+# Follow up:
+
+# Could you solve this problem in less than O(n) complexity?
+
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        if arr[0] != 1:
+            if arr[0] - 1 >= k:
+                return k
+            else: # decrement k by however many numbers are missing
+                k -= arr[0] - 1
+        
+        i = 0
+
+        while i < len(arr) - 1:
+            diff = arr[i + 1] - arr[i]
+
+            if diff != 1:
+                for num in range(arr[i] + 1, arr[i + 1]):
+                    k -= 1
+
+                    if not k:
+                        return num
+            i += 1
+        
+        if k:
+            return arr[-1] + k
+        
+        # T : O(N)
+        # S : O(1)
+
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        # Initialize the left and right pointers
+        left, right = 0, len(arr) - 1
+        
+        # Perform binary search
+        while left <= right:
+            mid = left + (right - left) // 2
+            
+            # Calculate the number of missing positive integers before mid
+            missing_before_mid = arr[mid] - mid - 1
+            
+            # Adjust the pointers based on the missing count
+            if missing_before_mid < k:
+                left = mid + 1
+            else:
+                right = mid - 1
+        
+        # Return the kth missing positive integer
+        return left + k
+
+        # T : O(logn)
+        # S : O(1)
+
+
+# ---- File: 1570. Dot Product of Two Sparse Vectors\solution.py ----
+# https://leetcode.com/problems/dot-product-of-two-sparse-vectors/description/
+
+# https://www.youtube.com/watch?v=sQNN4xKC1mA
+
+# Given two sparse vectors, compute their dot product.
+
+# Implement class SparseVector:
+
+#     SparseVector(nums) Initializes the object with the vector nums
+#     dotProduct(vec) Compute the dot product between the instance of SparseVector and vec
+
+# A sparse vector is a vector that has mostly zero values, you should store the sparse vector efficiently and compute the dot product between two SparseVector.
+
+# Follow up: What if only one of the vectors is sparse?
+
+ 
+
+# Example 1:
+
+# Input: nums1 = [1,0,0,2,3], nums2 = [0,3,0,4,0]
+# Output: 8
+# Explanation: v1 = SparseVector(nums1) , v2 = SparseVector(nums2)
+# v1.dotProduct(v2) = 1*0 + 0*3 + 0*0 + 2*4 + 3*0 = 8
+
+# Example 2:
+
+# Input: nums1 = [0,1,0,0,0], nums2 = [0,0,0,0,2]
+# Output: 0
+# Explanation: v1 = SparseVector(nums1) , v2 = SparseVector(nums2)
+# v1.dotProduct(v2) = 0*0 + 1*0 + 0*0 + 0*0 + 0*2 = 0
+
+# Example 3:
+
+# Input: nums1 = [0,1,0,0,2,0,0], nums2 = [1,0,0,0,3,0,4]
+# Output: 6
+
+ 
+
+# Constraints:
+
+#     n == nums1.length == nums2.length
+#     1 <= n <= 10^5
+#     0 <= nums1[i], nums2[i] <= 100
+
+from typing import List
+
+# 1st Solution: Naive Approach - Loop through each vector and formulate dot product
+# 2nd Solution: Non-Naive but not best as well - Use HashMap to store non-zero values in the form : non-zero index: value
+
+# 3rd Solution(Below): Use Tuples since HashMap's can be terrible sometimes and interviewer may expect a more efficient solution with a follow-up question. Tuple is the answer:
+
+class SparseVector:
+    def __init__(self, nums: List[int]):
+
+        self.nums = []
+
+        for i, num in enumerate(nums):
+            if num:
+                self.nums.append((i, num))
+
+    # Return the dotProduct of two sparse vectors
+    def dotProduct(self, vec: "SparseVector") -> int:
+
+        resProduct = 0
+        i = j = 0
+
+        while i < len(self.nums) and j < len(vec.nums):
+            i_idx, i_val = self.nums[i]
+            j_idx, j_val = vec.nums[j]
+
+            if i_idx == j_idx:
+                resProduct += i_val * j_val
+                i += 1
+                j += 1
+            elif i_idx > j_idx:
+                j += 1
+            else:
+                i += 1
+        return resProduct
+    
+# T and S - O(N + M)
+# If Follow up is asked in an interview: the answer is use Binary Search
+
+
+# ---- File: 162. Find Peak Element\findPeakElement.py ----
+# https://leetcode.com/problems/find-peak-element/description/
+
+# https://www.youtube.com/watch?v=GAJITCneCPE
+
+# A peak element is an element that is strictly greater than its neighbors.
+
+# Given a 0-indexed integer array nums, find a peak element, and return its index. If the array contains multiple peaks, return the index to any of the peaks.
+
+# You may imagine that nums[-1] = nums[n] = -∞. In other words, an element is always considered to be strictly greater than a neighbor that is outside the array.
+
+# You must write an algorithm that runs in O(log n) time.
+
+ 
+
+# Example 1:
+
+# Input: nums = [1,2,3,1]
+# Output: 2
+# Explanation: 3 is a peak element and your function should return the index number 2.
+
+# Example 2:
+
+# Input: nums = [1,2,1,3,5,6,4]
+# Output: 5
+# Explanation: Your function can return either index number 1 where the peak element is 2, or index number 5 where the peak element is 6.
+
+ 
+
+# Constraints:
+
+#     1 <= nums.length <= 1000
+#     -231 <= nums[i] <= 231 - 1
+#     nums[i] != nums[i + 1] for all valid i.
+
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        l = 0
+        r = len(nums) - 1
+
+        while l < r:
+            mid = l + ((r - l)) // 2
+
+            if nums[mid] < nums[mid + 1]:
+                l = mid + 1
+            else:
+                r = mid
+        return l # or return r, doesn't matter
+
+class Solution:
+    def findPeakGrid(self, mat: List[List[int]]) -> List[int]: #Time-Complexity: O(log(m) * n
+                                                               #Space-Complexity: O(1)
+        
+        #Approach: You can think of this problem in two ways! Either column-based or row-based! 
+        
+        #Idea is that we perform binary search on mat grid and utilize search space on rows. ROW BASED
+        #for the current middle row we are on, find the maximum element, as it will be bigger than
+        #both of its left and right neighboring elements. To verify this element is a peak, we need
+        #to make sure that it is also bigger than the immediate top and bottom neighboring elements!
+        
+        #however, we need to be careful of the bottom and top neighboring elements being out of bounds!
+        #in this case, the current peak candidate will always be bigger than such elements since
+        #all elements within mat are guaranteed to be positive numbers!
+        #Right when we find peak element, we should return its position immediately!
+        
+        #define my search space by row!
+        L, H = 0, len(mat) - 1
+        #as long as we have at least one row left to consider, continue binary search!
+        while L <= H:
+            mid = (L + H) // 2
+            mid_row = mat[mid]
+            #initialize max_pos and store column pos later!
+            max_pos = None
+            max_val = float(-inf)
+            #iterate linearly through the row since it's not sorted and find the maximum element as well
+            #as its position!
+            for j in range(len(mid_row)):
+                if(mid_row[j] > max_val):
+                    max_val = mid_row[j]
+                    max_pos = j
+                    continue
+            #once we have max_pos, then we have to compare relative to top and bottom neighbors!
+            top_val = -1 if mid - 1 < 0 else mat[mid-1][max_pos]
+            bottom_val = -1 if mid + 1 >= len(mat) else mat[mid+1][max_pos]
+            #then it's a peak!
+            if(top_val < max_val and bottom_val < max_val):
+                return [mid, max_pos]
+            #top neighboring element is bigger! -> it has better chance to be peak element!
+            if(top_val >= max_val):
+                H = mid - 1 
+                continue
+            if(bottom_val >= max_val):
+                L = mid + 1
+                continue
+
+
+# ---- File: 1644. Lowest Common Ancestor of a Binary Tree II\lowestCommonAncestor.py ----
+# https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/
+
+# https://www.youtube.com/watch?v=7csj-Elpmmo&t=755s
+
+# Given the root of a binary tree, return the lowest common ancestor (LCA) of two given nodes, p and q. If either node p or q does not exist in the tree, return null. All values of the nodes in the tree are unique.
+
+# According to the definition of LCA on Wikipedia: "The lowest common ancestor of two nodes p and q in a binary tree T is the lowest node that has both p and q as descendants (where we allow a node to be a descendant of itself)". A descendant of a node x is a node y that is on the path from node x to some leaf node.
+
+ 
+
+# Example 1:
+
+# Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+# Output: 3
+# Explanation: The LCA of nodes 5 and 1 is 3.
+
+# Example 2:
+
+# Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+# Output: 5
+# Explanation: The LCA of nodes 5 and 4 is 5. A node can be a descendant of itself according to the definition of LCA.
+
+# Example 3:
+
+# Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 10
+# Output: null
+# Explanation: Node 10 does not exist in the tree, so return null.
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        self.p_found = False
+        self.q_found = False
+
+        ans = self.dfs(root, p, q)
+
+        if self.p_found and self.q_found:
+            return ans
+        return None # return null if p or q doesn't exist in the tree
+
+    # do a post-order traversal: left -> right -> node to first check p_found and q_found are true
+    # then return the LCA value if both are true and there
+    def dfs(self, node, p, q):
+        if not node:
+            return None
+        
+        left = self.dfs(node.left, p, q)
+        right = self.dfs(node.right, p, q)
+
+        if node == p or node == q:
+            if node == p:
+                self.p_found = True
+            else:
+                self.q_found = True
+            return node
+
+        if left and right:
+            return node
+        else:
+            return left or right 
+
+        # T : O(N)
+        # S : O(N)
+
+
+# ---- File: 1650. Lowest Common Ancestor of a Binary Tree III\lowestCommonAncestor.py ----
+# https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/
+
+# https://www.youtube.com/watch?v=vZxxksAP8yk
+
+# Given two nodes of a binary tree p and q, return their lowest common ancestor (LCA).
+
+# Each node will have a reference to its parent node. The definition for Node is below:
+
+# class Node {
+#     public int val;
+#     public Node left;
+#     public Node right;
+#     public Node parent;
+# }
+
+# According to the definition of LCA on Wikipedia: "The lowest common ancestor of two nodes p and q in a tree T is the lowest node that has both p and q as descendants (where we allow a node to be a descendant of itself)."
+
+# Example 1:
+
+# Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+# Output: 3
+# Explanation: The LCA of nodes 5 and 1 is 3.
+
+# Example 2:
+
+# Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+# Output: 5
+# Explanation: The LCA of nodes 5 and 4 is 5 since a node can be a descendant of itself according to the LCA definition.
+
+# Example 3:
+
+# Input: root = [1,2], p = 1, q = 2
+# Output: 1
+
+ 
+
+# Constraints:
+
+#     The number of nodes in the tree is in the range [2, 105].
+#     -109 <= Node.val <= 109
+#     All Node.val are unique.
+#     p != q
+#     p and q exist in the tree.
+
+"""
+# Definition for a Node.
 class Node:
     def __init__(self, val):
         self.val = val
-        self.prev = None
-        self.next = None
-        self.top = None
-        self.bottom = None
+        self.left = None
+        self.right = None
+        self.parent = None
+"""
 
-class SkipList:
-    def search_closest(self, root: Optional['Node'], target: int) -> Optional['Node']:
-        if root is None:
-            return None
-        if root.val == target:
-            return root
+class Solution:
+    def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
+        # Naive Approach - Using Extra Space (Set) to store seen nodes : O(N)
 
-        c = root
-        while c.bottom is not None:
-            while c.next is not None and c.next.val <= target:
-                c = c.next
-                if c.val == target:
-                    return c
-            c = c.bottom
+        seenNodes = set()
 
-        while c.next is not None and c.next.val <= target:
-            c = c.next
-        return c
+        while p:
+            seenNodes.add(p)
+            p = p.parent
+        
+        while q:
+            if q in seenNodes:
+                return q
+            else:
+                q = q.parent
 
-# ---- File: Unknowns\3_digitsums\python\3_digitsums.py ----
+# ----
+                
+class Solution:
+    def lowestCommonAncestor(self, p: "Node", q: "Node") -> "Node":
+        # Efficient Approach - Using p_copy and q_copy : O(1) Space
+
+        p_copy = p
+        q_copy = q
+
+        while p_copy != q_copy:
+            if p_copy:
+                p_copy = p_copy.parent
+            else:
+                p_copy = q
+
+            if q_copy:
+                q_copy = q_copy.parent
+            else:
+                q_copy = p
+        return p_copy
+
+
+# ---- File: 1762. Buildings With an Ocean View\findBuildings.py ----
+# https://leetcode.com/problems/buildings-with-an-ocean-view/
+
+# https://www.youtube.com/watch?v=0UdQeXMjAFk
+
+# There are n buildings in a line. You are given an integer array heights of size n that represents the heights of the buildings in the line.
+
+# The ocean is to the right of the buildings. A building has an ocean view if the building can see the ocean without obstructions. Formally, a building has an ocean view if all the buildings to its right have a smaller height.
+
+# Return a list of indices (0-indexed) of buildings that have an ocean view, sorted in increasing order.
+
+ 
+
+# Example 1:
+
+# Input: heights = [4,2,3,1]
+# Output: [0,2,3]
+# Explanation: Building 1 (0-indexed) does not have an ocean view because building 2 is taller.
+
+# Example 2:
+
+# Input: heights = [4,3,2,1]
+# Output: [0,1,2,3]
+# Explanation: All the buildings have an ocean view.
+
+# Example 3:
+
+# Input: heights = [1,3,2,4]
+# Output: [3]
+# Explanation: Only building 3 has an ocean view.
+
+ 
+
+# Constraints:
+
+#     1 <= heights.length <= 105
+#     1 <= heights[i] <= 109
+
+from typing import List
+
+class Solution:
+    def findBuildings(self, heights: List[int]) -> List[int]:
+        stack = [len(heights) - 1]
+        max_height = heights[-1]
+
+        for i in range(len(heights) - 2, -1, -1):
+            if heights[i] > max_height:
+                stack.append(i)
+                max_height = heights[i]
+        return stack[::-1]
+
+
+# ---- File: 199. Binary Tree Right Side View\rightSideView.py ----
+# https://leetcode.com/problems/binary-tree-right-side-view/description/
+
+# https://www.youtube.com/watch?v=op8-7RWwL1A
+
+# Given the root of a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+ 
+
+# Example 1:
+
+# Input: root = [1,2,3,null,5,null,4]
+# Output: [1,3,4]
+
+# Example 2:
+
+# Input: root = [1,null,3]
+# Output: [1,3]
+
+# Example 3:
+
+# Input: root = []
+# Output: []
+
+ 
+
+# Constraints:
+
+#     The number of nodes in the tree is in the range [0, 100].
+#     -100 <= Node.val <= 100
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+
+        queue = collections.deque([root])
+        res = []
+
+        while queue:
+            levelLen = len(queue)
+
+            for i in range(levelLen):
+                node = queue.popleft()
+
+                if i == levelLen - 1: # 0 if asked left side view
+                    res.append(node.val)
+
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+        return res
+
+# T - O(N), S - O(N)
+
+# ---- File: 200. Number of Islands\numIslands.py ----
+# https://leetcode.com/problems/number-of-islands/description/
+
+# https://www.youtube.com/watch?v=BJ8KHYx_hXc
+
+# Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+
+# An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+ 
+
+# Example 1:
+
+# Input: grid = [
+#   ["1","1","1","1","0"],
+#   ["1","1","0","1","0"],
+#   ["1","1","0","0","0"],
+#   ["0","0","0","0","0"]
+# ]
+# Output: 1
+
+# Example 2:
+
+# Input: grid = [
+#   ["1","1","0","0","0"],
+#   ["1","1","0","0","0"],
+#   ["0","0","1","0","0"],
+#   ["0","0","0","1","1"]
+# ]
+# Output: 3
+
+ 
+
+# Constraints:
+
+#     m == grid.length
+#     n == grid[i].length
+#     1 <= m, n <= 300
+#     grid[i][j] is '0' or '1'.
+
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        island_count = 0
+
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+        def island_to_zero(grid, r, c):
+            if 0 <= r < len(grid) and 0 <= c < len(grid[0]) and grid[r][c] == "1":
+                grid[r][c] = "0"
+
+                for row_inc, col_inc in directions:
+                    island_to_zero(grid, r + row_inc, c + col_inc)
+
+        for row in range(len(grid)):
+            for column in range(len(grid[0])):
+                if grid[row][column] == "1":
+                    island_count += 1
+                    island_to_zero(grid, row, column)
+        return island_count
+
+        # T = O(R * C)
+        # S = O(R * C), O(1) if not counting stack frames
+
+# ---- File: 215. Kth Largest Element in an Array\findKthLargest.py ----
+# https://leetcode.com/problems/kth-largest-element-in-an-array/
+
+# https://www.youtube.com/watch?v=AzDs7qV1ugA&t=336s
+
+# https://www.youtube.com/watch?v=XEmy13g1Qxc
+
+# Given an integer array nums and an integer k, return the kth largest element in the array.
+
+# Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+# Can you solve it without sorting?
+
+ 
+
+# Example 1:
+
+# Input: nums = [3,2,1,5,6,4], k = 2
+# Output: 5
+
+# Example 2:
+
+# Input: nums = [3,2,3,1,2,4,5,5,6], k = 4
+# Output: 4
+
+ 
+
+# Constraints:
+
+#     1 <= k <= nums.length <= 105
+#     -104 <= nums[i] <= 104
+
 import heapq
+from typing import List
 
-class KthSmallestDigitSums:
-    def compute(self, num):
-        digit_sum = 0
-        while num != 0:
-            digit_sum += num % 10
-            num //= 10
-        return digit_sum
+# Efficient Approach using Heap/Priority Queue:
 
-    def kth_smallest_digit_sums(self, nums, k):
-        max_heap = []
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        min_heap = []
 
         for num in nums:
-            digit_sum = self.compute(num)
-            heapq.heappush(max_heap, (-digit_sum, num))
+            if len(min_heap) < k:
+                heapq.heappush(min_heap, num)
+            else:
+                if num > min_heap[0]:
+                    heapq.heappop(min_heap)
+                    heapq.heappush(min_heap, num)
+        return min_heap[0]
 
-            if len(max_heap) > k:
-                heapq.heappop(max_heap)
+        # Time Complexity = O(Nlogk)
+        # Space Complexity = O(k)
 
-        result = []
-        while max_heap:
-            _, num = heapq.heappop(max_heap)
-            result.append(num)
-        return result
+# ----
+    
+# Inefficient approach in worst case - Quick Select:
+    
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        k = len(nums) - k
 
-# ---- File: Unknowns\3_digitsums\python\3_digitsums_followup.py ----
+        def quickSelect(l, r):
+            pivot, p = nums[r], l
+
+            for i in range(l, r):
+                if nums[i] <= pivot:
+                    nums[p], nums[i] = nums[i], nums[p]
+                    p += 1
+            nums[p], nums[r] = nums[r], nums[p]
+
+            if p > k:
+                return quickSelect(l, p - 1)
+            elif p < k:
+                return quickSelect(p + 1, r)
+            else:
+                return nums[p]
+
+        return quickSelect(0, len(nums) - 1)
+
+
+# ---- File: 227. Basic Calculator II\calculate.py ----
+# https://leetcode.com/problems/basic-calculator-ii/description/
+
+# https://www.youtube.com/watch?v=W3Rg4HVSZ9k&t=15s
+
+# Given a string s which represents an expression, evaluate this expression and return its value. 
+
+# The integer division should truncate toward zero.
+
+# You may assume that the given expression is always valid. All intermediate results will be in the range of [-231, 231 - 1].
+
+# Note: You are not allowed to use any built-in function which evaluates strings as mathematical expressions, such as eval().
+
+ 
+
+# Example 1:
+
+# Input: s = "3+2*2"
+# Output: 7
+
+# Example 2:
+
+# Input: s = " 3/2 "
+# Output: 1
+
+# Example 3:
+
+# Input: s = " 3+5 / 2 "
+# Output: 5
+
+ 
+
+# Constraints:
+
+#     1 <= s.length <= 3 * 105
+#     s consists of integers and operators ('+', '-', '*', '/') separated by some number of spaces.
+#     s represents a valid expression.
+#     All the integers in the expression are non-negative integers in the range [0, 231 - 1].
+#     The answer is guaranteed to fit in a 32-bit integer.
+
+class Solution:
+    def calculate(self, s: str) -> int:
+        currOp = "+"
+        curr = prev = res = 0
+        i = 0
+
+        while i < len(s):
+            currChar = s[i]
+
+            if currChar.isdigit():
+                while i < len(s) and s[i].isdigit():
+                    curr = curr * 10 + int(s[i])
+                    i += 1
+                i -= 1
+
+                if currOp == "+":
+                    res += curr
+                    prev = curr
+                elif currOp == "-":
+                    res -= curr
+                    prev = -curr
+                elif currOp == "*":
+                    res -= prev
+                    res += prev * curr
+                    prev = prev * curr
+                elif currOp == "/":
+                    res -= prev
+                    res += int(prev / curr)
+                    prev = int(prev / curr)
+                
+                curr = 0
+
+            elif currChar != " ":
+                currOp = currChar
+            
+            i += 1
+        return res
+    
+# For * and / : rp, rpc, ppc
+
+# ---- File: 23. Merge k Sorted Lists\mergeKLists.py ----
+# https://leetcode.com/problems/merge-k-sorted-lists/
+
+# https://www.youtube.com/watch?v=RCuBc4Zl-oY
+
+# You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+
+# Merge all the linked-lists into one sorted linked-list and return it.
+
+ 
+
+# Example 1:
+
+# Input: lists = [[1,4,5],[1,3,4],[2,6]]
+# Output: [1,1,2,3,4,4,5,6]
+# Explanation: The linked-lists are:
+# [
+#   1->4->5,
+#   1->3->4,
+#   2->6
+# ]
+# merging them into one sorted list:
+# 1->1->2->3->4->4->5->6
+
+# Example 2:
+
+# Input: lists = []
+# Output: []
+
+# Example 3:
+
+# Input: lists = [[]]
+# Output: []
+
+ 
+
+# Constraints:
+
+#     k == lists.length
+#     0 <= k <= 104
+#     0 <= lists[i].length <= 500
+#     -104 <= lists[i][j] <= 104
+#     lists[i] is sorted in ascending order.
+#     The sum of lists[i].length will not exceed 104.
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 import heapq
 
-# FOLLOW-UP: What if the order in the output array mattered? It should be sorted in ascending order
-# In the case of a tiebreak (of equal digit sums), prioritize the number with the lower index
-class KthSmallestDigitSumsFollowup:
-    def compute(self, num):
-        digit_sum = 0
-        while num != 0:
-            digit_sum += num % 10
-            num //= 10
-        return digit_sum
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        min_heap = []
+
+        # add first elements of all the lists to the min heap
+        for i, l in enumerate(lists):
+            if l:
+                heapq.heappush(min_heap, (l.val, i))
+        
+        dummy = curr = ListNode(0)
+
+        while min_heap:
+            val, i = heapq.heappop(min_heap) # pop the current smallest element from the heap
+            curr.next = ListNode(val) # add to our output list
+            if lists[i].next: # add the next element from the list where it's element was popped from heap to add in heap
+                heapq.heappush(min_heap, (lists[i].next.val, i))
+                lists[i] = lists[i].next
+            curr = curr.next
+        return dummy.next
+        
+        # Time Complexity: O(N log k)
+        # Space Complexity: O(k)
     
-    def kth_smallest_digit_sums(self, nums, k):
-        max_heap = []
+    # Follow-up: If asked merge k sorted arrays instead of linked lists:
 
-        for index, num in enumerate(nums):
-            digit_sum = self.compute(num)
-            heapq.heappush(max_heap, (-digit_sum, -index, num))
+def merge_k_sorted_arrays(arrays):
+    # Min heap to store tuples (element, array index, index within array)
+    min_heap = []
+    
+    # Initialize the heap with the first element from each array
+    for i, array in enumerate(arrays):
+        if array:
+            heapq.heappush(min_heap, (array[0], i, 0))
 
-            if len(max_heap) > k:
-                heapq.heappop(max_heap)
+    result = []
 
+    while min_heap:
+        val, array_idx, idx_within_array = heapq.heappop(min_heap)
+        result.append(val)
+
+        # Move to the next element in the same array
+        if idx_within_array + 1 < len(arrays[array_idx]):
+            heapq.heappush(min_heap, (arrays[array_idx][idx_within_array + 1], array_idx, idx_within_array + 1))
+
+    return result
+
+    # Time Complexity: O(N log k)
+    # Space Complexity: O(k)
+
+# Example usage:
+arrays = [
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 6, 9]
+]
+
+result = merge_k_sorted_arrays(arrays)
+print(result)
+
+    
+    
+
+# ---- File: 236. Lowest Common Ancestor of a Binary Tree\lowestCommonAncestor.py ----
+# https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/
+
+# https://www.youtube.com/watch?v=WO1tfq2sbsI
+
+# Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+
+# According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+
+ 
+
+# Example 1:
+
+# Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+# Output: 3
+# Explanation: The LCA of nodes 5 and 1 is 3.
+
+# Example 2:
+
+# Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+# Output: 5
+# Explanation: The LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according to the LCA definition.
+
+# Example 3:
+
+# Input: root = [1,2], p = 1, q = 2
+# Output: 1
+
+ 
+
+# Constraints:
+
+#     The number of nodes in the tree is in the range [2, 105].
+#     -109 <= Node.val <= 109
+#     All Node.val are unique.
+#     p != q
+#     p and q will exist in the tree.
+
+# Check left and right root nodes, check who returns non-none values, return l or r. If both return non-none values, root is the LCA
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+
+class Solution:
+    def lowestCommonAncestor(self, root: "TreeNode", p: "TreeNode", q: "TreeNode") -> "TreeNode":
+        if not root:
+            return None
+
+        if root == p or root == q:
+            return root
+
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+
+        if left and right:
+            return root
+        else:
+            return left or right
+
+
+# ---- File: 246. Strobogrammatic Number\isStrobogrammatic.py ----
+# https://leetcode.com/problems/strobogrammatic-number/description/
+
+
+# Given a string num which represents an integer, return true if num is a strobogrammatic number.
+
+# A strobogrammatic number is a number that looks the same when rotated 180 degrees (looked at upside down).
+
+ 
+
+# Example 1:
+
+# Input: num = "69"
+# Output: true
+
+# Example 2:
+
+# Input: num = "88"
+# Output: true
+
+# Example 3:
+
+# Input: num = "962"
+# Output: false
+
+ 
+
+# Constraints:
+
+#     1 <= num.length <= 50
+#     num consists of only digits.
+
+
+class Solution:
+    def isStrobogrammatic(self, num):
+        maps = {("0", "0"), ("1", "1"), ("6", "9"), ("8", "8"), ("9", "6")}
+        i,j = 0, len(num) - 1
+        while i <= j:
+            if (num[i], num[j]) not in maps:
+                return False
+            i += 1
+            j -= 1
+        return True
+        
+
+# ---- File: 249. Group Shifted Strings\groupStrings.py ----
+# https://leetcode.com/problems/group-shifted-strings/
+
+# https://www.youtube.com/watch?v=g_CWHtPSQmQ&t=69s
+
+# We can shift a string by shifting each of its letters to its successive letter.
+
+#     For example, "abc" can be shifted to be "bcd".
+
+# We can keep shifting the string to form a sequence.
+
+#     For example, we can keep shifting "abc" to form the sequence: "abc" -> "bcd" -> ... -> "xyz".
+
+# Given an array of strings strings, group all strings[i] that belong to the same shifting sequence. You may return the answer in any order.
+
+ 
+
+# Example 1:
+
+# Input: strings = ["abc","bcd","acef","xyz","az","ba","a","z"]
+# Output: [["acef"],["a","z"],["abc","bcd","xyz"],["az","ba"]]
+
+# Example 2:
+
+# Input: strings = ["a"]
+# Output: [["a"]]
+
+ 
+
+# Constraints:
+
+#     1 <= strings.length <= 200
+#     1 <= strings[i].length <= 50
+#     strings[i] consists of lowercase English letters.
+
+import collections
+from typing import List
+
+class Solution:
+    def groupStrings(self, strings: List[str]) -> List[List[str]]:
+        
+        # Idea is to create a map of:
+        # key : tuple of difference between character values in each string
+        # value : that specific string value
+
+        grouping_dict = collections.defaultdict(list)
+
+        for string in strings:
+            if len(string) == 1:
+                grouping_dict[(-1)].append(string)
+            else:
+                char_diff = []
+
+                i = 1
+
+                while i < len(string):
+                    char_diff.append((ord(string[i]) - ord(string[i - 1])) % 26)
+                    i += 1
+
+                grouping_dict[tuple(char_diff)].append(string)
+
+        return grouping_dict.values()
+
+        # T: O(N * K), N = number of string in strings, K = length of longest string in strings
+        # S: O(N * K)
+
+
+# ---- File: 253. Meeting Rooms II\minMeetingRooms.py ----
+# https://leetcode.com/problems/meeting-rooms-ii/
+
+# https://www.youtube.com/watch?v=h_Ej3FFfnek
+
+# Given an array of meeting time intervals intervals where intervals[i] = [starti, endi], return the minimum number of conference rooms required.
+
+ 
+
+# Example 1:
+
+# Input: intervals = [[0,30],[5,10],[15,20]]
+# Output: 2
+
+# Example 2:
+
+# Input: intervals = [[7,10],[2,4]]
+# Output: 1
+
+ 
+
+# Constraints:
+
+#     1 <= intervals.length <= 104
+#     0 <= starti < endi <= 106
+
+import heapq
+
+class Solution:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        if not intervals:
+            return 0
+        
+        intervals.sort(key=lambda i: i[0])
+
+        min_heap = []
+        heapq.heappush(min_heap, intervals[0][1])
+
+        for i in intervals[1:]:
+            if i[0] >= min_heap[0]:
+                heapq.heappop(min_heap)
+            heapq.heappush(min_heap, i[1])
+
+        return len(min_heap)
+
+        # T - O(nlogn)
+        # S - O(N)
+
+
+# ---- File: 270. Closest Binary Search Tree Value\closestValue.py ----
+# https://leetcode.com/problems/closest-binary-search-tree-value/description/
+
+# Given the root of a binary search tree and a target value, return the value in the BST that is closest to the target. If there are multiple answers, print the smallest.
+
+ 
+
+# Example 1:
+
+# Input: root = [4,2,5,1,3], target = 3.714286
+# Output: 4
+
+# Example 2:
+
+# Input: root = [1], target = 4.428571
+# Output: 1
+
+ 
+
+# Constraints:
+
+#     The number of nodes in the tree is in the range [1, 104].
+#     0 <= Node.val <= 109
+#     -109 <= target <= 109
+
+class Solution:
+    def closestValue(self, root: Optional[TreeNode], target: float) -> int:
+        closest_value = float("inf")
+        curr = root
+
+        while curr:
+            if curr.val == target:
+                return curr.val
+            if abs(curr.val - target) < abs(closest_value - target):
+                closest_value = curr.val
+            if abs(curr.val - target) == abs(closest_value - target):
+                closest_value = min(curr.val, closest_value)
+
+            if curr.val > target:
+                curr = curr.left
+            else:
+                curr = curr.right
+        return closest_value
+
+
+# ---- File: 283. Move Zeroes\moveZeroes.py ----
+# Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
+
+# Note that you must do this in-place without making a copy of the array.
+
+ 
+
+# Example 1:
+
+# Input: nums = [0,1,0,3,12]
+# Output: [1,3,12,0,0]
+
+# Example 2:
+
+# Input: nums = [0]
+# Output: [0]
+
+ 
+
+# Constraints:
+
+#     1 <= nums.length <= 104
+#     -231 <= nums[i] <= 231 - 1
+
+ 
+# Follow up: Could you minimize the total number of operations done?
+
+from ast import List
+
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        i = 0
+        while i < n:
+            if nums[i] == 0:
+                tmp = nums[i]
+                nums.pop(i)
+                nums.append(tmp)
+                n -= 1
+            else:
+                i += 1
+
+
+# ---- File: 31. Next Permutation\nextPermutation.py ----
+# https://leetcode.com/problems/next-permutation/description/
+
+# https://www.youtube.com/watch?v=JDOXKqF60RQ
+
+# A permutation of an array of integers is an arrangement of its members into a sequence or linear order.
+
+#     For example, for arr = [1,2,3], the following are all the permutations of arr: [1,2,3], [1,3,2], [2, 1, 3], [2, 3, 1], [3,1,2], [3,2,1].
+
+# The next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
+
+#     For example, the next permutation of arr = [1,2,3] is [1,3,2].
+#     Similarly, the next permutation of arr = [2,3,1] is [3,1,2].
+#     While the next permutation of arr = [3,2,1] is [1,2,3] because [3,2,1] does not have a lexicographical larger rearrangement.
+
+# Given an array of integers nums, find the next permutation of nums.
+
+# The replacement must be in place and use only constant extra memory.
+
+ 
+
+# Example 1:
+
+# Input: nums = [1,2,3]
+# Output: [1,3,2]
+
+# Example 2:
+
+# Input: nums = [3,2,1]
+# Output: [1,2,3]
+
+# Example 3:
+
+# Input: nums = [1,1,5]
+# Output: [1,5,1]
+
+ 
+
+# Constraints:
+
+#     1 <= nums.length <= 100
+#     0 <= nums[i] <= 100
+
+class Solution:
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        index = -1
+        n = len(nums)
+
+        # find the first adacent pair/breakpoint from right side where left is smaller than right
+        for i in range(n - 2, -1, -1):
+            if nums[i] < nums[i + 1]:
+                index = i
+                break
+
+        # if you dont find such a pair, reverse the whole array
+        if index == -1:
+            return nums.reverse()
+
+        # swap the left element in the pair with the smallest element greater than that to its right
+        for i in range(n - 1, index, -1):
+            if nums[i] > nums[index]:
+                nums[i], nums[index] = nums[index], nums[i]
+                break
+
+        # sort the sub array from the point of swap (after the left element in the pair - index + 1) till the end
+        nums[index + 1 :] = sorted(nums[index + 1 :])
+
+
+# ---- File: 314. Binary Tree Vertical Order Traversal\verticalOrder.py ----
+# https://leetcode.com/problems/binary-tree-vertical-order-traversal/
+
+# https://www.youtube.com/watch?v=_Froy1yUCWw&t=11s
+
+# Given the root of a binary tree, return the vertical order traversal of its nodes' values. (i.e., from top to bottom, column by column).
+
+# If two nodes are in the same row and column, the order should be from left to right.
+
+ 
+
+# Example 1:
+
+# Input: root = [3,9,20,null,null,15,7]
+# Output: [[9],[3,15],[20],[7]]
+
+# Example 2:
+
+# Input: root = [3,9,8,4,0,1,7]
+# Output: [[4],[9],[3,0,1],[8],[7]]
+
+# Example 3:
+
+# Input: root = [3,9,8,4,0,1,7,null,null,null,2,5]
+# Output: [[4],[9,5],[3,0,1],[8,2],[7]]
+
+ 
+
+# Constraints:
+
+#     The number of nodes in the tree is in the range [0, 100].
+#     -100 <= Node.val <= 100
+
+# 1: Create a dictionary to store, column value : to their key's value
+# 2: Queue for BFS and popping the first element and adding in to the dict_nodes
+# 3: Sort the dictionary by keys (lowest col values) since we traverse left through right and append the respective key's value to the result list
+
+import collections
+from typing import List, Optional
+
+# Definition for a binary tree node.
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+        
+class Solution:
+    def verticalOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+
+        dict_nodes = collections.defaultdict(list)
+        queue = [(root, 0)]
         result = []
-        while max_heap:
-            _, _, num = heapq.heappop(max_heap)
-            result.append(num)
-        result.reverse()
+
+        while queue:
+            curr, col = queue.pop(0)
+            dict_nodes[col].append(curr.val)
+
+            if curr.left:
+                queue.append((curr.left, col - 1))
+            if curr.right:
+                queue.append((curr.right, col + 1))
+
+        for key in sorted(dict_nodes.keys()):
+            result.append(dict_nodes[key])
         return result
 
-# ---- File: utils\ListNode.py ----
-class ListNode:
-    def __init__(self, val=0, next=None):
+
+
+# ---- File: 339. Nested List Weight Sum\depthSum.py ----
+# https://leetcode.com/problems/nested-list-weight-sum/description/
+
+# https://www.youtube.com/watch?v=jR2UC4K-q2U
+
+# You are given a nested list of integers nestedList. Each element is either an integer or a list whose elements may also be integers or other lists.
+
+# The depth of an integer is the number of lists that it is inside of. For example, the nested list [1,[2,2],[[3],2],1] has each integer's value set to its depth.
+
+# Return the sum of each integer in nestedList multiplied by its depth.
+
+ 
+
+# Example 1:
+
+# Input: nestedList = [[1,1],2,[1,1]]
+# Output: 10
+# Explanation: Four 1's at depth 2, one 2 at depth 1. 1*2 + 1*2 + 2*1 + 1*2 + 1*2 = 10.
+
+# Example 2:
+
+# Input: nestedList = [1,[4,[6]]]
+# Output: 27
+# Explanation: One 1 at depth 1, one 4 at depth 2, and one 6 at depth 3. 1*1 + 4*2 + 6*3 = 27.
+
+# Example 3:
+
+# Input: nestedList = [0]
+# Output: 0
+
+ 
+
+# Constraints:
+
+#     1 <= nestedList.length <= 50
+#     The values of the integers in the nested list is in the range [-100, 100].
+#     The maximum depth of any integer is less than or equal to 50.
+
+# add the elements of nestedList in a queue
+# if it's a single integer, multiple its value to the depth and add it to the result
+# if it's a list, append the elements of the list (not the whole list) to end of the queue by using queue.extend(curr.getList())
+# increase depth += 1 each round
+
+# """
+# This is the interface that allows for creating nested lists.
+# You should not implement it, or speculate about its implementation
+# """
+# class NestedInteger:
+#    def __init__(self, value=None):
+#        """
+#        If value is not specified, initializes an empty list.
+#        Otherwise initializes a single integer equal to value.
+#        """
+#
+#    def isInteger(self):
+#        """
+#        @return True if this NestedInteger holds a single integer, rather than a nested list.
+#        :rtype bool
+#        """
+#
+#    def add(self, elem):
+#        """
+#        Set this NestedInteger to hold a nested list and adds a nested integer elem to it.
+#        :rtype void
+#        """
+#
+#    def setInteger(self, value):
+#        """
+#        Set this NestedInteger to hold a single integer equal to value.
+#        :rtype void
+#        """
+#
+#    def getInteger(self):
+#        """
+#        @return the single integer that this NestedInteger holds, if it holds a single integer
+#        Return None if this NestedInteger holds a nested list
+#        :rtype int
+#        """
+#
+#    def getList(self):
+#        """
+#        @return the nested list that this NestedInteger holds, if it holds a nested list
+#        Return None if this NestedInteger holds a single integer
+#        :rtype List[NestedInteger]
+#        """
+
+
+from collections import deque
+
+class Solution:
+    def depthSum(self, nestedList: List[NestedInteger]) -> int:
+        depth = 1
+        result = 0
+
+        queue = deque(nestedList)
+
+        while queue:
+            for _ in range(len(queue)):
+                curr = queue.popleft()
+
+                if curr.isInteger():
+                    result += curr.getInteger() * depth
+                else:
+                    queue.extend(curr.getList())
+
+            depth += 1
+        return result
+
+
+# ---- File: 346. Moving Average from Data Stream\MovingAverage.py ----
+# https://leetcode.com/problems/moving-average-from-data-stream/description/
+
+# https://www.youtube.com/watch?v=tje1ViST5Qk
+
+# Given a stream of integers and a window size, calculate the moving average of all integers in the sliding window.
+
+# Implement the MovingAverage class:
+
+#     MovingAverage(int size) Initializes the object with the size of the window size.
+#     double next(int val) Returns the moving average of the last size values of the stream.
+
+ 
+
+# Example 1:
+
+# Input
+# ["MovingAverage", "next", "next", "next", "next"]
+# [[3], [1], [10], [3], [5]]
+# Output
+# [null, 1.0, 5.5, 4.66667, 6.0]
+
+# Explanation
+# MovingAverage movingAverage = new MovingAverage(3);
+# movingAverage.next(1); // return 1.0 = 1 / 1
+# movingAverage.next(10); // return 5.5 = (1 + 10) / 2
+# movingAverage.next(3); // return 4.66667 = (1 + 10 + 3) / 3
+# movingAverage.next(5); // return 6.0 = (10 + 3 + 5) / 3
+
+ 
+
+# Constraints:
+
+#     1 <= size <= 1000
+#     -105 <= val <= 105
+#     At most 104 calls will be made to next.
+
+class MovingAverage:
+
+    def __init__(self, size: int):
+        self.size = size
+        self.stream = []
+
+    def next(self, val: int) -> float:
+        self.stream.append(val)
+
+        avg = 0
+        div = 0
+
+        if len(self.stream) >= self.size:
+            div = self.size
+        else:
+            div = len(self.stream)
+
+        avg = sum(self.stream[-self.size :]) / div
+
+        return avg
+
+# ---- File: 347. Top K Frequent Elements\topKFrequent.py ----
+# Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.
+
+ 
+
+# Example 1:
+
+# Input: nums = [1,1,1,2,2,3], k = 2
+# Output: [1,2]
+
+# Example 2:
+
+# Input: nums = [1], k = 1
+# Output: [1]
+
+ 
+
+# Constraints:
+
+#     1 <= nums.length <= 105
+#     -104 <= nums[i] <= 104
+#     k is in the range [1, the number of unique elements in the array].
+#     It is guaranteed that the answer is unique.
+
+ 
+
+# Follow up: Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+
+# Bucket Sort solution : O(n) time and O(n) space (slightly better than use heap w/heapify where time complexity is O(klogn))
+
+from typing import List
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        n = len(nums)
+        countMap = {}  # map to keep track of count - key: num, value: count of num in array nums
+        freq = [[] for i in range(n + 1)]  # frequency array to keep track of elements for their certain count, eg. [[], [], [], ...]
+
+        # add nums with their counts to hashmap
+        for num in nums:
+            if num in countMap:
+                countMap[num] += 1
+            else:
+                countMap[num] = 1
+
+        # append num's to the frequency array to their respective count indices
+        for num, count in countMap.items():
+            freq[count].append(num)
+
+        result = []
+        # loop from end of the frequency array to append top k frequent elements to the result array
+        for i in range(len(freq) - 1, 0, -1):
+            for num in freq[i]:
+                result.append(num)
+            if len(result) == k:
+                return result
+            
+        # Time Complexity: O(N + K log N)
+        # Space Complexity: O(N) for the countMap and freq arrays
+
+
+# ---- File: 383. Ransom Note\canConstruct.py ----
+# https://leetcode.com/problems/ransom-note/description/
+
+# Given two strings ransomNote and magazine, return true if ransomNote can be constructed by using the letters from magazine and false otherwise.
+
+# Each letter in magazine can only be used once in ransomNote.
+
+ 
+
+# Example 1:
+
+# Input: ransomNote = "a", magazine = "b"
+# Output: false
+
+# Example 2:
+
+# Input: ransomNote = "aa", magazine = "ab"
+# Output: false
+
+# Example 3:
+
+# Input: ransomNote = "aa", magazine = "aab"
+# Output: true
+
+ 
+
+# Constraints:
+
+#     1 <= ransomNote.length, magazine.length <= 105
+#     ransomNote and magazine consist of lowercase English letters.
+
+from collections import Counter
+
+class Solution:
+    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+        r_counter = Counter(ransomNote)
+
+        for char in magazine:
+            if r_counter[char]:
+                r_counter[char] -= 1
+                if r_counter[char] == 0:
+                    del r_counter[char]
+        if not r_counter:
+            return True
+        return False
+
+
+# ---- File: 398. Random Pick Index\solution.py ----
+# https://leetcode.com/problems/random-pick-index/
+
+# https://www.youtube.com/watch?v=HXRN8ZfAQOI
+
+# Given an integer array nums with possible duplicates, randomly output the index of a given target number. You can assume that the given target number must exist in the array.
+
+# Implement the Solution class:
+
+#     Solution(int[] nums) Initializes the object with the array nums.
+#     int pick(int target) Picks a random index i from nums where nums[i] == target. If there are multiple valid i's, then each index should have an equal probability of returning.
+
+ 
+
+# Example 1:
+
+# Input
+# ["Solution", "pick", "pick", "pick"]
+# [[[1, 2, 3, 3, 3]], [3], [1], [3]]
+# Output
+# [null, 4, 0, 2]
+
+# Explanation
+# Solution solution = new Solution([1, 2, 3, 3, 3]);
+# solution.pick(3); // It should return either index 2, 3, or 4 randomly. Each index should have equal probability of returning.
+# solution.pick(1); // It should return 0. Since in the array only nums[0] is equal to 1.
+# solution.pick(3); // It should return either index 2, 3, or 4 randomly. Each index should have equal probability of returning.
+
+ 
+
+# Constraints:
+
+#     1 <= nums.length <= 2 * 104
+#     -231 <= nums[i] <= 231 - 1
+#     target is an integer from nums.
+#     At most 104 calls will be made to pick.
+
+import random
+from typing import List
+
+# Use concept of Reservoir Sampling 
+
+class Solution:
+
+    def __init__(self, nums: List[int]):
+        self.nums = nums
+
+    def pick(self, target: int) -> int:
+        count = pickIndex = 0
+
+        for i, num in enumerate(self.nums):
+            if num == target:
+                count += 1
+
+                if random.randint(1, count) == count:
+                    pickIndex = i
+        return pickIndex
+
+# T - O(N)
+# S - O(1)
+
+
+# ---- File: 408. Valid Word Abbreviation\validWordAbbreviation.py ----
+# https://leetcode.com/problems/valid-word-abbreviation/
+
+# https://www.youtube.com/watch?v=Sut-F029biM
+
+# A string can be abbreviated by replacing any number of non-adjacent, non-empty substrings with their lengths. The lengths should not have leading zeros.
+
+# For example, a string such as "substitution" could be abbreviated as (but not limited to):
+
+#     "s10n" ("s ubstitutio n")
+#     "sub4u4" ("sub stit u tion")
+#     "12" ("substitution")
+#     "su3i1u2on" ("su bst i t u ti on")
+#     "substitution" (no substrings replaced)
+
+# The following are not valid abbreviations:
+
+#     "s55n" ("s ubsti tutio n", the replaced substrings are adjacent)
+#     "s010n" (has leading zeros)
+#     "s0ubstitution" (replaces an empty substring)
+
+# Given a string word and an abbreviation abbr, return whether the string matches the given abbreviation.
+
+# A substring is a contiguous non-empty sequence of characters within a string.
+
+ 
+# Example 1:
+
+# Input: word = "internationalization", abbr = "i12iz4n"
+# Output: true
+# Explanation: The word "internationalization" can be abbreviated as "i12iz4n" ("i nternational iz atio n").
+
+# Example 2:
+
+# Input: word = "apple", abbr = "a2e"
+# Output: false
+# Explanation: The word "apple" cannot be abbreviated as "a2e".
+
+ 
+
+# Constraints:
+
+#     1 <= word.length <= 20
+#     word consists of only lowercase English letters.
+#     1 <= abbr.length <= 10
+#     abbr consists of lowercase English letters and digits.
+#     All the integers in abbr will fit in a 32-bit integer.
+
+class Solution:
+    def validWordAbbreviation(self, word: str, abbr: str) -> bool:
+        wordPtr = abbrPtr = 0
+
+        while wordPtr < len(word) and abbrPtr < len(abbr):
+            if abbr[abbrPtr].isdigit():
+                steps = 0
+
+                if abbr[abbrPtr] == "0":
+                    return False
+
+                while abbrPtr < len(abbr) and abbr[abbrPtr].isdigit():
+                    steps = steps * 10 + int(abbr[abbrPtr])
+                    abbrPtr += 1
+
+                wordPtr += steps
+            else:
+                if word[wordPtr] != abbr[abbrPtr]:
+                    return False
+
+                abbrPtr += 1
+                wordPtr += 1
+        return wordPtr == len(word) and abbrPtr == len(abbr)
+
+
+# ---- File: 415. Add Strings\addStrings.py ----
+# https://leetcode.com/problems/add-strings/
+
+# https://www.youtube.com/watch?v=q1RR8gk47Cg
+
+# Given two non-negative integers, num1 and num2 represented as string, return the sum of num1 and num2 as a string.
+
+# You must solve the problem without using any built-in library for handling large integers (such as BigInteger). You must also not convert the inputs to integers directly.
+
+ 
+
+# Example 1:
+
+# Input: num1 = "11", num2 = "123"
+# Output: "134"
+
+# Example 2:
+
+# Input: num1 = "456", num2 = "77"
+# Output: "533"
+
+# Example 3:
+
+# Input: num1 = "0", num2 = "0"
+# Output: "0"
+
+ 
+
+# Constraints:
+
+#     1 <= num1.length, num2.length <= 104
+#     num1 and num2 consist of only digits.
+#     num1 and num2 don't have any leading zeros except for the zero itself.
+
+class Solution:
+    def addStrings(self, num1: str, num2: str) -> str:
+        i = len(num1) - 1
+        j = len(num2) - 1
+        carry = 0
+        result = []
+
+        while i >= 0 or j >= 0:
+            if i >= 0:
+                curr_i = int(num1[i])
+            else:
+                curr_i = 0
+            
+            if j >= 0:
+                curr_j = int(num2[j])
+            else:
+                curr_j = 0
+            
+            curr_sum = carry + curr_i + curr_j
+
+            result.append(str(curr_sum % 10))
+
+            carry = curr_sum // 10
+
+            i -= 1
+            j -= 1
+        
+        if carry:
+            result.append(str(carry))
+        
+        return "".join(reversed(result))
+
+        # T: O(N + M)
+        # S: O(N + M)
+
+# ---- File: 426. Convert Binary Search Tree to Sorted Doubly Linked List\treeToDoublyList.py ----
+# https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/description/
+
+# https://www.youtube.com/watch?v=l1hSUOaXLxc
+
+# Convert a Binary Search Tree to a sorted Circular Doubly-Linked List in place.
+
+# You can think of the left and right pointers as synonymous to the predecessor and successor pointers in a doubly-linked list. For a circular doubly linked list, the predecessor of the first element is the last element, and the successor of the last element is the first element.
+
+# We want to do the transformation in place. After the transformation, the left pointer of the tree node should point to its predecessor, and the right pointer should point to its successor. You should return the pointer to the smallest element of the linked list.
+
+ 
+
+# Example 1:
+
+# Input: root = [4,2,5,1,3]
+
+
+# Output: [1,2,3,4,5]
+
+# Explanation: The figure below shows the transformed BST. The solid line indicates the successor relationship, while the dashed line means the predecessor relationship.
+
+# Example 2:
+
+# Input: root = [2,1,3]
+# Output: [1,2,3]
+
+ 
+
+# Constraints:
+
+#     The number of nodes in the tree is in the range [0, 2000].
+#     -1000 <= Node.val <= 1000
+#     All the values of the tree are unique.
+
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+"""
+
+class Solution:
+    def treeToDoublyList(self, root: "Optional[Node]") -> "Optional[Node]":
+        if not root:
+            return None
+
+        self.first = None
+        self.last = None
+
+        self.inorder_link(root)
+
+        self.first.left = self.last
+        self.last.right = self.first
+
+        return self.first
+
+    # helper method for inorder traversal: left -> node -> right
+    def inorder_link(self, node):
+        if node:
+            # traverse to the left
+            self.inorder_link(node.left)
+
+            # if it's the leftmost (smallest) node
+            if not self.last:
+                self.first = node
+            # if we have seen a node prior, left done, now it's parent node, then:
+            else:
+                node.left = self.last
+                self.last.right = node
+
+            self.last = node
+
+            # after left and parent node steps are done, now traverse to the right
+            self.inorder_link(node.right)
+
+# T - O(N)
+# S - O(LogN) in best case but generally, O(N)
+
+# ---- File: 50. Pow(x, n)\myPow.py ----
+# https://leetcode.com/problems/powx-n/description/
+
+# https://www.youtube.com/watch?v=g9YQyYi4IQQ
+
+# Implement pow(x, n), which calculates x raised to the power n (i.e., xn).
+
+ 
+
+# Example 1:
+
+# Input: x = 2.00000, n = 10
+# Output: 1024.00000
+
+# Example 2:
+
+# Input: x = 2.10000, n = 3
+# Output: 9.26100
+
+# Example 3:
+
+# Input: x = 2.00000, n = -2
+# Output: 0.25000
+# Explanation: 2-2 = 1/22 = 1/4 = 0.25
+
+ 
+
+# Constraints:
+
+#     -100.0 < x < 100.0
+#     -231 <= n <= 231-1
+#     n is an integer.
+#     Either x is not zero or n > 0.
+#     -104 <= xn <= 104
+
+class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        def helper(x, n):
+            if n == 0:
+                return 1
+            if x == 0:
+                return 0
+
+            res = helper(x, n // 2)
+            res = res * res
+            if n % 2 == 0:
+                return res
+            return x * res
+
+        res = helper(x, abs(n))
+        if n < 0:
+            return 1 / res
+        return res
+
+
+# ---- File: 523. Continuous Subarray Sum\checkSubarraySum.py ----
+# https://leetcode.com/problems/continuous-subarray-sum/
+
+# https://www.youtube.com/watch?v=OKcrLfR-8mE
+
+# Given an integer array nums and an integer k, return true if nums has a good subarray or false otherwise.
+
+# A good subarray is a subarray where:
+
+#     its length is at least two, and
+#     the sum of the elements of the subarray is a multiple of k.
+
+# Note that:
+
+#     A subarray is a contiguous part of the array.
+#     An integer x is a multiple of k if there exists an integer n such that x = n * k. 0 is always a multiple of k.
+
+ 
+
+# Example 1:
+
+# Input: nums = [23,2,4,6,7], k = 6
+# Output: true
+# Explanation: [2, 4] is a continuous subarray of size 2 whose elements sum up to 6.
+
+# Example 2:
+
+# Input: nums = [23,2,6,4,7], k = 6
+# Output: true
+# Explanation: [23, 2, 6, 4, 7] is an continuous subarray of size 5 whose elements sum up to 42.
+# 42 is a multiple of 6 because 42 = 7 * 6 and 7 is an integer.
+
+# Example 3:
+
+# Input: nums = [23,2,6,4,7], k = 13
+# Output: false
+
+ 
+
+# Constraints:
+
+#     1 <= nums.length <= 105
+#     0 <= nums[i] <= 109
+#     0 <= sum(nums[i]) <= 231 - 1
+#     1 <= k <= 231 - 1
+
+class Solution:
+    def checkSubarraySum(self, nums: List[int], k: int) -> bool:
+        remainderMap = collections.defaultdict(int)
+        # We add it to handle case where subarray starting from 0 is divisible by k.
+        remainderMap[0] = -1 # remainder key : index value
+        total = 0
+
+        for i, n in enumerate(nums):
+            total += n
+            r = total % k
+            if r not in remainderMap:
+                remainderMap[r] = i
+            elif i - remainderMap[r] > 1:
+                return True
+        return False
+
+    # T - O(N)
+    # S - O(N)
+
+# ---- File: 528. Random Pick with Weight\solution.py ----
+# https://leetcode.com/problems/random-pick-with-weight/description/
+
+# https://www.youtube.com/watch?v=7x7Ydq2Wfvw
+
+# You are given a 0-indexed array of positive integers w where w[i] describes the weight of the ith index.
+
+# You need to implement the function pickIndex(), which randomly picks an index in the range [0, w.length - 1] (inclusive) and returns it. The probability of picking an index i is w[i] / sum(w).
+
+#     For example, if w = [1, 3], the probability of picking index 0 is 1 / (1 + 3) = 0.25 (i.e., 25%), and the probability of picking index 1 is 3 / (1 + 3) = 0.75 (i.e., 75%).
+
+ 
+
+# Example 1:
+
+# Input
+# ["Solution","pickIndex"]
+# [[[1]],[]]
+# Output
+# [null,0]
+
+# Explanation
+# Solution solution = new Solution([1]);
+# solution.pickIndex(); // return 0. The only option is to return 0 since there is only one element in w.
+
+# Example 2:
+
+# Input
+# ["Solution","pickIndex","pickIndex","pickIndex","pickIndex","pickIndex"]
+# [[[1,3]],[],[],[],[],[]]
+# Output
+# [null,1,1,1,1,0]
+
+# Explanation
+# Solution solution = new Solution([1, 3]);
+# solution.pickIndex(); // return 1. It is returning the second element (index = 1) that has a probability of 3/4.
+# solution.pickIndex(); // return 1
+# solution.pickIndex(); // return 1
+# solution.pickIndex(); // return 1
+# solution.pickIndex(); // return 0. It is returning the first element (index = 0) that has a probability of 1/4.
+
+# Since this is a randomization problem, multiple answers are allowed.
+# All of the following outputs can be considered correct:
+# [null,1,1,1,1,0]
+# [null,1,1,1,1,1]
+# [null,1,1,1,0,0]
+# [null,1,1,1,0,1]
+# [null,1,0,1,0,0]
+# ......
+# and so on.
+
+ 
+
+# Constraints:
+
+#     1 <= w.length <= 104
+#     1 <= w[i] <= 105
+#     pickIndex will be called at most 104 times.
+
+import random
+from typing import List
+
+class Solution:
+    # Time Complexity = O(N) 
+    # Space Complexity = O(N)
+    def __init__(self, w: List[int]):
+        self.prefixSums = []
+        total = 0
+
+        for weight in w:
+            total += weight
+            self.prefixSums.append(total)
+
+        self.total = total
+
+    # Time Complexity = O(logN) due to binary search [efficient since the naive approach is O(N)]
+    # Space Complexity = O(1)
+    def pickIndex(self) -> int:
+        left = 0
+        right = len(self.prefixSums)
+        target = random.uniform(0, self.total)
+
+        while left < right:
+            middle = left + ((right - left) // 2)
+
+            if self.prefixSums[middle] < target:
+                left = middle + 1
+            else:
+                right = middle
+        return left
+
+
+
+# ---- File: 543. Diameter of Binary Tree\diameterOfBinaryTree.py ----
+# Given the root of a binary tree, return the length of the diameter of the tree.
+
+# The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+# The length of a path between two nodes is represented by the number of edges between them.
+
+ 
+
+# Example 1:
+
+# Input: root = [1,2,3,4,5]
+# Output: 3
+# Explanation: 3 is the length of the path [4,2,1,3] or [5,2,1,3].
+
+# Example 2:
+
+# Input: root = [1,2]
+# Output: 1
+
+ 
+
+# Constraints:
+
+#     The number of nodes in the tree is in the range [1, 104].
+#     -100 <= Node.val <= 100
+
+# Definition for a binary tree node.
+from typing import Optional
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+        
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        res = [0]
+
+        def dfs(root):
+            if not root:
+                return -1
+
+            left = dfs(root.left)
+            right = dfs(root.right)
+
+            res[0] = max(res[0], 2 + left + right) # 2 + is not required
+            return 1 + max(left, right)
+
+        dfs(root)
+        return res[0]
+    
+    # T - O(N)
+    # S - O(H)
+
+
+
+# ---- File: 56. Merge Intervals\merge.py ----
+# https://leetcode.com/problems/merge-intervals/description/
+
+# https://www.youtube.com/watch?v=44H3cEC2fFM
+
+# Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.
+
+# Example 1:
+
+# Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+# Output: [[1,6],[8,10],[15,18]]
+# Explanation: Since intervals [1,3] and [2,6] overlap, merge them into [1,6].
+
+# Example 2:
+
+# Input: intervals = [[1,4],[4,5]]
+# Output: [[1,5]]
+# Explanation: Intervals [1,4] and [4,5] are considered overlapping.
+
+ 
+
+# Constraints:
+
+#     1 <= intervals.length <= 104
+#     intervals[i].length == 2
+#     0 <= starti <= endi <= 104
+
+from typing import List
+
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals.sort(key=lambda i: i[0])
+        result = [intervals[0]]
+
+        for start, end in intervals[1:]:
+            lastEnd = result[-1][1]
+
+            if start <= lastEnd:
+                result[-1][1] = max(lastEnd, end)
+            else:
+                result.append([start, end])
+        return result
+
+# Possible Follow up Q) 57. Insert Interval
+
+# ---- File: 560. Subarray Sum Equals K\subarraySum.py ----
+# https://leetcode.com/problems/subarray-sum-equals-k/description/
+
+# https://www.youtube.com/watch?v=xvNwoz-ufXA
+
+# Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+
+# A subarray is a contiguous non-empty sequence of elements within an array.
+
+ 
+
+# Example 1:
+
+# Input: nums = [1,1,1], k = 2
+# Output: 2
+
+# Example 2:
+
+# Input: nums = [1,2,3], k = 3
+# Output: 2
+
+ 
+
+# Constraints:
+
+#     1 <= nums.length <= 2 * 104
+#     -1000 <= nums[i] <= 1000
+#     -107 <= k <= 107
+
+import collections
+from typing import List
+
+# Intuition for O(N) efficient approach:
+# 1) Initialize Hashmap to start with "0: 1 ( prefixSum: count )"
+# 2) Do prefix sum as you loop through the input array, and check whether remove = (prefixSum - k) is in our map. 
+# 3) If yes, increment the count of remove and add to count/result (line 48)
+# 4) If not, add in map (line 49)
+
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        prefix_sum_counts = collections.defaultdict(int)
+        prefix_sum_counts[0] = 1
+        prefix_sum = 0
+        count = 0
+
+        for num in nums:
+            prefix_sum += num
+            remove = prefix_sum - k
+            count += prefix_sum_counts[remove]
+            prefix_sum_counts[prefix_sum] += 1
+        return count
+
+
+# ---- File: 57. Insert Interval\insert.py ----
+# https://leetcode.com/problems/insert-interval/description/
+
+# https://www.youtube.com/watch?v=_1jHnaovdpo
+
+# You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] represent the start and the end of the ith interval and intervals is sorted in ascending order by starti. You are also given an interval newInterval = [start, end] that represents the start and end of another interval.
+
+# Insert newInterval into intervals such that intervals is still sorted in ascending order by starti and intervals still does not have any overlapping intervals (merge overlapping intervals if necessary).
+
+# Return intervals after the insertion.
+
+ 
+
+# Example 1:
+
+# Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
+# Output: [[1,5],[6,9]]
+
+# Example 2:
+
+# Input: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+# Output: [[1,2],[3,10],[12,16]]
+# Explanation: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
+
+ 
+
+# Constraints:
+
+#     0 <= intervals.length <= 104
+#     intervals[i].length == 2
+#     0 <= starti <= endi <= 105
+#     intervals is sorted by starti in ascending order.
+#     newInterval.length == 2
+#     0 <= start <= end <= 105
+
+from typing import List
+
+
+class Solution:
+    def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        result = []
+        n = len(intervals)
+        i = 0
+
+        # non-merging intervals
+        while i < n and intervals[i][1] < newInterval[0]:
+            result.append(intervals[i])
+            i += 1
+
+        # merging intervals
+        while i < n and intervals[i][0] <= newInterval[1]:
+            newInterval[0] = min(intervals[i][0], newInterval[0])
+            newInterval[1] = max(intervals[i][1], newInterval[1])
+            i += 1
+        result.append(newInterval)
+
+        # append remaining integers
+        while i < n:
+            result.append(intervals[i])
+            i += 1
+        return result
+
+
+# ---- File: 670. Maximum Swap\maximumSwap.py ----
+# https://leetcode.com/problems/maximum-swap/description/
+
+# https://www.youtube.com/watch?v=PALPz9r2Q4A
+
+# You are given an integer num. You can swap two digits at most once to get the maximum valued number.
+
+# Return the maximum valued number you can get.
+
+ 
+
+# Example 1:
+
+# Input: num = 2736
+# Output: 7236
+# Explanation: Swap the number 2 and the number 7.
+
+# Example 2:
+
+# Input: num = 9973
+# Output: 9973
+# Explanation: No swap.
+
+ 
+
+# Constraints:
+
+#     0 <= num <= 108
+
+from collections import deque
+
+class Solution:
+    def maximumSwap(self, num: int) -> int:
+        if num <= 11:
+            return num
+
+        num_as_list = deque([])
+
+        # adding num in sequence wise to our num_as_list using queue
+        while num:
+            num_as_list.appendleft(num % 10)
+            num //= 10
+
+        max_num_seen = -1  # 1
+        max_num_at = len(num_as_list)  # 2
+        i = len(num_as_list) - 1
+
+        # traverse right to left to give max_num_seen (#1) and max_num_at (#2) indexes
+        while i >= 0:
+            curr_num = num_as_list[i]
+            num_as_list[i] = (curr_num, max_num_seen, max_num_at)  # add # 1 and # 2 to our nums_as_list[i] value
+
+            if curr_num > max_num_seen:
+                max_num_seen = curr_num
+                max_num_at = i
+            i -= 1
+
+        i = 0
+        # traverse left to right to swap
+        while i < len(num_as_list):
+            curr_num, max_to_right, max_num_at = num_as_list[i]
+
+            if max_to_right > curr_num:
+                num_as_list[i], num_as_list[max_num_at] = num_as_list[max_num_at], num_as_list[i]
+                break
+            i += 1
+
+        # converting our final num_as_list to number
+        number = 0
+        for num, _, _ in num_as_list:
+            number = number * 10 + num
+        return number
+
+
+# ---- File: 680. Valid Palindrome II\validPalindrome.py ----
+# Given a string s, return true if the s can be palindrome after deleting at most one character from it.
+
+ 
+
+# Example 1:
+
+# Input: s = "aba"
+# Output: true
+
+# Example 2:
+
+# Input: s = "abca"
+# Output: true
+# Explanation: You could delete the character 'c'.
+
+# Example 3:
+
+# Input: s = "abc"
+# Output: false
+
+ 
+
+# Constraints:
+
+#     1 <= s.length <= 105
+#     s consists of lowercase English letters.
+
+class Solution:
+    def validPalindrome(self, s: str) -> bool:
+        left = 0
+        right = len(s) - 1
+
+        while left < right:
+            if s[left] != s[right]:
+                skipLeft = s[left + 1 : right + 1]
+                skipRight = s[left:right]
+
+                return skipLeft == skipLeft[::-1] or skipRight == skipRight[::-1]
+            left += 1
+            right -= 1
+        return True
+
+
+# ---- File: 708. Insert into a Sorted Circular Linked List\insert.py ----
+# https://leetcode.com/problems/insert-into-a-sorted-circular-linked-list/
+
+# https://www.youtube.com/watch?v=XN9OsmP2YTk
+
+# Given a Circular Linked List node, which is sorted in non-descending order, write a function to insert a value insertVal into the list such that it remains a sorted circular list. The given node can be a reference to any single node in the list and may not necessarily be the smallest value in the circular list.
+
+# If there are multiple suitable places for insertion, you may choose any place to insert the new value. After the insertion, the circular list should remain sorted.
+
+# If the list is empty (i.e., the given node is null), you should create a new single circular list and return the reference to that single node. Otherwise, you should return the originally given node.
+
+ 
+
+# Example 1:
+
+ 
+
+# Input: head = [3,4,1], insertVal = 2
+# Output: [3,4,1,2]
+# Explanation: In the figure above, there is a sorted circular list of three elements. You are given a reference to the node with value 3, and we need to insert 2 into the list. The new node should be inserted between node 1 and node 3. After the insertion, the list should look like this, and we should still return node 3.
+
+
+
+# Example 2:
+
+# Input: head = [], insertVal = 1
+# Output: [1]
+# Explanation: The list is empty (given head is null). We create a new single circular list and return the reference to that single node.
+
+# Example 3:
+
+# Input: head = [1], insertVal = 0
+# Output: [1,0]
+
+ 
+
+# Constraints:
+
+#     The number of nodes in the list is in the range [0, 5 * 104].
+#     -106 <= Node.val, insertVal <= 106
+
+
+# Definition for a Node.
+class Node:
+    def __init__(self, val=None, next=None):
         self.val = val
         self.next = next
 
-# ---- File: utils\treenode.py ----
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
+# Four Edge Cases to Solve:
+# 1) Head is Null
+# 2) Insert into the LL
+# 3) Insert Edge
+# 4) Univalue Nodes
+
+class Solution:
+    def insert(self, head: "Optional[Node]", insertVal: int) -> "Node":
+        # 1) Head is Null
+        if not head:
+            new_head_node = Node(insertVal)
+            new_head_node.next = new_head_node
+
+            return new_head_node
+
+        curr = head
+        while curr.next != head:
+            # 2) Insert into the LL
+            if curr.val <= insertVal <= curr.next.val:
+                new_node = Node(insertVal, curr.next)
+                curr.next = new_node
+
+                return head
+
+            # 3) Insert Edge
+            elif curr.val > curr.next.val:
+                if insertVal >= curr.val or insertVal <= curr.next.val:
+                    new_node = Node(insertVal, curr.next)
+                    curr.next = new_node
+
+                    return head
+
+            curr = curr.next
+
+        # 4) Univalue Nodes
+        new_node = Node(insertVal, curr.next)
+        curr.next = new_node
+        return head
+         # T : O(N), S : O(1)
+
+# ---- File: 71. Simplify Path\simplifyPath.py ----
+# https://leetcode.com/problems/simplify-path/description/
+
+# https://www.youtube.com/watch?v=4e1gVeQ0AEs
+
+# Given a string path, which is an absolute path (starting with a slash '/') to a file or directory in a Unix-style file system, convert it to the simplified canonical path.
+
+# In a Unix-style file system, a period '.' refers to the current directory, a double period '..' refers to the directory up a level, and any multiple consecutive slashes (i.e. '//') are treated as a single slash '/'. For this problem, any other format of periods such as '...' are treated as file/directory names.
+
+# The canonical path should have the following format:
+
+#     The path starts with a single slash '/'.
+#     Any two directories are separated by a single slash '/'.
+#     The path does not end with a trailing '/'.
+#     The path only contains the directories on the path from the root directory to the target file or directory (i.e., no period '.' or double period '..')
+
+# Return the simplified canonical path.
+
+ 
+
+# Example 1:
+
+# Input: path = "/home/"
+# Output: "/home"
+# Explanation: Note that there is no trailing slash after the last directory name.
+
+# Example 2:
+
+# Input: path = "/../"
+# Output: "/"
+# Explanation: Going one level up from the root directory is a no-op, as the root level is the highest level you can go.
+
+# Example 3:
+
+# Input: path = "/home//foo/"
+# Output: "/home/foo"
+# Explanation: In the canonical path, multiple consecutive slashes are replaced by a single one.
+
+ 
+
+# Constraints:
+
+#     1 <= path.length <= 3000
+#     path consists of English letters, digits, period '.', slash '/' or '_'.
+#     path is a valid absolute Unix path.
+
+class Solution:
+    def simplifyPath(self, path: str) -> str:
+        stack = []
+        path_items = path.split("/")
+
+        for item in path_items:
+            if item == "." or not item:
+                continue
+            elif item == "..":
+                if stack:
+                    stack.pop()
+            else:
+                stack.append(item)
+        return "/" + "/".join(stack)
+
+
+# ---- File: 766. Toeplitz Matrix\isToeplitzMatrix.py ----
+# https://leetcode.com/problems/toeplitz-matrix/description/
+
+# Given an m x n matrix, return true if the matrix is Toeplitz. Otherwise, return false.
+
+# A matrix is Toeplitz if every diagonal from top-left to bottom-right has the same elements.
+
+ 
+
+# Example 1:
+
+# Input: matrix = [[1,2,3,4],[5,1,2,3],[9,5,1,2]]
+# Output: true
+# Explanation:
+# In the above grid, the diagonals are:
+# "[9]", "[5, 5]", "[1, 1, 1]", "[2, 2, 2]", "[3, 3]", "[4]".
+# In each diagonal all elements are the same, so the answer is True.
+
+# Example 2:
+
+# Input: matrix = [[1,2],[2,2]]
+# Output: false
+# Explanation:
+# The diagonal "[1, 2]" has different elements.
+
+ 
+
+# Constraints:
+
+#     m == matrix.length
+#     n == matrix[i].length
+#     1 <= m, n <= 20
+#     0 <= matrix[i][j] <= 99
+
+ 
+# Follow up:
+
+#     What if the matrix is stored on disk, and the memory is limited such that you can only load at most one row of the matrix into the memory at once?
+#     What if the matrix is so large that you can only load up a partial row into the memory at once?
+
+class Solution:
+    def isToeplitzMatrix(self, matrix: List[List[int]]) -> bool:
+        row = len(matrix)
+        col = len(matrix[0])
+
+        for r in range(row - 1):
+            for c in range(col - 1):
+                if matrix[r][c] != matrix[r + 1][c + 1]:
+                    return False
+        return True
+
+        # T - O(M * N) in worst case
+        # S - O(1)
+
+# Follow-ups:
+    
+# 1) Matrix Stored on Disk with Limited Memory:
+    
+# In this scenario, you can iterate through the matrix one row at a time. Load the current row into memory and compare it with the next row. 
+# This way, you only need to keep two rows in memory at any given time. 
+# Continue this process until you reach the end of the matrix.
+    
+# 2) Matrix So Large Partial Row Fits in Memory:
+
+# If the matrix is so large that you can only load a partial row into memory at once, you can still use a sliding window approach. 
+# Load a portion of the current row into memory, compare it with the corresponding portion of the next row, and slide the window through the entire row.
+# Repeat this process for each row.
+
+# ---- File: 791. Custom Sort String\customSortString.py ----
+# https://leetcode.com/problems/custom-sort-string/description/
+
+# https://www.youtube.com/watch?v=rrWsOBDybZE
+
+# You are given two strings order and s. All the characters of order are unique and were sorted in some custom order previously.
+
+# Permute the characters of s so that they match the order that order was sorted. More specifically, if a character x occurs before a character y in order, then x should occur before y in the permuted string.
+
+# Return any permutation of s that satisfies this property.
+
+ 
+
+# Example 1:
+
+# Input: order = "cba", s = "abcd"
+
+# Output: "cbad"
+
+# Explanation: "a", "b", "c" appear in order, so the order of "a", "b", "c" should be "c", "b", and "a".
+
+# Since "d" does not appear in order, it can be at any position in the returned string. "dcba", "cdba", "cbda" are also valid outputs.
+
+# Example 2:
+
+# Input: order = "bcafg", s = "abcd"
+
+# Output: "bcad"
+
+# Explanation: The characters "b", "c", and "a" from order dictate the order for the characters in s. The character "d" in s does not appear in order, so its position is flexible.
+
+# Following the order of appearance in order, "b", "c", and "a" from s should be arranged as "b", "c", "a". "d" can be placed at any position since it's not in order. The output "bcad" correctly follows this rule. Other arrangements like "bacd" or "bcda" would also be valid, as long as "b", "c", "a" maintain their order.
+
+ 
+
+# Constraints:
+
+#     1 <= order.length <= 26
+#     1 <= s.length <= 200
+#     order and s consist of lowercase English letters.
+#     All the characters of order are unique.
+
+# --- #
+
+# 1) Mid-Efficient Approach : T - O(N * M), S - O(N)
+class Solution:
+    def customSortString(self, order: str, s: str) -> str:
+        res = [""] * len(s)
+        orderList = list(order)
+
+        for char in s:
+            if char in orderList:
+                i = orderList.index(char)
+                res[i] += char
+            else:
+                res[-1] += char
+        return "".join(res)
+
+
+# 2) Efficient Approach using String Builder w/Dictionary : T - O(N + M) = O(N), S - O(N)
+from collections import Counter
+
+class Solution:
+    def customSortString(self, order: str, s: str) -> str:
+        s_counts = Counter(s)
+
+        string_builder = []
+
+        for char in order:
+            if char in s_counts:
+                string_builder.extend([char] * s_counts[char])
+                del s_counts[char]
+
+        for char, count in s_counts.items():
+            string_builder.extend([char] * count)
+
+        return "".join(string_builder)
+
+
+# ---- File: 88. Merge Sorted Arrays\merge.py ----
+# You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
+
+# Merge nums1 and nums2 into a single array sorted in non-decreasing order.
+
+# The final sorted array should not be returned by the function, but instead be stored inside the array nums1. To accommodate this, nums1 has a length of m + n, where the first m elements denote the elements that should be merged, and the last n elements are set to 0 and should be ignored. nums2 has a length of n.
+
+ 
+
+# Example 1:
+
+# Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+# Output: [1,2,2,3,5,6]
+# Explanation: The arrays we are merging are [1,2,3] and [2,5,6].
+# The result of the merge is [1,2,2,3,5,6] with the underlined elements coming from nums1.
+
+# Example 2:
+
+# Input: nums1 = [1], m = 1, nums2 = [], n = 0
+# Output: [1]
+# Explanation: The arrays we are merging are [1] and [].
+# The result of the merge is [1].
+
+# Example 3:
+
+# Input: nums1 = [0], m = 0, nums2 = [1], n = 1
+# Output: [1]
+# Explanation: The arrays we are merging are [] and [1].
+# The result of the merge is [1].
+# Note that because m = 0, there are no elements in nums1. The 0 is only there to ensure the merge result can fit in nums1.
+
+ 
+
+# Constraints:
+
+#     nums1.length == m + n
+#     nums2.length == n
+#     0 <= m, n <= 200
+#     1 <= m + n <= 200
+#     -109 <= nums1[i], nums2[j] <= 109
+
+ 
+
+# Follow up: Can you come up with an algorithm that runs in O(m + n) time?
+
+from typing import List
+
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        # for last index of nums 1
+        last = m + n - 1
+
+        # merge in reverse order
+        while m > 0 and n > 0:
+            if nums1[m - 1] > nums2[n - 1]:
+                nums1[last] = nums1[m - 1]
+                m -= 1
+            else:
+                nums1[last] = nums2[n - 1]
+                n-=1
+            last -= 1
+        
+        # fill nums1 with leftover nums2 elements
+        while n > 0:
+            nums1[last] = nums2[n - 1]
+            last -= 1
+            n -= 1
+        
+# If asked to merge three sorted arrays:    
+def merge3sorted(A, B, C):
+	(l1, l2, l3) = (len(A), len(B), len(C))
+	i = j = k = 0
+
+	# Destination array
+	ans = []
+
+	while (i < l1 or j < l2 or k < l3):
+
+		# Assigning a, b, c with max values so that if
+		# any value is not present then also we can sort
+		# the array
+		a = 9999
+		b = 9999
+		c = 9999
+
+		# a, b, c variables are assigned only if the
+		# value exist in the array.
+		if (i < l1):
+			a = A[i]
+		if (j < l2):
+			b = B[j]
+		if (k < l3):
+			c = C[k]
+
+		# Checking if 'a' is the minimum
+		if (a <= b and a <= c):
+			ans.append(a)
+			i += 1
+
+		# Checking if 'b' is the minimum
+		elif (b <= a and b <= c):
+			ans.append(b)
+			j += 1
+
+		# Checking if 'c' is the minimum
+		elif (c <= a and c <= b):
+			ans.append(c)
+			k += 1
+
+	return ans
+
+     # T and S : O(M + N + O) = O(N)
+
+ # If asked to merge three sorted arrays but without duplicates:
+
+def merge_three_sorted_arrays_no_duplicates(arr1, arr2, arr3):
+    result = []  # Initialize the result array to store the merged and deduplicated values
+    i = j = k = 0  # Initialize pointers for each array
+
+    while i < len(arr1) or j < len(arr2) or k < len(arr3):
+        # Extract values at current pointers (or use infinity if pointers are out of bounds)
+        val1 = arr1[i] if i < len(arr1) else float('inf')
+        val2 = arr2[j] if j < len(arr2) else float('inf')
+        val3 = arr3[k] if k < len(arr3) else float('inf')
+
+        # Find the minimum value among the three arrays
+        min_val = min(val1, val2, val3)
+
+        # Move the pointers based on the minimum value
+        if min_val == val1:
+            i += 1
+        elif min_val == val2:
+            j += 1
+        else:
+            k += 1
+
+        # Append the distinct value to the result (avoid duplicates)
+        if not result or min_val != result[-1]:
+            result.append(min_val)
+
+    return result
+
+    # T and S : O(N)
+
+
+# ---- File: 921. Minimum Add to Make Parentheses Valid\minAddToMakeValid.py ----
+# https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/description/
+
+# https://www.youtube.com/watch?v=LzcyBJRMhSw
+
+# A parentheses string is valid if and only if:
+
+#     It is the empty string,
+#     It can be written as AB (A concatenated with B), where A and B are valid strings, or
+#     It can be written as (A), where A is a valid string.
+
+# You are given a parentheses string s. In one move, you can insert a parenthesis at any position of the string.
+
+#     For example, if s = "()))", you can insert an opening parenthesis to be "(()))" or a closing parenthesis to be "())))".
+
+# Return the minimum number of moves required to make s valid.
+
+ 
+
+# Example 1:
+
+# Input: s = "())"
+# Output: 1
+
+# Example 2:
+
+# Input: s = "((("
+# Output: 3
+
+ 
+
+# Constraints:
+
+#     1 <= s.length <= 1000
+#     s[i] is either '(' or ')'.
+
+class Solution:
+    def minAddToMakeValid(self, s: str) -> int:
+        left = right = added = 0
+
+        for char in s:
+            if char == "(":
+                left += 1
+            else:
+                if right < left:
+                    right += 1
+                else:
+                    added += 1
+
+        added += left - right
+        return added
+
+
+# ---- File: 938. Range Sum of BST\rangeSumBST.py ----
+# https://leetcode.com/problems/range-sum-of-bst/
+
+# Iterative : https://www.youtube.com/watch?v=6dT3ZWhgDAU
+
+# Recursive: https://www.youtube.com/watch?v=uLVG45n4Sbg
+
+# Given the root node of a binary search tree and two integers low and high, return the sum of values of all nodes with a value in the inclusive range [low, high].
+
+# Example 1:
+
+# Input: root = [10,5,15,3,7,null,18], low = 7, high = 15
+# Output: 32
+# Explanation: Nodes 7, 10, and 15 are in the range [7, 15]. 7 + 10 + 15 = 32.
+
+# Example 2:
+
+# Input: root = [10,5,15,3,7,13,18,1,null,6], low = 6, high = 10
+# Output: 23
+# Explanation: Nodes 6, 7, and 10 are in the range [6, 10]. 6 + 7 + 10 = 23.
+
+# Constraints:
+
+#     The number of nodes in the tree is in the range [1, 2 * 104].
+#     1 <= Node.val <= 105
+#     1 <= low <= high <= 105
+#     All Node.val are unique.
+
+from typing import Optional
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+        # Iterative Solution (preferred, in case recursive since recursion can result in stack overflow in real-world problems - if asked in an interview)
+        # T : O(N)
+        # S : O(N)
+
+        if not root:
+            return 0
+
+        result = 0
+        stack = [root]
+
+        while stack:
+            curr = stack.pop()
+
+            if curr:
+                if low <= curr.val and curr.val <= high:
+                    result += curr.val
+
+                if curr.val > low:
+                    stack.append(curr.left)
+
+                if curr.val < high:
+                    stack.append(curr.right)
+        return result
+
+class Solution:
+    def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
+        # Recursive Solution
+        # T : O(N)
+        # S : O(N)
+
+        if not root:
+            return 0
+
+        if root.val > high:
+            return self.rangeSumBST(root.left, low, high)
+        if root.val < low:
+            return self.rangeSumBST(root.right, low, high)
+        return (
+            root.val
+            + self.rangeSumBST(root.left, low, high)
+            + self.rangeSumBST(root.right, low, high)
+        )
+
+
+# ---- File: 973. K Closest Points to Origin\kClosest.py ----
+# https://leetcode.com/problems/k-closest-points-to-origin/description/
+
+# https://www.youtube.com/watch?v=rI2EBUEMfTk
+
+# Given an array of points where points[i] = [xi, yi] represents a point on the X-Y plane and an integer k, return the k closest points to the origin (0, 0).
+
+# The distance between two points on the X-Y plane is the Euclidean distance (i.e., √(x1 - x2)2 + (y1 - y2)2).
+
+# You may return the answer in any order. The answer is guaranteed to be unique (except for the order that it is in).
+
+ 
+
+# Example 1:
+
+# Input: points = [[1,3],[-2,2]], k = 1
+# Output: [[-2,2]]
+# Explanation:
+# The distance between (1, 3) and the origin is sqrt(10).
+# The distance between (-2, 2) and the origin is sqrt(8).
+# Since sqrt(8) < sqrt(10), (-2, 2) is closer to the origin.
+# We only want the closest k = 1 points from the origin, so the answer is just [[-2,2]].
+
+# Example 2:
+
+# Input: points = [[3,3],[5,-1],[-2,4]], k = 2
+# Output: [[3,3],[-2,4]]
+# Explanation: The answer [[-2,4],[3,3]] would also be accepted.
+
+ 
+
+# Constraints:
+
+#     1 <= k <= points.length <= 104
+#     -104 <= xi, yi <= 104
+
+import heapq
+
+class Solution:
+    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+        min_heap = []
+
+        for x, y in points:
+            dist = (x**2) + (y**2)
+            min_heap.append([dist, x, y])
+
+        heapq.heapify(min_heap)
+        result = []
+
+        while k > 0:
+            dist, x, y = heapq.heappop(min_heap)
+            result.append([x, y])
+            k -= 1
+        return result
+
+        # T - O(klogN)
+        # S - O(N)
+
+
+# ---- File: 986. Interval List Intersections\intervalIntersection.py ----
+# https://leetcode.com/problems/interval-list-intersections/description/
+
+# https://www.youtube.com/watch?v=ZjxhxTiahBQ
+
+# You are given two lists of closed intervals, firstList and secondList, where firstList[i] = [starti, endi] and secondList[j] = [startj, endj]. Each list of intervals is pairwise disjoint and in sorted order.
+
+# Return the intersection of these two interval lists.
+
+# A closed interval [a, b] (with a <= b) denotes the set of real numbers x with a <= x <= b.
+
+# The intersection of two closed intervals is a set of real numbers that are either empty or represented as a closed interval. For example, the intersection of [1, 3] and [2, 4] is [2, 3].
+
+ 
+
+# Example 1:
+
+# Input: firstList = [[0,2],[5,10],[13,23],[24,25]], secondList = [[1,5],[8,12],[15,24],[25,26]]
+# Output: [[1,2],[5,5],[8,10],[15,23],[24,24],[25,25]]
+
+# Example 2:
+
+# Input: firstList = [[1,3],[5,9]], secondList = []
+# Output: []
+
+ 
+
+# Constraints:
+
+#     0 <= firstList.length, secondList.length <= 1000
+#     firstList.length + secondList.length >= 1
+#     0 <= starti < endi <= 109
+#     endi < starti+1
+#     0 <= startj < endj <= 109 
+#     endj < startj+1
+
+class Solution:
+    def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
+        if not firstList or not secondList:
+            return []
+
+        p1 = p2 = 0
+        result = []
+
+        while p1 < len(firstList) and p2 < len(secondList):
+            start1, end1 = firstList[p1]
+            start2, end2 = secondList[p2]
+
+            if start1 > end2:
+                p2 += 1
+            elif start2 > end1:
+                p1 += 1
+            else:
+                result.append([max(start1, start2), min(end1, end2)])
+
+                if end1 > end2:
+                    p2 += 1
+                else:
+                    p1 += 1
+        return result
+
+
+# ---- File: 987. Vertical Order Traversal of a Binary Tree\verticalTraversal.py ----
+# https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/
+
+# Given the root of a binary tree, calculate the vertical order traversal of the binary tree.
+
+# For each node at position (row, col), its left and right children will be at positions (row + 1, col - 1) and (row + 1, col + 1) respectively. The root of the tree is at (0, 0).
+
+# The vertical order traversal of a binary tree is a list of top-to-bottom orderings for each column index starting from the leftmost column and ending on the rightmost column. There may be multiple nodes in the same row and same column. In such a case, sort these nodes by their values.
+
+# Return the vertical order traversal of the binary tree.
+
+ 
+
+# Example 1:
+
+# Input: root = [3,9,20,null,null,15,7]
+# Output: [[9],[3,15],[20],[7]]
+# Explanation:
+# Column -1: Only node 9 is in this column.
+# Column 0: Nodes 3 and 15 are in this column in that order from top to bottom.
+# Column 1: Only node 20 is in this column.
+# Column 2: Only node 7 is in this column.
+
+# Example 2:
+
+# Input: root = [1,2,3,4,5,6,7]
+# Output: [[4],[2],[1,5,6],[3],[7]]
+# Explanation:
+# Column -2: Only node 4 is in this column.
+# Column -1: Only node 2 is in this column.
+# Column 0: Nodes 1, 5, and 6 are in this column.
+#           1 is at the top, so it comes first.
+#           5 and 6 are at the same position (2, 0), so we order them by their value, 5 before 6.
+# Column 1: Only node 3 is in this column.
+# Column 2: Only node 7 is in this column.
+
+# Example 3:
+
+# Input: root = [1,2,3,4,6,5,7]
+# Output: [[4],[2],[1,5,6],[3],[7]]
+# Explanation:
+# This case is the exact same as example 2, but with nodes 5 and 6 swapped.
+# Note that the solution remains the same since 5 and 6 are in the same location and should be ordered by their values.
+
+ 
+
+# Constraints:
+
+#     The number of nodes in the tree is in the range [1, 1000].
+#     0 <= Node.val <= 1000
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def verticalTraversal(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if not root:
+            return []
+
+        dict_nodes = collections.defaultdict(list)
+        queue = deque([(root, 0, 0)])
+        result = []
+
+        while queue:
+            curr, row, col = queue.popleft()
+            dict_nodes[col].append((row, curr.val))
+
+            if curr.left:
+                queue.append((curr.left, row + 1, col - 1))
+            if curr.right:
+                queue.append((curr.right, row + 1, col + 1))
+
+        for key in sorted(dict_nodes.keys()):
+            sorted_values = [val for _, val in sorted(dict_nodes[key])]
+            result.append(sorted_values)
+        return result
 
