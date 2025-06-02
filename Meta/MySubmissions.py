@@ -1181,4 +1181,117 @@ class Solution:
 
 ------------------------------------------------------------------------------
 
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        max_profit = 0
+        left, right = 0, 1
+
+        while right < len(prices): # Endukante.. you need to access the Array or full loop of Array Kabatti... 
+            if prices[left] < prices[right]:
+                profit = prices[right] - prices[left]
+                max_profit = max(max_profit, profit) # You are updating MAX Profit Here. 
+            else:
+                left = right # you are updating the Left Here. 
+            right += 1 # you are updating the RIGHT here. 
+
+        return max_profit
+
+
+
+---------------------------------------------------------------------------------
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        maxprofit = 0
+        for i in range(1, len(prices)):
+            if prices[i] > prices[i - 1]:
+                maxprofit += prices[i] - prices[i - 1]
+        return maxprofit
+
+-----------------------------------------------------------------------------------
+
+class Solution(object):
+    def maxProfit(self, prices: List[int]) -> int:
+        if len(prices) <= 1:
+            return 0
+
+        left_min = prices[0]
+        right_max = prices[-1]
+
+        length = len(prices)
+        left_profits = [0] * length
+        # pad the right DP array with an additional zero for convenience.
+        right_profits = [0] * (length + 1)
+
+        # construct the bidirectional DP array
+        for l in range(1, length):
+            left_profits[l] = max(left_profits[l - 1], prices[l] - left_min)
+            left_min = min(left_min, prices[l])
+
+            r = length - 1 - l
+            right_profits[r] = max(right_profits[r + 1], right_max - prices[r])
+            right_max = max(right_max, prices[r])
+
+        max_profit = 0
+        for i in range(0, length):
+            max_profit = max(max_profit, left_profits[i] + right_profits[i + 1])
+
+        return max_profit
+
+----------------------------------------------------------------------------------------
+
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        n = len(prices)
+
+        # solve special cases
+        if not prices or k == 0:
+            return 0
+
+        # find all consecutively increasing subsequence
+        transactions = []
+        start = 0
+        end = 0
+        for i in range(1, n):
+            if prices[i] >= prices[i - 1]:
+                end = i
+            else:
+                if end > start:
+                    transactions.append([start, end])
+                start = i
+        if end > start:
+            transactions.append([start, end])
+
+        while len(transactions) > k:
+            # check delete loss
+            delete_index = 0
+            min_delete_loss = math.inf
+            for i in range(len(transactions)):
+                t = transactions[i]
+                profit_loss = prices[t[1]] - prices[t[0]]
+                if profit_loss < min_delete_loss:
+                    min_delete_loss = profit_loss
+                    delete_index = i
+
+            # check merge loss
+            merge_index = 0
+            min_merge_loss = math.inf
+            for i in range(1, len(transactions)):
+                t1 = transactions[i - 1]
+                t2 = transactions[i]
+                profit_loss = prices[t1[1]] - prices[t2[0]]
+                if profit_loss < min_merge_loss:
+                    min_merge_loss = profit_loss
+                    merge_index = i
+
+            # delete or merge
+            if min_delete_loss <= min_merge_loss:
+                transactions.pop(delete_index)
+            else:
+                transactions[merge_index - 1][1] = transactions[merge_index][1]
+                transactions.pop(merge_index)
+
+        return sum(prices[j] - prices[i] for i, j in transactions)
+
+
 
