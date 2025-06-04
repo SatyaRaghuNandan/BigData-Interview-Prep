@@ -18,7 +18,9 @@ of other free content on h.com that's going to help you prepare for interviews i
 interviews with senior plus Engineers or Managers from your target company people just like me who are going to sit down
 for an hour with you um and kind of let you know where your gaps are and give you everything you need to to to know to
 make sure that you're successful in your interview so without further Ado let's get into it
+
 The Approach
+
 so as always before we jump into the actual design let's take a moment to go over the road map or the framework that
 we're going to use throughout this video and it's the framework that I recommend that you use in your real system design
 interviews and so if you've watched any of our other videos you've seen me do this a 100 times you're tired of it feel
@@ -27,6 +29,7 @@ to outline the requirements of the system and so this is your opportunity to ens
 with your interviewer about the system that you're going to build this includes what we call the functional requirements or the core features of the system as
 well as the non-functional requirements or the qualities of the system after that we're going to outline
 a very basic list of core entities and so this can be thought of the nouns of your system often times this correlates
+
 almost one to one with the tables in your database but we're going to stop short of outlining the full data schema
 or modeling any relationships the justification being that we just don't know it yet it's too early in our design
 but we do want to outline the nouns because they're going to give us the context necessary to understand our API
