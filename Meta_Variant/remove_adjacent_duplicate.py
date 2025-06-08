@@ -78,3 +78,16 @@ class Solution:
 				
 		return "".join([s * count for s, count in stack])
 
+
+
+
+Python: if not stack or char != stack[-1]:
+This checks two things:
+
+not stack → is the stack empty?
+
+char != stack[-1] → is the incoming character different from the last character on stack?
+
+This is a common pattern when checking whether to push a new character or remove duplicates.
+
+
