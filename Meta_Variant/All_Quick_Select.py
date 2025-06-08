@@ -151,6 +151,27 @@ class Solution:
         # Step 6: Return only the coordinates (x, y) of the k closest points
         return [(x, y) for _, x, y in points_with_dist[:k]]
 
+
+#Sorting
+class Solution:
+    def findKthLargest(self, nums, k):
+        return sorted(nums, reverse=True)[k-1]
+
+#Heap
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        heap = nums[:k]
+        heapq.heapify(heap)
+        
+        for num in nums[k:]:
+            if num > heap[0]:
+                heapq.heappop(heap)
+                heapq.heappush(heap, num)
+        
+        return heap[0]
+
+
+# Quick Seelct.
 import random
 from typing import List
 
