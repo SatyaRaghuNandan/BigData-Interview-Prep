@@ -97,6 +97,10 @@ class Solution:
             defDict[number] += 1
         return sorted(defDict, key=defDict.get, reverse=True)[:k]
 
+
+# https://leetcode.com/problems/top-k-frequent-words/solutions/431008/summary-of-all-the-methods-you-can-imagine-of-this-problem/
+
+# See the Above Explaination. For all the approaches.
 class Solution:
     def topKFrequent(self, words: List[str], k: int) -> List[str]:
         # Step 1: Count frequency of each word
