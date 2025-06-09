@@ -1,3 +1,10 @@
+1. Binary Search Problem
+2. left < right matrame pettuko.
+3. left = mid + 1
+4. right = mid
+5. return left/right ==> Why ? 
+
+
 Great question! When designing or testing `findPeakElement` or `findValleyElement`, you must consider **edge cases** to ensure correctness and robustness.
 
 Here are **important edge cases** for both **peak** and **valley** detection:
