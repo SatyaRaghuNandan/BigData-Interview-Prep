@@ -56,6 +56,33 @@ class Solution:
             nums[left], nums[right] = nums[right], nums[left]
             left += 1
             right -= 1
+
+
+
+def main():
+    solution = Solution()
+
+    test_cases = [
+        [1, 2, 3],         # Simple ascending: next is [1, 3, 2]
+        [3, 2, 1],         # Descending (highest): next is [1, 2, 3]
+        [1, 1, 5],         # Duplicate values: next is [1, 5, 1]
+        [1, 3, 2],         # Mixed: next is [2, 1, 3]
+        [2, 3, 1],         # next is [3, 1, 2]
+        [1],               # Single element → same
+        [1, 5, 1],         # next is [5, 1, 1]
+        [2, 4, 3, 2, 1],   # next is [3, 1, 2, 2, 4]
+        [1, 2, 3, 6, 5, 4] # next is [1, 2, 4, 3, 5, 6]
+    ]
+
+    for idx, nums in enumerate(test_cases, start=1):
+        original = nums[:]
+        print(f"Test Case {idx}: Input = {original}")
+        solution.nextPermutation(nums)
+        print(f"            Next Permutation = {nums}\n")
+
+if __name__ == "__main__":
+    main()
+
 ```
 
 ---
