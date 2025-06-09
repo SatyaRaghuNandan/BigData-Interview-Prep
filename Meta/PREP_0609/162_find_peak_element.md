@@ -61,7 +61,7 @@ class Solution:
                 # Peak is mid or on the left
                 right = mid
 
-        return left  # left == right is the peak index
+        return left  # left == right is the peak index return right kuda work avutundhi.... I don'w know How
 
 ```
 
