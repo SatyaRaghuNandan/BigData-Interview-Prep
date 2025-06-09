@@ -21,6 +21,31 @@ This implementation returns **any one** peak index using **binary search**, whic
 ### 📝 Code with Detailed Telugu Comments (Transliterated):
 
 ```python
+
+class Solution:
+    def findPeakElement(self, nums):
+        left = 0
+        right = len(nums) - 1
+        
+        while left <= right:
+            # Mid calculate cheyyadam – overflow avoid cheyyadaniki
+            mid = (right - left) // 2 + left
+
+            # Check if mid oka peak element
+            if (mid == len(nums) - 1 or nums[mid + 1] < nums[mid]) and \
+               (mid == 0 or nums[mid - 1] < nums[mid]):
+                return mid  # Idi oka valid peak
+
+            # Right neighbor ekkuva undi ante → peak right side lo untadi
+            if nums[mid + 1] > nums[mid]:
+                left = mid + 1  # Search in right half
+            else:
+                right = mid - 1  # Search in left half
+
+        return -1  # Ideally unreachable
+
+
+
 class Solution:
     def findPeakElement(self, nums):
         left = 0
