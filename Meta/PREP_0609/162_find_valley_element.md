@@ -42,6 +42,27 @@ def findValleyElement(nums):
             right = mid - 1
 
     return -1  # Should never happen if input has at least one valley
+
+
+
+def findValleyElement(nums):
+    left = 0
+    right = len(nums) - 1
+
+    while left < right:
+        mid = (left + right) // 2
+
+        # If right side is smaller, valley must be on the right
+        if nums[mid] > nums[mid + 1]:
+            left = mid + 1
+        else:
+            # Left side (or mid itself) could be the valley
+            right = mid
+
+    return left  # or return nums[left] if value needed
+
+
+
 ```
 
 ---
