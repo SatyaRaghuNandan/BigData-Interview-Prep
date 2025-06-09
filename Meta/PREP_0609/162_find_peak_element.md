@@ -25,23 +25,19 @@ class Solution:
     def findPeakElement(self, nums):
         left = 0
         right = len(nums) - 1
-        
-        while left <= right:
-            # Mid calculate cheyyadam – overflow avoid cheyyadaniki
+
+        while left < right:
             mid = (right - left) // 2 + left
-
-            # Check if mid oka peak element
-            if (mid == len(nums) - 1 or nums[mid + 1] < nums[mid]) and \
-               (mid == 0 or nums[mid - 1] < nums[mid]):
-                return mid  # Idi oka valid peak
-
-            # Right neighbor ekkuva undi ante → peak right side lo untadi
-            if nums[mid + 1] > nums[mid]:
-                left = mid + 1  # Search in right half
+            
+            if nums[mid] < nums[mid + 1]:
+                # Peak must be on the right
+                left = mid + 1
             else:
-                right = mid - 1  # Search in left half
+                # Peak is mid or on the left
+                right = mid
 
-        return -1  # Ideally unreachable
+        return left  # left == right is the peak index
+
 ```
 
 ---
