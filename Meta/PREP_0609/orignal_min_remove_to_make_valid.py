@@ -32,3 +32,48 @@ class Solution:
             final_result.append(ch)  # valid character ni add cheyyadam
 
         return ''.join(final_result)
+
+
+
+
+```
+
+Sure! Let's analyze the **Time Complexity** and **Space Complexity** for the Python implementation of `minRemoveToMakeValid`.
+
+---
+
+### ✅ **Time Complexity: `O(n)`**
+
+Where `n = len(input_string)`.
+
+#### 🔍 Why?
+
+* First loop (`for ch in input_string`) → runs `n` times.
+* Second loop (`for ch in result_after_first_pass`) → runs at most `n` times again (since we only skip invalid ones).
+* Each operation inside the loop is `O(1)`.
+
+➡️ So, overall time complexity = `O(n) + O(n)` = **`O(n)`**
+
+---
+
+### ✅ **Space Complexity: `O(n)`**
+
+#### 🔍 Why?
+
+* `result_after_first_pass` list stores up to `n` characters.
+* `final_result` list also stores up to `n` characters.
+* Even though we use two lists, they're both at most size `n`, so total auxiliary space is **linear**.
+
+➡️ Therefore, space complexity = **`O(n)`**
+
+---
+
+### 🧠 Note:
+
+* If you were allowed to **mutate the string in place**, you could try optimizing space to `O(1)` (using a character array and two pointers).
+* But since Python strings are immutable and we use extra lists, space is **O(n)** in this implementation.
+
+Let me know if you'd like to see an in-place simulation or version with one pass optimization!
+
+
+```
