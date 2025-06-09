@@ -18,6 +18,7 @@ class Solution:
                 curr_num = curr_num * 10 + int(char)  # Telugu: multi-digit numbers ni build cheyyadam
 
             # Telugu: character operator aithe or last index aithe, operation execute cheyyali
+            # if (!Character.isDigit(ch) || i == s.length() - 1) {
             if not char.isdigit() or i == len(s) - 1:
                 if op == '+':
                     result += prev_num       # Telugu: previous value ni result lo add cheyyadam
