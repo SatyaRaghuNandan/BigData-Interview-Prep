@@ -106,3 +106,23 @@ Let me know if you want to:
 * Decode the message (reverse rotation)
 * Extend it to rotate **Unicode or emoji** characters
 * Handle rotation on words instead of characters
+
+
+
+```text
+Edge Case Test Results
+You've tested:
+
+python
+Copy
+Edit
+assert rotationalCipher("Zebra-493?", 3) == "Cheud-726?"
+assert rotationalCipher("abcdefghijklmNOPQRSTUVWXYZ0123456789", 39) == "nopqrstuvwxyzABCDEFGHIJKLM9012345678"
+These are perfect tests:
+
+The first checks lowercase, uppercase, digits, and special characters.
+
+The second checks rotation factor > 26 (modulo logic correctness) for both alphabets and digits.
+
+
+```
