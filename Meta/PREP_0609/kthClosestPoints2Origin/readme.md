@@ -1,3 +1,5 @@
+```java
+
 kth Closest Points from Origin. 
 Kth Closes Points from Origin. 
 
@@ -12,3 +14,4 @@ private void kClosestPoints() {
 private int distance(int[] points){
 	return points[0] * points[0] + points[1] * points[1];
 }
+```
