@@ -1,4 +1,4 @@
-
+```python
 from collections import Counter
 import random
 from typing import List
@@ -343,3 +343,4 @@ class KthLargest:
 # Your KthLargest object will be instantiated and called as such:
 # obj = KthLargest(k, nums)
 # param_1 = obj.add(val)
+```
