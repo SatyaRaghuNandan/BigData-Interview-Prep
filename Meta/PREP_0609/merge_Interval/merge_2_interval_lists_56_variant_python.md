@@ -5,6 +5,85 @@ Here's your `merge_2_interval_lists_56_variant_python` code with **detailed Telu
 ### ✅ Python Code with Telugu Comments
 
 ```python
+
+
+from typing import List
+
+# ✅ Utility function to merge current interval with result list
+def try_merge(result: List[List[int]], curr_interval: List[int]):
+    if not result or curr_interval[0] > result[-1][1]:
+        result.append(curr_interval)
+    else:
+        result[-1][1] = max(result[-1][1], curr_interval[1])
+
+# ✅ Merge two sorted interval lists
+def merge_2_interval_lists_56_variant_python(A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
+    result = []
+    i, j = 0, 0
+
+    while i < len(A) and j < len(B):
+        if A[i][0] <= B[j][0]:
+            try_merge(result, A[i])
+            i += 1
+        else:
+            try_merge(result, B[j])
+            j += 1
+
+    while i < len(A):
+        try_merge(result, A[i])
+        i += 1
+
+    while j < len(B):
+        try_merge(result, B[j])
+        j += 1
+
+    return result
+
+# ✅ Main method to run test cases
+def main():
+    test_cases = [
+        # 🧪 Simple overlapping
+        ([[1, 3], [5, 7]], [[2, 6], [8, 10]]),
+
+        # 🧪 One list completely inside another
+        ([[1, 10]], [[2, 3], [4, 5]]),
+
+        # 🧪 Disjoint lists
+        ([[1, 2], [3, 5]], [[6, 8], [9, 10]]),
+
+        # 🧪 Fully overlapping intervals
+        ([[1, 3], [4, 6]], [[2, 5]]),
+
+        # 🧪 One list empty
+        ([], [[1, 2], [3, 4]]),
+
+        # 🧪 Both lists empty
+        ([], []),
+
+        # 🧪 Adjacent intervals
+        ([[1, 2], [5, 6]], [[2, 5]]),
+
+        # 🧪 Same intervals in both
+        ([[1, 3], [6, 8]], [[1, 3], [6, 8]]),
+    ]
+
+    for i, (A, B) in enumerate(test_cases):
+        result = merge_2_interval_lists_56_variant_python(A, B)
+        print(f"Test Case {i + 1}:")
+        print(f"A = {A}")
+        print(f"B = {B}")
+        print(f"Merged Result = {result}")
+        print("-" * 40)
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
 from typing import List
 
 # ✅ Idi oka utility function: overlap check chesi merge chestundi
