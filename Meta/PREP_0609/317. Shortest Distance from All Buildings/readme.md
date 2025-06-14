@@ -202,6 +202,286 @@ Use **Approach 2** in interviews:
 * ✅ Clean code with clear reasoning
 * ✅ Does not mutate input
 * ✅ Easy to explain visited tracking and `distances` matrix
+* 
+
+
+Here are comprehensive **✅ test cases** for the **“Shortest Distance from All Buildings”** problem. Each test case is followed by:
+
+* 🔍 Explanation
+* 📤 Expected Output
+* 💡 Why it's an edge case
+
+---
+
+## ✅ Test Case 1: Basic 3x3 Grid
+
+```python
+grid = [
+    [1, 0, 2],
+    [0, 0, 0],
+    [0, 0, 1]
+]
+```
+
+### 🔍 Explanation:
+
+* 2 houses at `(0,0)` and `(2,2)`
+* The cell `(1,1)` can reach both and has the **shortest total distance:**
+
+  * Distance from `(0,0)` → 2
+  * Distance from `(2,2)` → 2
+  * Total = 4
+
+### 📤 Output:
+
+```python
+4
+```
+
+---
+
+## ✅ Test Case 2: Only One House
+
+```python
+grid = [
+    [0, 0, 0],
+    [0, 1, 0],
+    [0, 0, 0]
+]
+```
+
+### 🔍 Explanation:
+
+* Only one house at `(1,1)`
+* Any surrounding cell has distance = 1
+* Best answer = 1
+
+### 📤 Output:
+
+```python
+1
+```
+
+---
+
+## ✅ Test Case 3: Blocked by Walls (No Path)
+
+```python
+grid = [
+    [1, 2, 0],
+    [2, 2, 2],
+    [0, 2, 1]
+]
+```
+
+### 🔍 Explanation:
+
+* Houses at `(0,0)` and `(2,2)`
+* All paths between houses are blocked by `2`s
+* No empty land can reach both houses
+
+### 📤 Output:
+
+```python
+-1
+```
+
+### 💡 Edge case:
+
+Disconnected graph → must return `-1`
+
+---
+
+## ✅ Test Case 4: All Houses, No Empty Land
+
+```python
+grid = [
+    [1, 1],
+    [1, 1]
+]
+```
+
+### 🔍 Explanation:
+
+* No empty cell to consider
+* Return `-1`
+
+### 📤 Output:
+
+```python
+-1
+```
+
+---
+
+## ✅ Test Case 5: All Obstacles
+
+```python
+grid = [
+    [2, 2],
+    [2, 2]
+]
+```
+
+### 🔍 Explanation:
+
+* No houses or empty land
+* Return `-1`
+
+### 📤 Output:
+
+```python
+-1
+```
+
+---
+
+## ✅ Test Case 6: Large Empty Area, One House
+
+```python
+grid = [
+    [0, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 0]
+]
+```
+
+### 🔍 Explanation:
+
+* One house at `(1,1)`
+* Closest empty cell is adjacent → best answer = 1
+
+### 📤 Output:
+
+```python
+1
+```
+
+---
+
+## ✅ Test Case 7: Only One Empty Cell Between Two Houses
+
+```python
+grid = [
+    [1, 0, 1]
+]
+```
+
+### 🔍 Explanation:
+
+* Two houses at `(0,0)` and `(0,2)`
+* Middle cell `(0,1)`:
+
+  * Distance from `(0,0)` → 1
+  * Distance from `(0,2)` → 1
+  * Total = 2
+
+### 📤 Output:
+
+```python
+2
+```
+
+---
+
+## ✅ Test Case 8: All Empty, No House
+
+```python
+grid = [
+    [0, 0],
+    [0, 0]
+]
+```
+
+### 🔍 Explanation:
+
+* No house to calculate distance to
+* Return `-1`
+
+### 📤 Output:
+
+```python
+-1
+```
+
+---
+
+## ✅ Test Case 9: Only One Cell, House
+
+```python
+grid = [[1]]
+```
+
+### 🔍 Explanation:
+
+* No empty land
+* Return `-1`
+
+### 📤 Output:
+
+```python
+-1
+```
+
+---
+
+## ✅ Test Case 10: Zig-Zag Path Required
+
+```python
+grid = [
+    [1, 2, 0],
+    [0, 2, 0],
+    [0, 0, 1]
+]
+```
+
+### 🔍 Explanation:
+
+* Need to go around the 2s to connect houses
+* Best empty cell is `(1,2)`
+
+  * Distance to `(0,0)` = 4
+  * Distance to `(2,2)` = 1
+  * Total = 5
+
+### 📤 Output:
+
+```python
+5
+```
+
+---
+
+## 🧪 Python Test Function (Optional for Unit Testing)
+
+```python
+def test_shortest_distance():
+    sol = Solution()
+
+    assert sol.shortestDistance([[1, 0, 2], [0, 0, 0], [0, 0, 1]]) == 4
+    assert sol.shortestDistance([[0, 0, 0], [0, 1, 0], [0, 0, 0]]) == 1
+    assert sol.shortestDistance([[1, 2, 0], [2, 2, 2], [0, 2, 1]]) == -1
+    assert sol.shortestDistance([[1, 1], [1, 1]]) == -1
+    assert sol.shortestDistance([[2, 2], [2, 2]]) == -1
+    assert sol.shortestDistance([[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]) == 1
+    assert sol.shortestDistance([[1, 0, 1]]) == 2
+    assert sol.shortestDistance([[0, 0], [0, 0]]) == -1
+    assert sol.shortestDistance([[1]]) == -1
+    assert sol.shortestDistance([[1, 2, 0], [0, 2, 0], [0, 0, 1]]) == 5
+
+    print("✅ All test cases passed!")
+```
+
+---
+
+Let me know if you want:
+
+* Graph visualization of BFS layers per house 🧭
+* Extension with weights or diagonal movement 🧩
+* Java versions of these test cases 🧪
+
+
+
 
 Let me know if you'd like:
 
