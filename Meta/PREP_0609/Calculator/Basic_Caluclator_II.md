@@ -1,54 +1,84 @@
-Here is the **Python version** of your C++ code (`Leetcode 227 - Basic Calculator II`) with **detailed comments** in **English and Telugu (transliterated)**:
+Here is the **Python version** of your `Solution_227` C++ code for the \**basic calculator with +, -, *, and /** (Leetcode 227 – Basic Calculator II), with:
+
+* ✅ Clean Python syntax
+* ✅ Detailed **Telugu-English comments**
+* ✅ Time and space complexity
 
 ---
 
-### ✅ Python Translation with Telugu Comments
+## ✅ Python Code with Telugu Comments
 
 ```python
 class Solution:
     def calculate(self, s: str) -> int:
-        curr_num = 0        # Telugu: current number ni build chesthunnam
-        prev_num = 0        # Telugu: previous number ni multiplication/division kosam store chestham
-        result = 0          # Telugu: final result ikkadiki accumulate chestham
-        op = '+'            # Telugu: default ga first number ki '+' operation apply avutundi
-        s = s.replace(" ", "")  # Telugu: whitespace remove cheyyadam
+        curr_num = 0        # 🔢 Present number ni build cheyyadam (digit by digit)
+        prev_num = 0        # 🔁 Previous computed number (+/- handled separately)
+        result = 0          # 🧮 Final result accumulate cheyyadam kosam
+        op = '+'            # 🔣 Initial operation is assume '+' (first number ki)
 
-        for i, char in enumerate(s):
-            if char.isdigit():
-                curr_num = curr_num * 10 + int(char)  # Telugu: multi-digit numbers ni build cheyyadam
+        for i in range(len(s)):
+            ch = s[i]
 
-            # Telugu: character operator aithe or last index aithe, operation execute cheyyali
-            # if (!Character.isDigit(ch) || i == s.length() - 1) {
-            if not char.isdigit() or i == len(s) - 1:
+            # 🔢 Digit ayithe: curr_num ni build cheyyadam (multi-digit support)
+            if ch.isdigit():
+                curr_num = curr_num * 10 + int(ch)
+
+            # ⛔ Operator or last character vachesinappudu, operation perform cheyyali
+            if (not ch.isdigit() and ch != ' ') or i == len(s) - 1:
                 if op == '+':
-                    result += prev_num       # Telugu: previous value ni result lo add cheyyadam
-                    prev_num = curr_num      # Telugu: current value ni store cheyyadam
+                    result += prev_num     # ✅ Previous number ni result lo add cheyyadam
+                    prev_num = curr_num    # ✅ Ee number ni next ki save cheyyadam
                 elif op == '-':
                     result += prev_num
-                    prev_num = -curr_num     # Telugu: subtraction ki negative ga store cheyyadam
+                    prev_num = -curr_num   # 🔻 Negative number ni track cheyyadam
                 elif op == '*':
-                    prev_num *= curr_num     # Telugu: multiplication directly cheyyadam
+                    prev_num = prev_num * curr_num  # ➕ Result immediate ga kaadu
                 elif op == '/':
-                    prev_num = int(prev_num / curr_num)  # Telugu: truncate toward zero
+                    prev_num = int(prev_num / curr_num)  # ➗ Python lo floor cheyyadam (like C++)
 
-                curr_num = 0     # Telugu: current number reset cheyyadam
-                op = char        # Telugu: next operator store cheyyadam
+                # 🔁 Reset current number and update next operator
+                curr_num = 0
+                op = ch
 
-        result += prev_num       # Telugu: last pending value ni result lo add cheyyadam
+        # 🔚 Last prev_num ni final result lo add cheyyadam
+        result += prev_num
         return result
 ```
 
 ---
 
-### ✅ Example Usage:
+## 🧠 Example
 
 ```python
-solution = Solution()
-print(solution.calculate("3+2*2"))       # Output: 7
-print(solution.calculate(" 3/2 "))       # Output: 1
-print(solution.calculate(" 3+5 / 2 "))   # Output: 5
+s = "3+2*2"
+# ➡️ Step-by-step:
+# op='+', curr_num=3 → result=0, prev=3
+# op='+', curr_num=2 → result=3, prev=2
+# op='*', curr_num=2 → prev = 2*2 = 4
+# final result = 3 + 4 = 7
 ```
 
 ---
 
-Let me know if you want to support parentheses (`(`, `)`) or handle floating point numbers as well.
+## ⏱️ Time and Space Complexity
+
+| Metric              | Value                                |
+| ------------------- | ------------------------------------ |
+| ⏱️ Time Complexity  | **O(N)** — One pass through string   |
+| 🧠 Space Complexity | **O(1)** — Constant space (no stack) |
+
+> 📝 Unlike full expression parsing (with parentheses), this version doesn’t use a stack because operator precedence is handled using `prev_num`.
+
+---
+
+## ✅ Interview Talking Points
+
+> "This approach simulates a single pass calculator without stack by maintaining a `prev_num` variable. This allows us to defer addition until multiplication/division is handled."
+
+Let me know if you want:
+
+* A **version with stack** (more extensible to parentheses)
+* **Leetcode test harness**
+* Or support for **spaces and edge cases**
+
+You're mastering expression parsing! 🔥
