@@ -158,3 +158,22 @@ For a tree like:
 ---
 
 Let me know if you want the **iterative variant**, or want to trace with a real tree example in code!
+
+
+
+
+
+Here’s the visual comparison between an N-ary Tree and a Binary Tree:
+
+![N-ary vs Binary Tree](sandbox:/mnt/data/A_2D_digital_illustration_exhibits_two_tree_data_s.png)
+
+
+
+![image](https://github.com/user-attachments/assets/4a517941-854c-4e0e-853d-c8af3e139ea3)
+
+
+
+🟢 Binary Tree: Max 2 children (left/right) → rendu branches unde option untundi
+🔵 N-ary Tree: N number of children possible → list lo store chestham (children[])
+
+
