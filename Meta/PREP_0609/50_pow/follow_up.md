@@ -1,3 +1,71 @@
+Perfect — here’s a slightly **expanded yet still concise** version of the iterative `myPow(x, n)` explanation that you can confidently say in a Meta interview:
+
+---
+
+### ✅ Iterative Exponentiation by Squaring — `myPow(x, n)`
+
+---
+
+### 🔧 Algorithm:
+
+1. **Handle Negative Exponent:**
+
+   * If `n < 0`, we convert the problem to its reciprocal form:
+
+     ```python
+     x = 1 / x
+     n = abs(n)
+     ```
+
+2. **Initialize Variables:**
+
+   * `result = 1.0` → stores the final accumulated power
+   * `doubling_val = x` → used to keep squaring the base
+
+3. **Process Each Bit of `n`:**
+
+   * While `n != 0`:
+
+     * If the **current least significant bit is 1** (i.e., `n % 2 == 1`), multiply the current `doubling_val` into `result`:
+
+       ```python
+       result *= doubling_val
+       ```
+     * Square `doubling_val` to prepare the next power:
+
+       ```python
+       doubling_val *= doubling_val
+       ```
+     * Right-shift the exponent by halving it:
+
+       ```python
+       n //= 2
+       ```
+
+4. **Return the Final Result:**
+
+   * `return result`
+
+---
+
+### 📌 Summary for Interview:
+
+> "I use **iterative exponentiation by squaring** to compute `x^n`. If `n` is negative, I invert the base and use the absolute exponent. I initialize `result = 1.0` and `doubling_val = x`. For each bit in the binary representation of `n`, I multiply `doubling_val` into `result` if the bit is set, then square `doubling_val` and halve `n`. This allows us to compute the power in **O(log n)** time and **O(1)** space."
+
+---
+
+### 🧠 Why it’s Efficient:
+
+* Leverages the **binary representation** of the exponent.
+* Avoids redundant multiplications.
+* Works for large `n` without recursion or stack overflow.
+
+---
+
+Let me know if you’d like to prepare a verbal script version for mock interview answers!
+
+
+
 Great — you're now using the **iterative version of Exponentiation by Squaring** for `x^n`, which improves the **space complexity from O(log n) → O(1)**. This is a common **follow-up question** in interviews after solving the recursive version.
 
 ---
