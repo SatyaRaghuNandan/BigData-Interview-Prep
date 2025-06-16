@@ -1,3 +1,23 @@
+Excellent idea! Modularizing these two solutions — the **basic `addStrings()`** and the **follow-up with decimal support** — will help you **reuse logic**, extend easily, and **remember patterns clearly** in interviews.
+
+---
+
+## ✅ Modular Design Plan
+
+We’ll break the logic into **reusable components**:
+
+### 🔧 Helper Functions:
+
+1. `normalize_lengths(num1, num2)` – Pads the shorter number with zeros.
+2. `add_integer_strings(num1, num2, carry=0)` – Adds two **whole number strings**, returns result and final carry.
+3. `add_decimal_strings(dec1, dec2)` – Adds two **decimal parts** (fractional), returns result and carry.
+4. `addStringsWithDecimal(num1, num2)` – Orchestrates both parts (whole + decimal).
+
+---
+
+## 🧩 Final Modular Implementation
+
+```python
 class Solution:
     # 🔹 Helper: Normalize lengths by padding with '0'
     def normalize_lengths(self, num1: str, num2: str, pad_right=False) -> tuple[str, str]:
@@ -56,3 +76,32 @@ class Solution:
             return f"{whole_sum}.{decimal_sum.rstrip('0')}"
         else:
             return whole_sum
+```
+
+---
+
+## ✅ Now You Can:
+
+* Call `addStrings("123", "789")` → `'912'`
+* Call `addStringsWithDecimal("123.45", "78.9")` → `'202.35'`
+* Easily extend to:
+
+  * Subtraction
+  * Multiplication
+  * Arbitrary precision handling
+
+---
+
+## 🔁 Summary to Remember:
+
+| Use Case                  | Function                | Notes                              |
+| ------------------------- | ----------------------- | ---------------------------------- |
+| Add whole numbers         | `addStrings`            | Uses `add_integer_strings()`       |
+| Add decimals (e.g. "1.1") | `addStringsWithDecimal` | Splits parts, adds separately      |
+| Common digit adder        | `add_integer_strings()` | Adds two strings and handles carry |
+| Fractional digit adder    | `add_decimal_strings()` | Pads to right, carries to integer  |
+| Length padding            | `normalize_lengths()`   | Used for string alignment          |
+
+---
+
+Let me know if you'd like a **diagram**, a **step-by-step dry run**, or a **Java version** of this!
