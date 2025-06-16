@@ -1,3 +1,11 @@
+| Question Asked                        | Preferred Approach          |
+| ------------------------------------- | --------------------------- |
+| K-th smallest in **sorted** matrix    | ✅ Min Heap or Binary Search |
+| Top-k smallest in **unsorted** matrix | ✅ Max Heap                  |
+| K-th largest overall                  | ✅ Min Heap of size `k`      |
+| Merging k sorted lists                | ✅ Min Heap                  |
+
+
 
 You've captured two solid heap-based solutions to the **Kth Smallest Element in a Sorted Matrix** problem (Leetcode 378). Let's break both down with:
 
