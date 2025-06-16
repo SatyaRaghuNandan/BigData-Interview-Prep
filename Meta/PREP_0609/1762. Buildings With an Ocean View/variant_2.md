@@ -44,6 +44,52 @@ class Solution:
 
         # Right side view ni reverse cheyyali and final result lo add cheyyali
         return left_view + list(reversed(right_view))
+
+
+def main():
+    sol = Solution()
+
+    test_cases = [
+        # ✅ Edge Case 1: Only one building
+        ([7], [0]),
+
+        # ✅ Edge Case 2: Two buildings
+        ([5, 6], [0, 1]),  # Both ends have views
+
+        # ✅ Edge Case 3: All increasing
+        ([1, 2, 3, 4, 5], [0, 1, 2, 3, 4]),
+
+        # ✅ Edge Case 4: All decreasing
+        ([5, 4, 3, 2, 1], [0, 1, 2, 3, 4]),
+
+        # ✅ Edge Case 5: Equal heights
+        ([3, 3, 3, 3], [0, 3]),  # Only ends can have view
+
+        # ✅ Regular Case: Peaks in the middle
+        ([2, 4, 3, 5, 1], [0, 1, 3, 4]),
+
+        # ✅ Regular Case: Multiple ups and downs
+        ([4, 2, 3, 1, 5], [0, 2, 4]),
+
+        # ✅ Edge Case: Same building heights except one
+        ([1, 1, 10, 1, 1], [0, 2, 4]),
+
+        # ✅ Edge Case: Valley in the middle
+        ([5, 1, 5], [0, 2]),
+
+        # ✅ Large peak at the end
+        ([1, 2, 3, 2, 10], [0, 1, 2, 4])
+    ]
+
+    for idx, (heights, expected) in enumerate(test_cases, 1):
+        output = sol.findBuildingsWithViewOnEitherSide(heights)
+        print(f"Test Case {idx}: heights = {heights}")
+        print(f"Expected     : {expected}")
+        print(f"Output       : {output}")
+        print(f"✅ Pass       : {output == expected}\n")
+
+if __name__ == "__main__":
+    main()
 ```
 
 ---
