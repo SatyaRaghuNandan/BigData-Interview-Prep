@@ -1,0 +1,3 @@
+- original emo ocean view ante right.
+- variant_1 emo just count not the list
+- variant_2 emi left and right.
