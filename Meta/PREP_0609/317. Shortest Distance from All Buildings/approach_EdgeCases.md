@@ -123,3 +123,92 @@ grid = [
 ---
 
 Let me know if you want a visual BFS animation or a **Java version** with the same logic and Telugu comments.
+
+
+
+
+Absolutely — let me break it down clearly for you.
+
+---
+
+## 🧠 🔍 What the Comment is Saying
+
+### ✅ Core Idea:
+
+> Even though the goal is to find an empty land reachable by **all** buildings, **some buildings might be blocked off** completely by obstacles (`2`s).
+
+---
+
+### 🧱 Example Scenario:
+
+Imagine this grid:
+
+```
+1 2 2
+2 1 2
+0 0 0
+```
+
+* `1` = building
+* `2` = obstacle
+* `0` = empty land
+
+Here:
+
+* The **top-left building (0,0)** is completely **surrounded by obstacles** — it **can’t reach any 0**.
+* Bottom row has 0s, but **they're only reachable by the (1,1) building**.
+
+So, **no single land cell can be reached by all buildings**.
+
+---
+
+### ❗ Why the Comment Talks About “Extra Counter”?
+
+This is where the **key observation** comes in:
+
+> You need to track **how many buildings can reach each empty cell** — not just the distance.
+
+### ✅ Hence, in the solution:
+
+```python
+reach_count[i][j]  # How many buildings reached cell (i, j)
+```
+
+And only if:
+
+```python
+reach_count[i][j] == total_buildings:
+```
+
+→ then you consider this land cell valid.
+
+---
+
+## ✅ Translation of That Comment in Plain English
+
+> Some buildings may be blocked (surrounded by obstacles), so not all empty land cells are reachable by all buildings. That’s why we must **count how many buildings reach each empty cell**. At the end, only consider those cells which are reachable by **all buildings**.
+
+---
+
+## ✅ Telugu Summary:
+
+```telugu
+Konni buildings obstacles tho completely surround ayyuntayi.
+Anta cheppagane, aa building nunchi e land ki reach cheyyalekapovachu.
+
+E case lo manam okka extra matrix maintain cheyyali:
+- prathi empty cell (0) ni entha mandi buildings reach chesaru ane count (`reach_count[i][j]`).
+
+Final lo, only aa land ni consider cheyyali, eppudaithe:
+reach_count[i][j] == total_buildings
+
+Ledu ante, aa land ni select cheyyadam waste — andarini reach cheyyaledu kabatti.
+```
+
+---
+
+Let me know if you'd like a visual grid example to make this even more intuitive!
+
+
+
+##### https://leetcode.com/discuss/post/6857669/meta-onsite-live-coding-by-anonymous_use-z9jn/comments/3040171/?parent=3040161
