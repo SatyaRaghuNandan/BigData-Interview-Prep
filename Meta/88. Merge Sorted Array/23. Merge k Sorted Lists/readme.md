@@ -160,3 +160,124 @@ Would you like:
 * Heap-based `O(N log K)` solution for comparison?
 * Java version with clean structure and comments?
 * Diagram-based PDF showing merge levels?
+
+
+Absolutely! Let's walk through the **Heap-based solution** for the **Merge K Sorted Lists** problem, which also gives us **`O(N log K)`** performance — just like Divide & Conquer — but with a **different strategy**.
+
+---
+
+## ✅ Why Heap-Based?
+
+Instead of merging lists pair by pair, we:
+
+* Use a **min-heap (priority queue)** to always extract the **smallest current node** among all k list heads.
+* Efficient because:
+
+  * Heap insert/remove takes `O(log K)`
+  * We push `N` nodes total → total time: **`O(N log K)`**
+
+---
+
+## ✅ Concept (Plain English)
+
+> “Keep the current head of each list in a min-heap. At each step, pop the smallest node, add it to the result list, and push its next node (if exists) back to the heap. Repeat until the heap is empty.”
+
+---
+
+## ✅ Python Code with Clean Variable Names + Telugu Comments
+
+```python
+import heapq
+from typing import List, Optional
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+        
+    # For heapq to compare ListNodes
+    def __lt__(self, other):
+        return self.val < other.val
+
+class Solution:
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+        min_heap = []
+
+        # 🧺 Step 1: Initialize heap with first node of each list
+        for index, node in enumerate(lists):
+            if node:
+                heapq.heappush(min_heap, (node.val, index, node))
+
+        dummy_head = ListNode(0)
+        current = dummy_head
+
+        # 🔁 Step 2: Pop min node and push next node from same list
+        while min_heap:
+            _, index, smallest_node = heapq.heappop(min_heap)
+            current.next = smallest_node
+            current = current.next
+
+            if smallest_node.next:
+                heapq.heappush(min_heap, (smallest_node.next.val, index, smallest_node.next))
+
+        return dummy_head.next
+```
+
+---
+
+## ✅ Why `(val, index, node)` in the heap?
+
+* Python’s `heapq` requires elements to be **comparable**
+* `ListNode` doesn’t support `<` unless we override `__lt__()`, but using `(val, index, node)`:
+
+  * `val` → primary sorting
+  * `index` → avoids tie-breaking error if `val`s are equal
+
+---
+
+## ✅ Time & Space Complexity
+
+| Metric    | Value        | Notes                                 |
+| --------- | ------------ | ------------------------------------- |
+| **Time**  | `O(N log K)` | `N` total nodes, heap of size `K`     |
+| **Space** | `O(K)`       | Heap stores up to `K` nodes at a time |
+
+---
+
+## ✅ Dry Run Example
+
+```python
+lists = [
+  1 → 4 → 5,
+  1 → 3 → 4,
+  2 → 6
+]
+```
+
+### Initial Heap:
+
+```text
+[(1, 0), (1, 1), (2, 2)]
+```
+
+* Pop (1,0) → add to result → push 4 from list 0
+* Pop (1,1) → add to result → push 3 from list 1
+* Pop (2,2) → add to result → push 6 from list 2
+  ...
+
+Final Result:
+`1 → 1 → 2 → 3 → 4 → 4 → 5 → 6`
+
+---
+
+## ✅ Summary for Meta Interviews
+
+> “This heap-based approach maintains a min-heap of the current head node of each list. At each step, we extract the smallest node and insert its next node into the heap. Since each node is pushed and popped once and heap size is `K`, total complexity is `O(N log K)` — same as divide & conquer but more intuitive when merging streams or files.”
+
+---
+
+Let me know if you want:
+
+* A **comparison table** between Heap and Divide & Conquer
+* Java version with `PriorityQueue`
+* Unit tests or test harness in Python
