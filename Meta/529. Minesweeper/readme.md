@@ -1,3 +1,185 @@
+Absolutely! Let's go through **multiple approaches** to solve **Leetcode 529 – Minesweeper**, followed by the **best solution** with proper code structure, meaningful variable names, and detailed **Telugu comments**.
+
+---
+
+## ✅ Problem Recap
+
+You are given a Minesweeper board and a click position. Based on the click:
+
+* If it's a mine `'M'`, mark as `'X'` (game over).
+* If it's an empty cell `'E'`:
+
+  * Count adjacent mines.
+  * If adjacent mines exist, replace `'E'` with that number (e.g., `'1'`, `'2'`, etc.)
+  * If no adjacent mines, reveal cell as `'B'` and recursively reveal its neighbors.
+
+---
+
+## ✅ Multiple Approaches
+
+### ✅ Approach 1: Recursive DFS (Depth-First Search)
+
+* Recursive expansion of `'E'` cells until you reach boundaries or mine-adjacent cells.
+* Elegant and easy to implement.
+* ⚠️ Risk of stack overflow on large boards.
+
+👉 This is what you already implemented.
+
+---
+
+### ✅ Approach 2: Iterative BFS (Breadth-First Search)
+
+* Use a queue (`deque`) instead of recursion.
+* Reveal cells level by level.
+* Safer for large grids (no recursion depth issue).
+* More interview-preferred at Meta for scalability and testability.
+
+---
+
+### ❌ Approach 3: Full Board Scan on Click
+
+* On each click, scan the whole board to update.
+* Inefficient and not required for this problem.
+* ❌ Not optimal or recommended.
+
+---
+
+## ✅ Best Approach: **Iterative BFS**
+
+(More scalable, safe against recursion stack overflow, and predictable)
+
+---
+
+## ✅ Python Code (BFS) with Telugu Comments + Clean Variables
+
+```python
+from collections import deque
+from typing import List
+
+class Solution:
+    def updateBoard(self, board: List[List[str]], click: List[int]) -> List[List[str]]:
+        totalRows, totalCols = len(board), len(board[0])
+        clickRow, clickCol = click
+
+        # 🔴 User click chesina place lo mine unte, adi game over
+        if board[clickRow][clickCol] == 'M':
+            board[clickRow][clickCol] = 'X'
+            return board
+
+        # 🟢 Safe click aithe BFS use chesi reveal cheyyali
+        directions = [(-1, -1), (-1, 0), (-1, 1),
+                      (0, -1),           (0, 1),
+                      (1, -1),  (1, 0),  (1, 1)]
+
+        queue = deque()
+        queue.append((clickRow, clickCol))
+
+        while queue:
+            currentRow, currentCol = queue.popleft()
+
+            # 🛑 If already visited or not 'E', skip cheyyali
+            if board[currentRow][currentCol] != 'E':
+                continue
+
+            # 🔍 Neighbors lo mines count cheyyadam
+            adjacentMineCount = 0
+            neighbors = []
+
+            for rowOffset, colOffset in directions:
+                neighborRow = currentRow + rowOffset
+                neighborCol = currentCol + colOffset
+
+                if 0 <= neighborRow < totalRows and 0 <= neighborCol < totalCols:
+                    if board[neighborRow][neighborCol] == 'M':
+                        adjacentMineCount += 1
+                    elif board[neighborRow][neighborCol] == 'E':
+                        neighbors.append((neighborRow, neighborCol))
+
+            # 🔢 If adjacent mines exist, cell ni '1'-'8' ga update cheyyali
+            if adjacentMineCount > 0:
+                board[currentRow][currentCol] = str(adjacentMineCount)
+            else:
+                # 🟦 No adjacent mines → mark as 'B' and continue expansion
+                board[currentRow][currentCol] = 'B'
+                for neighbor in neighbors:
+                    queue.append(neighbor)
+
+        return board
+```
+
+---
+
+## ✅ Time and Space Complexity
+
+| Metric              | Complexity | Explanation                                   |
+| ------------------- | ---------- | --------------------------------------------- |
+| 🕒 Time Complexity  | `O(R × C)` | Each cell visited once                        |
+| 🧠 Space Complexity | `O(R × C)` | BFS queue in worst case, all cells go into it |
+
+Where:
+
+* `R = total rows`
+* `C = total columns`
+
+---
+
+## ✅ Dry Run Example
+
+### Input:
+
+```python
+board = [
+ ['E', 'E', 'E', 'E', 'E'],
+ ['E', 'E', 'M', 'E', 'E'],
+ ['E', 'E', 'E', 'E', 'E'],
+ ['E', 'E', 'E', 'E', 'E']
+]
+click = [3, 0]
+```
+
+### Step-by-step:
+
+* `(3, 0)` is `'E'` → no adjacent mines
+* Mark as `'B'`, enqueue neighbors
+* BFS continues expanding `'E'` cells
+* Cells near the `'M'` (like `(1,2)`) will be marked as `'1'`, `'2'`, etc.
+
+---
+
+## ✅ Test Cases to Validate
+
+### Case 1: Mine Clicked
+
+```python
+board = [['M']]
+click = [0, 0]
+# Output: [['X']]
+```
+
+### Case 2: No Adjacent Mines
+
+```python
+click = [3, 0]
+# Triggers BFS expansion, many cells become 'B'
+```
+
+### Case 3: Adjacent to 1 Mine
+
+```python
+click = [1, 1]
+# Output: Cell shows '1' or '2' etc.
+```
+
+---
+
+Would you like:
+
+* Java version of this BFS approach with Telugu comments?
+* Unit tests or test runner for Python?
+
+
+
+
 Absolutely! Since you're preparing for **Meta interviews**, here is the revised version of your **Minesweeper solution (LeetCode 529)** with:
 
 ✅ Clean structure
