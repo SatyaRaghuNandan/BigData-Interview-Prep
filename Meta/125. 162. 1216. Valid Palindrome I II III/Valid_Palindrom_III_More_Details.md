@@ -121,3 +121,136 @@ Let me know if you'd like:
 * The bottom-up DP version for comparison
 * Java version with comments
 * Or more dry runs on edge cases like palindromes or long strings with tight `k` values.
+
+
+
+Great follow-up! Let's break this into two parts:
+
+---
+
+## ✅ Part 1: Why use `@lru_cache` in Valid Palindrome III?
+
+### 🔍 What is `@lru_cache`?
+
+`@lru_cache` is a Python **decorator** from `functools` that **caches** results of function calls.
+**LRU = Least Recently Used**, but when used without size (`None`), it just **memoizes** all calls.
+
+---
+
+### ✅ Why do we use it here?
+
+In our recursive function:
+
+```python
+def min_deletions(left, right):
+```
+
+We're solving the same subproblem `min_deletions(i, j)` **multiple times** due to overlapping recursion.
+Without `lru_cache`, it would recompute the same things again and again → exponential time!
+
+✅ With `@lru_cache(None)`:
+
+* Results are **cached** automatically
+* Next time you call `min_deletions(i, j)`, Python reuses the result instantly
+* Makes the recursion **run in `O(N²)` instead of exponential**
+
+---
+
+### ✅ Equivalent Manual Memoization
+
+This:
+
+```python
+@lru_cache(None)
+def min_deletions(i, j):
+```
+
+is equivalent to:
+
+```python
+memo = {}
+def min_deletions(i, j):
+    if (i, j) in memo:
+        return memo[(i, j)]
+    ...
+    memo[(i, j)] = result
+    return result
+```
+
+✅ Cleaner and safer to use `@lru_cache` in interviews (unless asked otherwise).
+
+---
+
+## ✅ Part 2: More Test Cases and Examples
+
+---
+
+### ✅ Example 1: Already a Palindrome
+
+```python
+s = "racecar"
+k = 0
+→ Already a palindrome → ✅ True
+```
+
+---
+
+### ✅ Example 2: Needs 1 Deletion
+
+```python
+s = "abca"
+k = 1
+→ Remove 'b' or 'c' → "aca" or "aba" → ✅ True
+```
+
+---
+
+### ✅ Example 3: Needs Too Many Deletions
+
+```python
+s = "abcdefg"
+k = 2
+→ Minimum deletions = 6 (keep only 'g') → ❌ False
+```
+
+---
+
+### ✅ Example 4: One Character
+
+```python
+s = "a"
+k = 0
+→ ✅ Always a palindrome
+```
+
+---
+
+### ✅ Example 5: Empty String
+
+```python
+s = ""
+k = 0
+→ ✅ Trivially a palindrome
+```
+
+---
+
+### ✅ Example 6: With Duplicates
+
+```python
+s = "abcbd"
+k = 1
+→ Remove 'a' or 'd' → "bcb" → ✅ True
+```
+
+---
+
+## ✅ Recap
+
+* Use `@lru_cache` when recursive calls repeat with same parameters.
+* It reduces **redundant computation** and turns recursion into dynamic programming.
+* It’s Python’s built-in way to do **memoization** and is a **huge win** in recursive problems.
+
+---
+
+Would you like a visual tree of recursion calls with vs. without `lru_cache` to illustrate the benefit?
