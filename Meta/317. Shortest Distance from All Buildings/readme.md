@@ -62,49 +62,163 @@ If no such empty land exists that can reach all buildings, return `-1`.
 
 ---
 
-## ✅ Python Code with Telugu Comments
+You're right! Here's the **same updated version** of the code with:
+
+✅ `is_valid()` helper
+✅ Clean variable names
+✅ ✍️ Telugu-style comments (in English script)
+
+---
+
+### ✅ Final Python Code with Telugu Comments and `is_valid()` Function
+
+Absolutely! Here's a concise **plan (pointers)** for this approach to **“Shortest Distance from All Buildings”**:
+
+---
+
+### ✅ Problem Plan: BFS from Each Building
+
+#### **1. Count total number of buildings**
+
+* Iterate through the grid.
+* Count how many cells have value `1`.
+
+---
+
+#### **2. Initialize two helper grids:**
+
+* `dist_sum[i][j]`: Sum of distances from cell `(i, j)` to all buildings.
+* `reach_count[i][j]`: Number of buildings that cell `(i, j)` can reach.
+
+---
+
+#### **3. For each building (cell with `1`), perform BFS:**
+
+* Track `visited[][]` to avoid revisiting.
+* Use BFS to expand from that building to all reachable empty lands (`0`).
+* For each reachable cell:
+
+  * Update its `dist_sum` by adding the distance.
+  * Increment its `reach_count`.
+
+---
+
+#### **4. After all BFS runs:**
+
+* Check each empty land cell (`0`):
+
+  * If `reach_count[i][j] == total_buildings`, it means this land is reachable from **all buildings**.
+  * Among such valid cells, find the minimum `dist_sum`.
+
+---
+
+#### **5. Final result:**
+
+* Return the **minimum distance sum**.
+* If no such valid empty land exists, return `-1`.
+
+---
+
+Let me know if you’d like visual diagrams or examples with this plan!
+
 
 ```python
 from collections import deque
+from typing import List
 
 class Solution:
-    def shortestDistance(self, grid):
+    def shortestDistance(self, grid: List[List[int]]) -> int:
+        # Grid lekapote or empty aithe -1 return cheyyali
+        if not grid or not grid[0]:
+            return -1
+
         rows, cols = len(grid), len(grid[0])
-        total_dist = [[0]*cols for _ in range(rows)]
-        reach = [[0]*cols for _ in range(rows)]
-        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-        building_count = 0
+        total_buildings = 0  # Total ga entha mandhi buildings unnaayo count cheyyali
 
-        for r in range(rows):
-            for c in range(cols):
-                if grid[r][c] == 1:
-                    building_count += 1
-                    visited = [[False]*cols for _ in range(rows)]
-                    q = deque([(r, c, 0)])
+        # ✅ Step 1: Total buildings count cheyyadam
+        for row in range(rows):
+            for col in range(cols):
+                if grid[row][col] == 1:
+                    total_buildings += 1
 
-                    while q:
-                        x, y, dist = q.popleft()
-                        for dx, dy in directions:
-                            nx, ny = x + dx, y + dy
+        # ✅ Step 2: Distance sum and reach count matrices initialize cheyyadam
+        dist_sum = [[0] * cols for _ in range(rows)]         # Prathi cell nunchi total distance
+        reach_count = [[0] * cols for _ in range(rows)]      # Prathi cell nunchi entha mandhi buildings ki reach ayyindho
 
-                            if (0 <= nx < rows and 0 <= ny < cols and
-                                grid[nx][ny] == 0 and not visited[nx][ny]):
+        # ✅ Helper method: ee cell bounds lo unda? already visit ayyinda?
+        def is_valid(r, c, visited):
+            return (
+                0 <= r < rows and
+                0 <= c < cols and
+                not visited[r][c]
+            )
 
-                                # Ee cell ni ee building reach chesindi
-                                visited[nx][ny] = True
-                                total_dist[nx][ny] += dist + 1
-                                reach[nx][ny] += 1
-                                q.append((nx, ny, dist + 1))
+        # ✅ Step 3: BFS from each building
+        def bfs(start_row: int, start_col: int) -> bool:
+            visited = [[False] * cols for _ in range(rows)]
+            queue = deque([(start_row, start_col, 0)])  # (row, col, distance)
+            visited[start_row][start_col] = True
+            reachable_buildings = 1  # I building ni include chesam
 
-        # Final step lo: anni buildings reach chesina 0 cells ni consider cheyyali
-        result = float('inf')
-        for r in range(rows):
-            for c in range(cols):
-                if grid[r][c] == 0 and reach[r][c] == building_count:
-                    result = min(result, total_dist[r][c])
+            directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right
 
-        return -1 if result == float('inf') else result
+            while queue:
+                row, col, dist = queue.popleft()
+
+                for d_row, d_col in directions:
+                    next_row, next_col = row + d_row, col + d_col
+
+                    if is_valid(next_row, next_col, visited):
+                        if grid[next_row][next_col] == 0:
+                            # ✅ Empty land unte distance and reach update cheyyadam
+                            dist_sum[next_row][next_col] += dist + 1
+                            reach_count[next_row][next_col] += 1
+                            visited[next_row][next_col] = True
+                            queue.append((next_row, next_col, dist + 1))
+
+                        elif grid[next_row][next_col] == 1:
+                            # ✅ Inko building ni reach ayyamu
+                            reachable_buildings += 1
+                            visited[next_row][next_col] = True
+
+            # ✅ Ee BFS lo anni buildings ki reach ayyama leda?
+            return reachable_buildings == total_buildings
+
+        # ✅ Step 4: Prathi building nunchi BFS run cheyyadam
+        for row in range(rows):
+            for col in range(cols):
+                if grid[row][col] == 1:
+                    if not bfs(row, col):
+                        return -1  # Edaina unreachable unte shortest distance possible kadu
+
+        # ✅ Step 5: Minimum distance ni find cheyyadam
+        min_distance = float('inf')
+        for row in range(rows):
+            for col in range(cols):
+                if grid[row][col] == 0 and reach_count[row][col] == total_buildings:
+                    min_distance = min(min_distance, dist_sum[row][col])
+
+        # ✅ Answer lekapote -1 return cheyyali
+        return min_distance if min_distance != float('inf') else -1
 ```
+
+---
+
+### 📊 Time & Space Complexity:
+
+#### ⏱ Time Complexity: `O(B × m × n)`
+
+* `B` = Number of buildings
+* For every building we do `BFS` across `m × n` grid → total time = **O(B × m × n)**
+
+#### 💾 Space Complexity: `O(m × n)`
+
+* `dist_sum`, `reach_count`, `visited` arrays are all `O(m × n)`
+* `queue` in BFS can grow up to `O(m × n)`
+
+---
+
+Let me know if you want a dry-run or want the same in Java with Telugu-style comments!
 
 ---
 
