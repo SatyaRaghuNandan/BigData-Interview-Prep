@@ -1,86 +1,131 @@
-Excellent question!
-
-You're right: the original `findPeakElement()` logic works **only when adjacent elements are guaranteed to be distinct**, as stated:
-
-> `nums[i] ≠ nums[i + 1]`
-
-This invariant helps ensure that **every strictly increasing slope eventually ends in a peak** and avoids ambiguity.
+Great question! Let’s update the **`findPeakElement()`** problem to handle **duplicates** in **Java**, including:
 
 ---
 
-## ❓ New Variant: **Duplicates Allowed**
+## ✅ Problem Recap (Leetcode 162 Variant)
 
-If you now allow **duplicates**, i.e. `nums[i] == nums[i+1]` is possible, the earlier approach may **miss valid peaks**, especially in **plateaus**.
+> Given an array of integers `nums`, **return any peak element's index**.
+> A peak element is one that is **greater than or equal to** its neighbors.
+>
+> 🆕 **Duplicates are allowed**, i.e., `nums[i] == nums[i+1]` is possible.
 
-### ❗ Example That Breaks Old Logic:
+---
 
-```python
-nums = [1, 2, 2, 2, 1]
-# Valid peak is at index 1, 2, or 3
-# Original binary search may skip the whole plateau
+## ❗ Why Original Binary Search Fails with Duplicates
+
+The classic Leetcode 162 binary search uses:
+
+```java
+if (nums[mid] > nums[mid + 1]) right = mid;
+else left = mid + 1;
+```
+
+⚠️ This assumes `nums[i] != nums[i+1]`.
+
+Example where this breaks:
+
+```java
+nums = [1, 2, 2, 2, 1];
+```
+
+* Flat plateau with a peak at `2`.
+* Original binary search may skip the entire plateau and return wrong index.
+
+---
+
+# ✅ Approach 1: Modified Binary Search with Duplicates
+
+### 🔧 Java Code with Telugu Comments
+
+```java
+public class PeakFinderWithDuplicates {
+
+    public int findPeakElement(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        // 🔁 Loop until left and right pointers meet
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            // 🔼 Increasing slope → peak will be right side
+            if (nums[mid] < nums[mid + 1]) {
+                left = mid + 1;
+            }
+            // 🔽 Decreasing slope → peak could be at mid or left side
+            else if (nums[mid] > nums[mid + 1]) {
+                right = mid;
+            }
+            // 🟰 Plateau situation → unsure, shrink window safely
+            else {
+                right--; // OR left++; both are acceptable
+            }
+        }
+
+        return left; // OR return right
+    }
+}
 ```
 
 ---
 
-## ✅ Updated Approach (with Duplicates Allowed)
+## ✅ Approach 2: Linear Scan for All Peaks (Brute Force)
 
-We need to slightly **modify the binary search**:
+If interviewer wants **all peaks** or code simplicity is preferred:
 
-* If `nums[mid] > nums[mid + 1]`: go left → peak might be `mid`
-* If `nums[mid] < nums[mid + 1]`: go right
-* But if `nums[mid] == nums[mid + 1]`: we **don't know** which side has a peak — so we **explore both** sides safely (bias towards right/left)
+```java
+public List<Integer> findAllPeakElements(int[] nums) {
+    List<Integer> peaks = new ArrayList<>();
+    int n = nums.length;
 
----
+    for (int i = 0; i < n; i++) {
+        boolean leftOk = (i == 0 || nums[i] >= nums[i - 1]);
+        boolean rightOk = (i == n - 1 || nums[i] >= nums[i + 1]);
+        if (leftOk && rightOk) {
+            peaks.add(i);
+        }
+    }
 
-## ✅ Python Code (Duplicates Allowed)
-
-```python
-class Solution:
-    def findPeakElementWithDuplicates(self, nums):
-        left = 0
-        right = len(nums) - 1
-
-        while left < right:
-            mid = (right - left) // 2 + left
-
-            if nums[mid] < nums[mid + 1]:
-                # Increasing → move right
-                left = mid + 1
-            elif nums[mid] > nums[mid + 1]:
-                # Decreasing → move left (including mid)
-                right = mid
-            else:
-                # nums[mid] == nums[mid + 1] → unsure, move left by 1 (safe shrink)
-                right -= 1  # OR left += 1, both are valid
-
-        return left  # or right, both equal
+    return peaks;
+}
 ```
 
----
-
-## 🧠 Time and Space Complexity
-
-| Metric           | Value      | Notes                                 |
-| ---------------- | ---------- | ------------------------------------- |
-| Time Complexity  | O(n) worst | Due to duplicates causing slow shrink |
-| Avg Time         | O(log n)   | If few/no duplicates                  |
-| Space Complexity | O(1)       | No extra space used                   |
+🧪 Input: `[1, 2, 2, 2, 1]` → Output: `[1, 2, 3]`
 
 ---
 
-## ✅ Behavior
+## 📊 Time & Space Complexity Comparison
 
-This modified binary search handles **plateaus** and **flat peaks** like:
-
-* `[1, 2, 2, 2, 1]` → returns any of the peak indices 1–3
-* `[3, 3, 3, 3]` → all are peaks; returns any valid index
+| Approach                    | Time                               | Space                    | Notes                           |
+| --------------------------- | ---------------------------------- | ------------------------ | ------------------------------- |
+| **Modified Binary Search**  | `O(log n)` average<br>`O(n)` worst | `O(1)`                   | Worst case when many duplicates |
+| **Brute Force Linear Scan** | `O(n)`                             | `O(k)` for output        | Simple and clear                |
+| **Find All Peaks**          | `O(n)`                             | `O(k)` for list of peaks | Use when all peaks are required |
 
 ---
 
-Let me know if you want:
+## 🧠 Interview Talking Points
 
-* To **find all** peak indices
-* The **Java version**
-* Handle **valleys** or **local minima**
+🎤 “If the array contains duplicates, traditional binary search logic breaks due to **plateaus**. So I use a modified binary search that safely shrinks the window by `right--` when encountering equality. This guarantees progress even when `nums[mid] == nums[mid+1]`, though in worst case it may degrade to linear time.”
 
-Happy to help!
+---
+
+## ✅ Behavior of Modified Binary Search
+
+| Input             | Output (any valid index) |
+| ----------------- | ------------------------ |
+| `[1, 2, 3, 1]`    | 2                        |
+| `[1, 2, 2, 2, 1]` | 1, 2, or 3               |
+| `[5, 5, 5, 5]`    | any index (0–3)          |
+
+---
+
+## 🎯 Want More?
+
+Let me know if you'd like:
+
+* To **return all plateaus** (flat peak zones)
+* Version for **2D matrix** peak finding (Leetcode 1901)
+* Peak with **strict inequality** (no equal neighbors)
+
+I'll happily extend this!
