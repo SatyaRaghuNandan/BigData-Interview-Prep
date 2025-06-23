@@ -1,72 +1,59 @@
-Here is your Python solution for **Leetcode 1004 – Max Consecutive Ones III**, rewritten with detailed **Telugu comments** and clear **time and space complexity analysis**.
+Here’s a 5-sentence description of the sliding window approach used in the Java solution:
+
+1. We maintain a window `[left, right]` and try to include as many `1`s as possible, allowing up to `k` zeros to be flipped.
+2. As we iterate with the `right` pointer, we decrement `k` whenever we see a zero, since we are "flipping" it to one.
+3. If `k` becomes negative, it means we've flipped more than allowed, so we move the `left` pointer forward to shrink the window and restore validity.
+4. While moving `left`, if the element leaving the window is a zero, we increment `k` since we're undoing a flip.
+5. At every step, we update the maximum window size using `right - left + 1` to track the longest valid subarray.
+
+
+
+
+
+Here's the equivalent **efficient Java implementation** for Leetcode 1004: *Max Consecutive Ones III* using the **sliding window** approach (same logic as your Python code), with **detailed Telugu comments**:
 
 ---
 
-### ✅ Python Code with Telugu Comments
+### ✅ Java Code – Sliding Window (O(N) Time, O(1) Space)
 
-```python
-from typing import List
+```java
+class Solution {
+    public int longestOnes(int[] nums, int k) {
+        int maxLength = 0; // Ila maximum window length ni store cheyyali
+        int left = 0; // Sliding window left pointer
 
-def longestOnes_1004_python(nums: List[int], k: int) -> int:
-    max_length = 0  # Ila max consecutive ones length ni track cheyadam
-    left = 0  # Sliding window left pointer
+        for (int right = 0; right < nums.length; right++) {
+            // nums[right] == 0 ante flip cheyyali kabatti k ni reduce cheyyali
+            if (nums[right] == 0) {
+                k--;
+            }
 
-    for right in range(len(nums)):
-        # nums[right] == 0 ante flip cheyyali, so k ni reduce cheyyali
-        if nums[right] == 0:
-            k -= 1
+            // k < 0 ante, already ekkuva 0s flip chesam, so window shrink cheyyali
+            while (k < 0) {
+                // nums[left] == 0 ante, adi window nunchi bayataki velthundi so k ni increment cheyyali
+                if (nums[left] == 0) {
+                    k++;
+                }
+                // left pointer ni move cheyyali to shrink window
+                left++;
+            }
 
-        # k < 0 ante, ekkuva 0s ni flip chesam, so left ni move cheyali
-        while k < 0:
-            # left daggara 0 vunte, adi remove avutundi kabatti k ni increment cheyyali
-            if nums[left] == 0:
-                k += 1
-            # left window ni forward cheyyadam
-            left += 1
+            // max window length ni update cheyyali
+            maxLength = Math.max(maxLength, right - left + 1);
+        }
 
-        # max_length ni update cheyyadam, current window size = right - left + 1
-        max_length = max(max_length, right - left + 1)
-
-    return max_length
+        return maxLength;
+    }
+}
 ```
 
 ---
 
-### 🧠 Explanation in Simple Terms:
+### ✅ Time & Space Complexity
 
-We are allowed to **flip at most `k` zeros to ones**. So:
-
-* Use a **sliding window** to include as many `1`s and **at most `k` flipped `0`s**.
-* When the number of zeros flipped **exceeds `k`**, move the `left` pointer forward to **restore validity**.
+* **Time Complexity**: `O(N)` – Each element is visited at most twice (right and left pointers).
+* **Space Complexity**: `O(1)` – No extra data structures used.
 
 ---
 
-### 🕒 Time Complexity: `O(n)`
-
-* `right` pointer goes from `0` to `n - 1` → **`O(n)`**
-* `left` pointer also moves **at most `n` times**
-* ✅ Total Time: **O(n)**
-
----
-
-### 🧮 Space Complexity: `O(1)`
-
-* We are using just a few integer variables (`left`, `right`, `max_length`, `k`)
-* No extra space based on input size
-* ✅ Total Space: **O(1)**
-
----
-
-### 📌 Example Dry Run:
-
-```python
-nums = [1, 1, 0, 0, 1, 1, 1, 0]
-k = 2
-```
-
-* Max 2 zeros can be flipped.
-* Answer: 6 (from index 0 to 5 → \[1,1,0,0,1,1])
-
----
-
-Let me know if you want this solution in Java as well, or dry runs on specific inputs!
+Let me know if you want to **track which indices were flipped** or **return the subarray itself** – I can extend this solution.
