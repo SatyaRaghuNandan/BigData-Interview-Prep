@@ -32,51 +32,55 @@ The **most preferred** and **optimal** approach is:
 
 ## ✅ Code with Detailed Telugu Comments:
 
-```python
-class Solution:
-    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
-        self.diameter = 0  # Tree lo max diameter ni store cheyyadaniki
+```java
 
-        def dfs(node):
-            if not node:
-                return 0  # Null node ki height 0 return cheyyadam
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    /**
 
-            # Left and Right subtree heights ni calculate cheyyadam
-            left_height = dfs(node.left)
-            right_height = dfs(node.right)
+1. The **diameter** of a binary tree is defined as the **length of the longest path between any two nodes**, which may or may not pass through the root.
+2. To find this, we use **post-order DFS traversal** to calculate the **height** of left and right subtrees for every node.
+3. At each node, we compute the possible diameter as `leftHeight + rightHeight`, and track the **maximum** across all nodes using a global variable.
+4. Finally, we return this maximum diameter value, which represents the longest path in terms of **number of edges**, not nodes.
+ */
+    private int diameter;
+    public int diameterOfBinaryTree(TreeNode root) {
+        diameter = 0;
+        longestPath(root);
+        return diameter;
+    }
 
-            # Diameter for this node = left height + right height
-            current_diameter = left_height + right_height
+    private int longestPath(TreeNode root) {
+        if (root == null) {
+            return -1; //  Am I not decrementing this ? 
+        }
+        int left = longestPath(root.left);
+        int right = longestPath(root.right);
 
-            # Global max diameter ni update cheyyadam
-            self.diameter = max(self.diameter, current_diameter)
-
-            # Parent ki height return cheyyali → max(left, right) + 1
-            return 1 + max(left_height, right_height)
-
-        dfs(root)  # DFS call from root node
-        return self.diameter
+        diameter = Math.max(diameter, left + right + 2) ;
+        return Math.max(left, right) + 1;
 
 
+    }
 
-
-
-from ...utils.treenode import TreeNode
-
-def getDiameter(root: TreeNode | None):
-    diameter = 0
-    def longestPath(root: TreeNode | None):
-        nonlocal diameter
-        if not root:
-            return 0
-        right = longestPath(root.right)
-        left = longestPath(root.left)
-        diameter = max(diameter, left + right)
-        return max(left, right) + 1
-    longestPath(root)
-    return diameter
+}
 
 ```
+
 
 ---
 
