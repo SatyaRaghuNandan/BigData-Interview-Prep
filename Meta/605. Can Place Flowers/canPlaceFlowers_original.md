@@ -1,76 +1,78 @@
-Here's a breakdown of your Python code for **"Can Place Flowers"** (LeetCode 605) along with **detailed Telugu comments** and explanation:
+Here is your Java code **cleanly formatted** with **detailed Telugu comments (in English script)** and **easy-to-remember tricks** for interviews.
 
 ---
 
-### ✅ **Problem Statement:**
+### ✅ **Formatted & Commented Java Code**
 
-Given a flowerbed (list of 0s and 1s) and an integer `n`, determine if `n` new flowers can be planted **without violating the rule**: **no two flowers can be adjacent**.
+```java
+class Solution {
+    public boolean canPlaceFlowers(int[] flowerbed, int n) {
+        // Adjacent Flowers undakudadhu → rendu pakkala kuda 1 undakudadhu
+        int count = 0;
 
----
+        for (int i = 0; i < flowerbed.length; i++) {
+            // Ee plot lo flower lekapote matrame consider cheyyali
+            if (flowerbed[i] == 0) {
 
-### ✅ **Code with Telugu Comments**
+                // Left plot empty unda? → i == 0 ante start lo unte boundary consider cheyyali
+                boolean emptyLeftPlot = (i == 0) || (flowerbed[i - 1] == 0);
 
-```python
-from typing import List
+                // Right plot empty unda? → i == last element aite boundary case
+                boolean emptyRightPlot = (i == flowerbed.length - 1) || (flowerbed[i + 1] == 0);
 
-class Solution:
-    def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
-        i = 0
-        placed = 0  # ippati varaku pettina flowers count
+                // Rendu pakkala plots empty unte flower plant cheyyachu
+                if (emptyLeftPlot && emptyRightPlot) {
+                    flowerbed[i] = 1; // Ee plot lo flower plant chesam
+                    count++; // Flower count ni increment cheyyali
 
-        while i < len(flowerbed):
-            # left side plot empty aithe 0 ga consider cheyyali
-            empty_left_plot = 0 if i == 0 else flowerbed[i - 1]
+                    // n flowers already plant ayite, return true (short-circuit)
+                    if (count >= n) {
+                        return true;
+                    }
+                }
+            }
+        }
 
-            # right side plot last index aithe 0 ga consider cheyyali
-            empty_right_plot = 0 if i == len(flowerbed) - 1 else flowerbed[i + 1]
-
-            # current, left, right plots anni empty aithe flower place cheyyachu
-            if flowerbed[i] == empty_left_plot == empty_right_plot == 0:
-                placed += 1  # flower plant chesam
-                i += 2        # next possible position ki jump cheyyali
-            elif flowerbed[i]:
-                i += 2  # already flower vunte next next ki jump cheyyali
-            else:
-                i += 3  # ekkada flower pettalem, skip next and jump to avoid overlap
-
-            # target flowers already plant chesam ante return True
-            if placed >= n:
-                return True
-
-        # loop aipoina tarvata kooda place cheyyaledu ante return False
-        return False
+        // Loop ayyaka kuda required flowers plant cheyyalekapote, check count
+        return count >= n;
+    }
+}
 ```
 
 ---
 
-### 🧪 **Example Test Case:**
+### 🧠 **Easy Way to Remember This Logic (Interview Tip)**
 
-```python
-sol = Solution()
-print(sol.canPlaceFlowers([1, 0, 0, 0, 1], 1))  # True
-print(sol.canPlaceFlowers([1, 0, 0, 0, 1], 2))  # False
+1. **Think in 3 PLOT WINDOW:** Every time you're at index `i`, look at `i-1`, `i`, `i+1`
+   → Can we plant here? Then: `[0, 0, 0]` pattern becomes `[0, 1, 0]`.
+
+2. **Boundary Safe Checks:**
+
+   * If `i == 0`, there's no `i-1`, assume left is empty.
+   * If `i == len-1`, there's no `i+1`, assume right is empty.
+
+3. **Greedy Strategy:**
+
+   * Plant flowers as early as possible if both neighbors are empty.
+   * This avoids skipping potential future plots.
+
+---
+
+### ✅ **Dry Run Example**
+
+```java
+flowerbed = [0, 0, 1, 0, 0], n = 2
+
+i = 0: [x, 0, 0] → left empty, right = 0 → ✅ → plant at i=0 → count = 1
+i = 1: [0, 1, 1] → already planted, skip
+i = 2: flowerbed[2] == 1 → skip
+i = 3: [1, 0, 0] → left = 1 → ❌
+i = 4: [0, 0, x] → ✅ → plant at i=4 → count = 2 → return true
 ```
 
 ---
 
-### 📈 **Time and Space Complexity**
+Let me know if you'd like a **visual diagram**, **Python equivalent**, or **test cases/edge cases** like:
 
-| Metric           | Complexity |
-| ---------------- | ---------- |
-| Time Complexity  | O(n)       |
-| Space Complexity | O(1)       |
-
-> Only one pass through the array; no extra space used.
-
----
-
-### 🔁 **Edge Cases Handled:**
-
-* Starting or ending with `0` → handles by `i == 0` and `i == len(flowerbed) - 1`.
-* Already planted flowers (1) block both adjacent plots.
-* Automatically stops if `n` is satisfied early.
-
----
-
-Let me know if you’d like a **Java version** or a **dry-run explanation with visuals**!
+* `n = 0`
+* `flowerbed = [1,0,1,0,1]`, `n = 1` → false
