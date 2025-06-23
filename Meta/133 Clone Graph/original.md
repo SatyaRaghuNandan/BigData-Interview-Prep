@@ -4,6 +4,64 @@ Here’s the equivalent Python version of your C++ graph cloning code (LeetCode 
 
 ### ✅ Python Code with Telugu Comments
 
+```java
+
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+
+    public Node() {
+        neighbors = new ArrayList<>();
+    }
+
+    public Node(int val) {
+        this.val = val;
+        neighbors = new ArrayList<>();
+    }
+
+    public Node(int val, List<Node> neighbors) {
+        this.val = val;
+        this.neighbors = neighbors;
+    }
+}
+
+class Solution {
+    public Node cloneGraph(Node node) {
+        // 🔴 Null check - input lo node lekapote, return null
+        if (node == null) return null;
+
+        // 🗺️ HashMap: original node ⟶ cloned node mapping maintain cheyyadam
+        Map<Node, Node> oldToNew = new HashMap<>();
+
+        // 🔁 DFS call to start cloning
+        return dfsClone(node, oldToNew);
+    }
+
+    private Node dfsClone(Node node, Map<Node, Node> oldToNew) {
+        // 🟡 Ee node ni clone chesamo ledo ani check cheyyadam
+        if (oldToNew.containsKey(node)) {
+            return oldToNew.get(node); // 🟢 Already clone chesina node return cheyyadam (cycles kosam)
+        }
+
+        // 🔵 Kotha node create cheyyadam (clone chesinattu)
+        Node clone = new Node(node.val);
+        oldToNew.put(node, clone); // 🟢 Mapping ni store cheyyadam
+
+        // 🔁 Neighbors ni recursive ga clone cheyyadam
+        for (Node neighbor : node.neighbors) {
+            // 🟣 Prati neighbor ni clone chesi, clone object ki add cheyyadam
+            clone.neighbors.add(dfsClone(neighbor, oldToNew));
+        }
+
+        return clone;
+    }
+}
+
+
+```
+
+
 ```python
 class Node:
     def __init__(self, val = 0, neighbors = None):
