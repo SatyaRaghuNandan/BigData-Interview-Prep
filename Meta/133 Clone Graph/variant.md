@@ -126,6 +126,73 @@ All connections and values are deeply copied.
 
 If this were in Python:
 
+
+```java
+
+import java.util.*;
+
+// 🔷 Node definition
+class Node {
+    int val;
+    List<Node> neighbors;
+
+    Node(int val) {
+        this.val = val;
+        this.neighbors = new ArrayList<>();
+    }
+}
+
+// 🔷 Graph definition (contains multiple roots – disconnected graph)
+class Graph {
+    List<Node> roots;
+
+    Graph() {
+        this.roots = new ArrayList<>();
+    }
+}
+
+class Solution {
+    // 🔁 Clone chesina node ni return cheyyadam, memoization tho
+    private Node dfsClone(Node node, Map<Node, Node> oldToNew) {
+        // 🟢 Already clone chesina node unte return cheyyadam (cycles kosam)
+        if (oldToNew.containsKey(node)) {
+            return oldToNew.get(node);
+        }
+
+        // 🔵 Kotha clone create cheyyadam
+        Node clone = new Node(node.val);
+        oldToNew.put(node, clone);
+
+        // 🔁 Neighbors ni recursive ga clone cheyyadam
+        for (Node neighbor : node.neighbors) {
+            clone.neighbors.add(dfsClone(neighbor, oldToNew));
+        }
+
+        return clone;
+    }
+
+    // 🔷 Disconnected Graph Clone cheyyadam (multiple components)
+    public Graph cloneDisconnectedGraph(Graph graph) {
+        Graph output = new Graph();
+
+        for (Node root : graph.roots) {
+            if (root == null) continue;
+
+            Map<Node, Node> oldToNew = new HashMap<>();
+            Node clonedRoot = dfsClone(root, oldToNew);
+            output.roots.add(clonedRoot);
+        }
+
+        return output;
+    }
+}
+
+
+
+
+
+```
+
 ```python
 class Node:
     def __init__(self, val):
