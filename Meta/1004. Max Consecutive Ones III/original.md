@@ -54,6 +54,39 @@ class Solution {
 * **Time Complexity**: `O(N)` – Each element is visited at most twice (right and left pointers).
 * **Space Complexity**: `O(1)` – No extra data structures used.
 
+* Here are **two alternative approaches** for solving **Leetcode 1004 (Max Consecutive Ones III)** and why the **sliding window** approach is preferred:
+
+---
+
+### ✅ **Approach 1: Brute Force**
+
+* **Idea**: For every subarray, count how many zeros are present. If the number of zeros is ≤ `k`, calculate its length and update the max.
+* **Time Complexity**: `O(N^2)` – You check all possible subarrays.
+* **Space Complexity**: `O(1)`
+* **Why Not Preferred**: Very slow for large arrays. Not scalable.
+
+---
+
+### ✅ **Approach 2: Prefix Sum + Binary Search**
+
+* **Idea**:
+
+  * Build a prefix sum array that counts the number of zeros up to each index.
+  * For each `right` index, use binary search to find the leftmost index where the number of zeros in the window is at most `k`.
+* **Time Complexity**: `O(N log N)` – One binary search for each index.
+* **Space Complexity**: `O(N)` – To store prefix sums.
+* **Why Not Preferred**: Slightly better than brute force, but still slower and more complex than sliding window.
+
+---
+
+### ✅ Why Sliding Window is Better
+
+* It runs in **linear time `O(N)`**, uses **constant space**, and is **simple, intuitive**, and **easy to implement**.
+* It dynamically adjusts the window and avoids unnecessary re-computation, making it optimal for this type of problem.
+
+Let me know if you want code for any of the two approaches.
+
+
 ---
 
 Let me know if you want to **track which indices were flipped** or **return the subarray itself** – I can extend this solution.
