@@ -2,6 +2,8 @@ Yes! Let's **amend your original `canPlaceFlowers` solution** to support the **v
 
 ---
 
+### // VARIANT: What if you had to return the number of flowers you can place?
+
 ### ✅ Updated Java Code: Return Number of Flowers Placed (Same Style)
 
 ```java
