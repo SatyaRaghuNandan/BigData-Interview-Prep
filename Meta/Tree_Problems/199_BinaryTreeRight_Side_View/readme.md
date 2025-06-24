@@ -1,3 +1,35 @@
+## 🔍 Why BFS is Preferred
+
+### 🔧 BFS Traverses Level-by-Level
+
+* BFS naturally processes all nodes **level by level**, **left to right**, using a queue.
+* This makes it **very easy to know**:
+
+  * Who is the **first node** at the level (`i == 0`)
+  * Who is the **last node** at the level (`i == size - 1`)
+* You can capture **left/right views during the same loop** without extra logic.
+
+✅ **Efficient and Natural for Level Order Problems**
+
+---
+
+## 🧠 Why DFS is Less Natural for This Case
+
+DFS is **depth-first**, so it:
+
+* Traverses **deep** before **wide**
+* Requires you to manually **track level numbers**
+* Needs extra checks like:
+
+  * "Is this the **first node** I'm visiting at this level?" → then it's left view
+  * "Is this the **last node** I'm visiting at this level?" → needs post-order or overwrite logic
+
+### DFS works best when:
+
+* You’re looking for **any one path** (e.g., root-to-leaf path sum)
+* You want to go **deep into subtrees** (e.g., max depth, tree diameter)
+
+
 // ✅ Approach 1: BFS using Two Queues
 
 // 💡 Idea:
