@@ -4,6 +4,7 @@
 // Use two queues — one for the current level and one for the next level.
 // After each level finishes, add the last node from that level to the result (this will be the rightmost one).
 
+```java
 import java.util.*;
 
 class Solution {
@@ -160,7 +161,7 @@ class Solution4 {
 // Space: O(H) – due to recursion stack (H = height of tree)
 // Note: Elegant for interview, especially for recursion-heavy problems
 
-
+```
 
 // 🏁 Summary Table:
 //
