@@ -3,6 +3,51 @@ Sure! Here are all the **Telugu comments** from your code in one dedicated secti
 ---
 
 ### 📝 **Telugu Comments for `removeDuplicates` Function:**
+```java
+
+class Solution {
+    public String removeDuplicates(String input) {
+        StringBuilder builder = new StringBuilder();
+        for (char ch : input.toCharArray()) {
+            // Get the length
+            int length = builder.length();
+            if (length > 0 && builder.charAt(length - 1) == ch) {
+                builder.deleteCharAt(length - 1);
+            }else {
+                builder.append(ch);
+            }
+        }   
+        return builder.toString();
+    }
+}
+
+/*
+
+| Metric                | Java (`StringBuilder`) | Python (`list`) |
+| --------------------- | ---------------------- | --------------- |
+| Time Complexity       | **O(n)**               | **O(n)**        |
+| Space Complexity      | **O(n)**               | **O(n)**        |
+| Append/Delete Speed   | O(1) at end            | O(1) at end     |
+| Interview Readability | Slightly more verbose  | More concise    |
+
+class Solution:
+    def removeDuplicates(self, s: str) -> str:
+        result = []
+        for c in s:
+            if result and result[-1] == c: # If the Chars are Same.
+                result.pop()
+            else:
+                result.append(c)
+        return "".join(result)
+
+
+*/
+
+
+
+
+```
+
 
 ```text
 - Stack ni list laga use chestunnadu - charecter tho count ni store cheyyadam kosam
