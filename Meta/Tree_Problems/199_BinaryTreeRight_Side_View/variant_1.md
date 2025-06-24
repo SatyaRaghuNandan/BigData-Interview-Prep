@@ -25,6 +25,62 @@ You're testing a **custom tree traversal variant** that prints the **left-side v
 
 ---
 
+## ✅ Java Code with Telugu Comments
+
+
+```java
+import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int val) { this.val = val; }
+}
+
+class Solution {
+    public List<Integer> leftRightSideViewVariant(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+
+        List<Integer> leftSide = new ArrayList<>();   // Prathi level lo first (leftmost) node
+        List<Integer> rightSide = new ArrayList<>();  // Prathi level lo last (rightmost) node
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);  // BFS traversal ki root node ni queue lo pettaali
+
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();  // Ee level lo entha mandi unnaru
+
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode node = queue.poll();
+
+                // First node of this level — left side view
+                if (i == 0) {
+                    leftSide.add(node.val);
+                }
+
+                // Last node of this level — right side view
+                if (i == levelSize - 1) {
+                    rightSide.add(node.val);
+                }
+
+                // Children ni next level queue lo veyyadam
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+        }
+
+        // leftSide reverse cheyyadam (bottom-up order)
+        Collections.reverse(leftSide);
+
+        // rightSide[1:] ni include cheyyadam (duplicate root avoid cheyyadam ki)
+        for (int i = 1; i < rightSide.size(); i++) {
+            leftSide.add(rightSide.get(i));
+        }
+
+        return leftSide;
+    }
+}
+```
+
 ## ✅ Python Code with Telugu Comments
 
 ```python
