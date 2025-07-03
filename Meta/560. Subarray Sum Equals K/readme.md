@@ -8,6 +8,16 @@ Two Sum ki Extension laga ne untadi.
 
 ```java
 
+
+
+Complexity Analysis
+
+Time complexity : O(n). The entire nums array is traversed only once.
+
+Space complexity : O(n). Hashmap map can contain up to n distinct entries in the worst case.
+
+
+
 class Solution {
     public int subarraySum(int[] nums, int k) {
         int count = 0;
