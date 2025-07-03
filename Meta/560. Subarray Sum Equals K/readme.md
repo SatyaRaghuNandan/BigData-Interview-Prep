@@ -8,6 +8,32 @@ Two Sum ki Extension laga ne untadi.
 
 ```java
 
+Intuition
+We want to count the number of subarrays whose elements sum up to a given value k.
+Instead of checking every possible subarray (which is slow), we use the idea of prefix sums and a HashMap to track how often a cumulative sum has occurred.
+
+If at some index j, the current prefix sum is sum, and there's a previous prefix sum sum - k, then the subarray between those two indices adds up to k.
+
+Approach
+Initialize a HashMap to store the frequency of prefix sums.
+Start with map.put(0, 1) to handle subarrays starting at index 0.
+
+Traverse through the array, calculating the prefix sum sum at each index.
+
+For each index:
+
+Check if sum - k exists in the map. If it does, it means there's a subarray ending at the current index which sums to k. Add the frequency of sum - k to your answer.
+
+Update the map with the current sum.
+
+Return the final count of valid subarrays.
+
+Complexity
+Time complexity:
+O(n) — Single pass through the array.
+
+Space complexity:
+O(n) — In the worst case, the HashMap may store up to n different prefix sums
 
 
 Complexity Analysis
