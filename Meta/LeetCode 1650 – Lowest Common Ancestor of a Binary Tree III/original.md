@@ -1,8 +1,135 @@
-You’ve implemented the **Lowest Common Ancestor (LCA)** algorithm for a **binary tree with parent pointers** — as in **LeetCode 1650 – Lowest Common Ancestor of a Binary Tree III**.
+You’ve implemented the **Lowest Common Ancestor (LCA)** algorithm for a **binary tree with parent pointers** — as in **LeetCode 1650 – Lowest Common Ancestor of a 
+Binary Tree III**.
+
+
+Here’s the complete Java solution for **Leetcode 1650 - Lowest Common Ancestor of a Binary Tree III**, which assumes that **each node has a `.parent` pointer**.
+
+I'll provide:
+
+1. ✅ **Java Iterative Solution** (Two Pointer Technique)
+2. ✅ **Java Recursive Solution** (Using HashSet)
+3. ✅ **Time and Space Complexity**
+4. ✅ 📌 Edge Case Notes
+
+---
+
+## ✅ Java Node Class Definition
+
+```java
+class Node {
+    public int val;
+    public Node parent;
+    public Node left;
+    public Node right;
+
+    public Node(int val) {
+        this.val = val;
+    }
+}
+```
+
+---
+
+## ✅ 1. Iterative Solution (Two Pointers, Like Linked List Intersection)
+
+```java
+public class LCAWithParent {
+
+    public Node lowestCommonAncestor(Node p, Node q) {
+        Node a = p;
+        Node b = q;
+
+        // 🪜 Two pointer climb upwards
+        while (a != b) {
+            a = (a.parent != null) ? a.parent : q;
+            b = (b.parent != null) ? b.parent : p;
+        }
+
+        return a; // or b, since a == b
+    }
+}
+```
+
+### 🧠 Logic (Telugu in English)
+
+* RendU nodes ki `parent` path climb chesthu potham.
+* Oka pointer `null` ki vachinappudu, vere node nunchi start cheyyadam.
+* Iddaru okesari same node mida padutaaru (guaranteed due to total equal path logic).
+
+---
+
+## ✅ 2. Recursive Solution (Using HashSet to Track Ancestors)
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+public class LCAWithParentRecursive {
+
+    public Node lowestCommonAncestor(Node p, Node q) {
+        Set<Node> visited = new HashSet<>();
+
+        // 👉 Climb from p and mark all ancestors
+        while (p != null) {
+            visited.add(p);
+            p = p.parent;
+        }
+
+        // 👉 Climb from q and return the first common ancestor
+        while (q != null) {
+            if (visited.contains(q)) {
+                return q;
+            }
+            q = q.parent;
+        }
+
+        return null; // In case there's no LCA (disconnected trees)
+    }
+}
+```
+
+---
+
+## ⏱️ Time and Space Complexity
+
+| Metric | Iterative (Two Pointer) | Recursive (Using Set)      |
+| ------ | ----------------------- | -------------------------- |
+| Time   | `O(H)`                  | `O(H)`                     |
+| Space  | `O(1)`                  | `O(H)` for HashSet storage |
+| Notes  | Best in practice        | Clear ancestor-path logic  |
+
+Where `H` is the height of the tree (or max depth from node to root).
+
+---
+
+## 🧪 Edge Cases
+
+1. ✅ `p == q` → Returns `p` directly.
+2. ✅ One is ancestor of the other → Still returns LCA correctly.
+3. ✅ Tree with only one node → Works without issues.
+4. ❌ Disconnected trees → Recursive version returns `null`, iterative may loop forever unless guarded.
+
+---
+
+## 📌 Optional Enhancements
+
+Would you like any of these next?
+
+* ✅ Java unit tests using `JUnit` with edge cases
+* ✅ Visualization of pointer paths
+* ✅ Conversion to tree *without* parent pointer (DFS approach)
+
+Let me know how you’d like to continue!
+
+
 
 Below is a full **Python version with Telugu comments**, followed by an **explanation of the approach** and **time/space complexity**.
 
 ---
+
+
+
+
 
 ## ✅ Python Version with Telugu Comments
 
