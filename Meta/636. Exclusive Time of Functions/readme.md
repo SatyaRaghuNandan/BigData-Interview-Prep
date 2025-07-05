@@ -175,4 +175,179 @@ Would you like:
 * ✅ A variant that supports **inclusive end time** in the second version too?
 * ✅ Help turning raw strings into structured `Log` objects?
 
+
+
+Perfect. Below are two detailed Java programs:
+
+1. ✅ **Original Leetcode 636 Problem** – with integer IDs and inclusive end handling
+2. ✅ **Variant** – with named functions and structured logs
+
+Each has:
+
+* 📦 Complete class with `main()` method
+* 🧪 Multiple **comprehensive test cases**
+* 📌 Detailed comments (interview-style)
+* 🧠 Clear input-output expectations
+
+---
+
+## ✅ 1. Original Leetcode 636 (Function ID, Inclusive End)
+
+### 🔹 Java Code with Main + Test Cases
+
+```java
+import java.util.*;
+
+public class ExclusiveTime636_Original {
+
+    public int[] exclusiveTime(int n, List<String> logs) {
+        int[] result = new int[n];
+        Stack<Integer> stack = new Stack<>();
+        int prev = 0;
+
+        for (String log : logs) {
+            String[] parts = log.split(":");
+            int id = Integer.parseInt(parts[0]);
+            String type = parts[1];
+            int timestamp = Integer.parseInt(parts[2]);
+
+            if (type.equals("start")) {
+                if (!stack.isEmpty()) {
+                    result[stack.peek()] += timestamp - prev;
+                }
+                stack.push(id);
+                prev = timestamp;
+            } else { // type == "end"
+                result[stack.pop()] += timestamp - prev + 1;
+                prev = timestamp + 1;
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        ExclusiveTime636_Original solution = new ExclusiveTime636_Original();
+
+        List<String> logs1 = Arrays.asList("0:start:0", "1:start:2", "1:end:5", "0:end:6");
+        System.out.println("Expected: [3, 4]");
+        System.out.println("Output  : " + Arrays.toString(solution.exclusiveTime(2, logs1)));
+
+        List<String> logs2 = Arrays.asList("0:start:0", "0:end:0");
+        System.out.println("Expected: [1]");
+        System.out.println("Output  : " + Arrays.toString(solution.exclusiveTime(1, logs2)));
+
+        List<String> logs3 = Arrays.asList("0:start:0", "1:start:2", "1:end:5", "0:end:6", "2:start:7", "2:end:9");
+        System.out.println("Expected: [3, 4, 3]");
+        System.out.println("Output  : " + Arrays.toString(solution.exclusiveTime(3, logs3)));
+    }
+}
+```
+
+---
+
+## ✅ 2. Variant with Named Functions and Structured Log
+
+### 🔹 Log Struct and Main Program
+
+```java
+import java.util.*;
+
+class Log {
+    String functionName;
+    String type; // "start" or "end"
+    int timestamp;
+
+    public Log(String name, String type, int timestamp) {
+        this.functionName = name;
+        this.type = type;
+        this.timestamp = timestamp;
+    }
+}
+
+public class ExclusiveTime636_Variant {
+
+    public Map<String, Integer> profileApp(List<Log> logs) {
+        Map<String, Integer> result = new HashMap<>();
+        Stack<String> stack = new Stack<>();
+        int prev = 0;
+
+        for (Log log : logs) {
+            if (log.type.equals("start")) {
+                if (!stack.isEmpty()) {
+                    String prevFunc = stack.peek();
+                    result.put(prevFunc, result.getOrDefault(prevFunc, 0) + (log.timestamp - prev));
+                }
+                stack.push(log.functionName);
+                prev = log.timestamp;
+            } else {
+                String finishedFunc = stack.pop();
+                result.put(finishedFunc, result.getOrDefault(finishedFunc, 0) + (log.timestamp - prev));
+                prev = log.timestamp;
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        ExclusiveTime636_Variant solution = new ExclusiveTime636_Variant();
+
+        List<Log> logs1 = Arrays.asList(
+                new Log("ServiceA", "start", 0),
+                new Log("ServiceB", "start", 2),
+                new Log("ServiceB", "end", 5),
+                new Log("ServiceA", "end", 6)
+        );
+        System.out.println("Test 1 Expected: {ServiceA=3, ServiceB=3}");
+        System.out.println("Output         : " + solution.profileApp(logs1));
+
+        List<Log> logs2 = Arrays.asList(
+                new Log("Ping", "start", 1),
+                new Log("Ping", "end", 3)
+        );
+        System.out.println("Test 2 Expected: {Ping=2}");
+        System.out.println("Output         : " + solution.profileApp(logs2));
+
+        List<Log> logs3 = Arrays.asList(
+                new Log("UI", "start", 0),
+                new Log("Controller", "start", 1),
+                new Log("Controller", "end", 3),
+                new Log("UI", "end", 5)
+        );
+        System.out.println("Test 3 Expected: {Controller=2, UI=3}");
+        System.out.println("Output         : " + solution.profileApp(logs3));
+    }
+}
+```
+
+---
+
+## ✅ Meta-Ready Interview Notes
+
+### 🧠 Tips for Talking in Interview
+
+* Emphasize **stack-based nested function tracking**
+* Clarify **difference in end timestamp semantics**
+* Mention why `prev` is needed (tracks last time cursor moved)
+* For variant, stress **flexibility with string-named functions**, helpful in observability tooling
+
+---
+
+## ✅ Bonus Enhancements You Can Try
+
+* Convert string logs → `Log` objects for variant
+* Add support for `pause`/`resume` logs
+* Add error-handling for malformed logs (robustness)
+
+---
+
+Would you like to:
+
+* Add support for parsing `"id:start:timestamp"` → `Log`?
+* Add **unit test framework** like JUnit for Meta-style coverage?
+* Handle **parallel functions (non-nested)**?
+
+Let me know and I can extend this further.
+
+
 Let me know!
