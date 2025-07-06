@@ -81,3 +81,101 @@ Input: `2736`
 ---
 
 Let me know if you want to add test cases, optimize further, or explore a recursive variant!
+
+
+
+
+
+Great follow-up. Yes — your understanding is **mostly correct**, and let’s make it **crystal clear**.
+
+---
+
+## ✅ Question Recap (LeetCode 670 – Maximum Swap)
+
+> You are given an integer `num`.
+> You can **swap two digits at most once** to get the maximum valued number.
+> Return the maximum valued number you can get.
+
+---
+
+## 🤔 Why TWO `return` statements?
+
+### ✅ Return #1 (inside loop):
+
+```java
+return Integer.parseInt(new String(digits));
+```
+
+* If a valid **swap is found**, do the swap and **return immediately**.
+* This is the **only swap you're allowed** (since problem says: *at most once*).
+* You **don't need to continue** — the greedy approach guarantees the best answer.
+
+---
+
+### ✅ Return #2 (at end):
+
+```java
+return num;
+```
+
+* This happens **only when no swap is ever made**.
+* Which means: the digits are already in the best order possible (e.g. `9876` or `9973`)
+* So, in that case, **no swap is needed**, and you just return the original number.
+
+---
+
+## ✅ Example 1: `2736`
+
+* First digit = `2`
+* You see `7` later → Swap to get `7236` → return immediately
+
+✅ Early return after **one valid swap**
+
+---
+
+## ✅ Example 2: `9973`
+
+* Already in maximum form — no digit after a smaller one
+* Inner loop **never finds a swap**
+* No `return` happens inside loop
+* So fallback is: `return num` → returns `9973`
+
+✅ No return inside loop → hits the final return
+
+---
+
+## ✅ Why Not Just One Return?
+
+You **can** technically write it with one return like this:
+
+```java
+boolean swapped = false;
+
+... // loop and swap if needed
+
+if (swapped) return new number;
+else return original;
+```
+
+But in this optimized version:
+
+* We **exit early** as soon as we find the best possible result (greedy)
+* We **avoid unnecessary tracking (e.g. boolean flags)**
+* It's simpler and more efficient
+
+---
+
+## 🔁 Summary
+
+| Situation           | What Happens                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------- |
+| Valid swap found    | Swap → return new number                                                                    |
+| No valid swap found | Just return original number                                                                 |
+| Why two returns?    | Because only **one swap** is allowed, and if we don't use it, we return the original number |
+
+---
+
+Would you like to refactor this to a version with **one return**, or visualize this with a dry-run stack trace?
+
+
+
