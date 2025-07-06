@@ -182,3 +182,122 @@ Would you like this visualized with a dry-run on a tree like `10 → 5, 15 → 6
 
 
 
+Excellent question — and a **very common** one in interviews like at Meta, Google, or Amazon.
+
+Let’s break it down from an **interviewer’s perspective** and give you an **optimal answer** with code, reasoning, and strategy.
+
+---
+
+## ✅ Question: “What is the Optimal Way to Validate a Binary Search Tree?”
+
+### 💡 Optimal Answer Structure (How you say it):
+
+> “The most optimal and reliable way is to use a **recursive DFS** with a **min–max range check** on each node.
+> This approach ensures the entire tree maintains the invariant:
+> **left subtree < node < right subtree**, not just with immediate children but also ancestors.”
+
+---
+
+## ✅ Optimal Java Code (Concise, Clean)
+
+```java
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return validate(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    private boolean validate(TreeNode node, long min, long max) {
+        if (node == null) return true;
+
+        if (node.val <= min || node.val >= max) return false;
+
+        return validate(node.left, min, node.val) &&
+               validate(node.right, node.val, max);
+    }
+}
+```
+
+---
+
+## ✅ Why is this optimal?
+
+| Criteria              | ✅ Optimal Min/Max DFS              |
+| --------------------- | ---------------------------------- |
+| ✔️ Time Complexity    | O(N) (every node once)             |
+| ✔️ Space Complexity   | O(H) (call stack)                  |
+| ✔️ Handles edge cases | Yes (`Integer.MIN/MAX`) via `long` |
+| ✔️ Global correctness | Enforces ancestor constraints      |
+| ✔️ Readability        | Very high – clean and recursive    |
+
+---
+
+## 🛠️ Common Pitfall to Mention (Optional in interview)
+
+> “A common mistake is checking only `node.left.val < node.val` and `node.right.val > node.val`, which misses deeper violations.”
+
+Bad version (don’t use):
+
+```java
+if (node.left != null && node.left.val >= node.val) return false;
+if (node.right != null && node.right.val <= node.val) return false;
+```
+
+This will **fail for trees like:**
+
+```
+    10
+   /  \
+  5    15
+      /  \
+     6    20
+```
+
+Because `6` is on the right of `10`, but less than `10` — invalid BST.
+
+---
+
+## ✅ If Interviewer Asks “Can You Do This Iteratively?”
+
+Sure! Mention:
+
+> “Yes, I can also solve this using an **iterative in-order traversal**.
+> If the tree is a valid BST, then an in-order traversal yields a strictly increasing sequence.”
+
+You can share this code:
+
+```java
+public boolean isValidBST(TreeNode root) {
+    Stack<TreeNode> stack = new Stack<>();
+    TreeNode curr = root;
+    Integer prev = null;
+
+    while (curr != null || !stack.isEmpty()) {
+        while (curr != null) {
+            stack.push(curr);
+            curr = curr.left;
+        }
+
+        curr = stack.pop();
+        if (prev != null && curr.val <= prev) return false;
+
+        prev = curr.val;
+        curr = curr.right;
+    }
+
+    return true;
+}
+```
+
+---
+
+## 🧠 Final Summary You Can Say in Interview
+
+> “I’d choose the recursive min/max method as the optimal way to validate a BST.
+> It’s simple, correct, and handles edge cases cleanly.
+> If asked for an iterative solution, I’d implement in-order traversal and check for sorted values.”
+
+---
+
+Would you like a cheat-sheet answer to memorize for this question or dry-run walkthrough of both solutions?
+
+
