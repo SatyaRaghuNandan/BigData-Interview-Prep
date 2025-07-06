@@ -1,37 +1,47 @@
+## 🧭 LeetCode 173 – Binary Search Tree Iterator (Java Version)
 
+---
 
+### ✅ Problem Summary
+> Design an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.
 
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
+Implement the `BSTIterator` class:
+- `BSTIterator(TreeNode root)` initializes the object.
+- `int next()` returns the next smallest number.
+- `boolean hasNext()` returns whether the next smallest number is available.
+
+---
+
+### ✅ Java Code (with Comments)
+
+```java
+import java.util.*;
+
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode() {}
+    TreeNode(int val) { this.val = val; }
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
 class BSTIterator {
-     private Stack<TreeNode> stack = new Stack<>();
+    private Stack<TreeNode> stack = new Stack<>();
 
-
-
-/* BSTIterator(TreeNode root) Initializes an object of the BSTIterator class. The root of the BST is given as part of the constructor. The pointer should be initialized to a non-existent number smaller than any element in the BST.
-*/
     public BSTIterator(TreeNode root) {
-        pushLeft(root); // Push all left nodes to the stack
+        pushLeft(root); // Push all left nodes to the stack (in-order traversal)
     }
 
     // Returns the next smallest element
     public int next() {
         TreeNode node = stack.pop();
 
-        // If node has right subtree, push its left path
+        // If node has a right subtree, process its left path
         if (node.right != null) {
             pushLeft(node.right);
         }
@@ -52,10 +62,54 @@ class BSTIterator {
         }
     }
 }
+```
 
-/**
- * Your BSTIterator object will be instantiated and called as such:
- * BSTIterator obj = new BSTIterator(root);
- * int param_1 = obj.next();
- * boolean param_2 = obj.hasNext();
- */
+---
+
+### ✅ Time and Space Complexity
+
+| Method        | Time Complexity | Space Complexity |
+|---------------|------------------|-------------------|
+| `next()`      | `O(1)` amortized | `O(h)` where h = height of tree |
+| `hasNext()`   | `O(1)`           | `O(h)`            |
+
+- In total, each node is pushed and popped **once**, so total time across `n` calls is `O(n)`.
+- Stack holds up to `h` elements, where `h` is the height of the BST.
+
+---
+
+### ✅ Sample Test Case
+
+```java
+TreeNode root = new TreeNode(7,
+        new TreeNode(3),
+        new TreeNode(15,
+            new TreeNode(9),
+            new TreeNode(20)));
+
+BSTIterator iterator = new BSTIterator(root);
+System.out.println(iterator.next());    // returns 3
+System.out.println(iterator.next());    // returns 7
+System.out.println(iterator.hasNext()); // returns true
+System.out.println(iterator.next());    // returns 9
+System.out.println(iterator.hasNext()); // returns true
+System.out.println(iterator.next());    // returns 15
+System.out.println(iterator.hasNext()); // returns true
+System.out.println(iterator.next());    // returns 20
+System.out.println(iterator.hasNext()); // returns false
+```
+
+---
+
+### 🧠 How to Remember This Approach
+
+- Think of **in-order traversal** (Left → Node → Right) = Sorted Order.
+- Use a **stack** to simulate the recursive traversal.
+- Always **push left nodes** first (simulate the in-order recursion).
+- When `next()` is called, pop one node and process its right child.
+
+✅ Tip: All left children are pushed until we reach the smallest node.
+
+---
+
+Let me know if you'd like the **reverse iterator** (for decreasing order) or **next-k smallest** extension!
