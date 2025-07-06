@@ -102,3 +102,83 @@ public class ValidateBST {
 ---
 
 Let me know if you want an iterative version using Stack, or want to validate **duplicate allowed** BSTs (e.g., on left only).
+
+
+
+Yes — your understanding is **mostly correct**, and you're on the right track! Let's break it down clearly, especially your question:
+
+---
+
+## ❓ Why return `true` when `root == null`?
+
+```java
+if (root == null) {
+    return true;
+}
+```
+
+### ✅ Meaning:
+
+An empty subtree (i.e., `null` node) is **by definition** a valid Binary Search Tree.
+
+### 🧠 Think recursively:
+
+* Every leaf node's left and right child is `null`.
+* We need the base case in recursion.
+* So, if we reach a `null`, we assume that part of the tree is valid (no violation to BST rules).
+
+✅ **Correct behavior:** Returning `true` lets recursion bubble up from leaf to root if all constraints are satisfied.
+
+---
+
+## ✅ Your interpretation of:
+
+```java
+if (root.val <= min || root.val >= max)
+    return false;
+```
+
+Is also **correct**.
+
+### 🔥 Reason:
+
+* BST rule: for each node, all nodes in the **left subtree must be strictly < root**, and **right subtree strictly > root**
+* So we maintain a valid **range (min, max)** during recursion
+
+Example:
+
+* At root = `10`, left range is `(-∞, 10)`, right range is `(10, ∞)`
+* At left child = `5`, its left is `(-∞, 5)`, right is `(5, 10)`, etc.
+
+If at any point `val <= min` or `val >= max`, we **violate** the BST invariant.
+
+---
+
+## ✅ Final Line:
+
+```java
+return validate(root.left, min, root.val) &&
+       validate(root.right, root.val, max);
+```
+
+* Recurse left: update `max` to `root.val`
+* Recurse right: update `min` to `root.val`
+
+This guarantees **entire subtree** follows the global BST rules.
+
+---
+
+## ✅ Summary of Your Understanding
+
+| Statement                                   | Correct? | Notes                                        |
+| ------------------------------------------- | -------- | -------------------------------------------- |
+| `return true` on null node → means valid    | ✅        | Correct base case                            |
+| `<= min` or `>= max` means invalid BST      | ✅        | Enforces strict rule: left < node < right    |
+| Ranges are updated at each step recursively | ✅        | That’s how BST property is enforced globally |
+
+---
+
+Would you like this visualized with a dry-run on a tree like `10 → 5, 15 → 6, 20` (invalid BST)?
+
+
+
