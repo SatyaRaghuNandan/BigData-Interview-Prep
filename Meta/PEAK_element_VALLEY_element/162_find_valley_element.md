@@ -1,133 +1,80 @@
-You're working with an excellent **variant of the "Find Peak Element" problem**, which searches for a **Valley Element** — an element **smaller than both neighbors**.
+Great! Here's the **Java version** of the **Find Valley Element** problem using the optimal **binary search** approach, complete with:
 
-Let’s go over this implementation in full detail, with:
-
----
-
-### ✅ What’s a **Valley Element**?
-
-A **valley** is an index `i` such that:
-
-```python
-nums[i] < nums[i - 1] and nums[i] < nums[i + 1]
-```
-
-For edge cases:
-
-* We treat `nums[-1]` and `nums[len]` as **positive infinity** (`+∞`)
-* So, the **first** or **last** element can be a valley.
+* ✅ Clean structure
+* ✅ Telugu + English comments
+* ✅ Time and space complexity
+* ✅ Sample test cases
 
 ---
 
-### ✅ Your Code — Annotated & Explained
+## ✅ Java Code – Find Valley Element (Binary Search)
 
-```python
-def findValleyElement(nums):
-    left = 0
-    right = len(nums) - 1
+```java
+class Solution {
+    public int findValleyElement(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
 
-    while left <= right:
-        mid = (right - left) // 2 + left  # Calculate midpoint safely
+        // Telugu: Binary Search – valley element kosam
+        while (left < right) {
+            int mid = left + (right - left) / 2;
 
-        # Check if current element is a valid valley:
-        if (mid == len(nums) - 1 or nums[mid + 1] > nums[mid]) and \
-           (mid == 0 or nums[mid - 1] > nums[mid]):
-            return mid  # mid is a valley
+            // Telugu: If right element thakkuva undi → valley right side lo untadi
+            if (nums[mid] > nums[mid + 1]) {
+                left = mid + 1;
+            } else {
+                // Telugu: mid or left side lo valley undachu
+                right = mid;
+            }
+        }
 
-        # If right neighbor is smaller, valley might be on right
-        if nums[mid + 1] < nums[mid]:
-            left = mid + 1
-        else:
-            # Otherwise valley might be on left
-            right = mid - 1
-
-    return -1  # Should never happen if input has at least one valley
-
-
-
-def findValleyElement(nums):
-    left = 0
-    right = len(nums) - 1
-
-    while left < right:
-        mid = (left + right) // 2
-
-        # If right side is smaller, valley must be on the right
-        if nums[mid] > nums[mid + 1]:
-            left = mid + 1
-        else:
-            # Left side (or mid itself) could be the valley
-            right = mid
-
-    return left  # or return nums[left] if value needed
-
-
-
+        // Telugu: Final index lo valley untadi
+        return left;
+    }
+}
 ```
 
 ---
 
-### 🧠 Logic (in Telugu - Transliterated):
+## ✅ Time and Space Complexity
 
-```text
-- mid element ni valley cheyyali ante:
-  - mid ki left and right neighbors kanna thakkuva undaali.
-  - mid = 0 ayite left side +∞ laga treat chestham.
-  - mid = n - 1 ayite right side +∞ laga treat chestham.
-  
-- Right neighbor chinna undi ante valley right lo vundachu → left = mid + 1
-- Otherwise valley left lo vundachu → right = mid - 1
+| Metric           | Value      | Why?                                 |
+| ---------------- | ---------- | ------------------------------------ |
+| Time Complexity  | `O(log n)` | Binary search halves input each step |
+| Space Complexity | `O(1)`     | No extra space used                  |
+
+---
+
+## ✅ Sample Test Cases
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+
+        System.out.println(sol.findValleyElement(new int[]{1, 2, 3, 1}));          // Output: 0 or 3
+        System.out.println(sol.findValleyElement(new int[]{3, 2, 1}));             // Output: 2
+        System.out.println(sol.findValleyElement(new int[]{1, 2, 1, 3, 5, 6}));    // Output: 2
+        System.out.println(sol.findValleyElement(new int[]{5, 4, 3, 4, 5}));       // Output: 2
+        System.out.println(sol.findValleyElement(new int[]{1}));                   // Output: 0 (edge case)
+    }
+}
 ```
 
 ---
 
-### 🧪 Test Case Walkthroughs
+## ✅ Edge Case Handling
 
-#### 1. `nums = [1, 2, 3, 1]`
-
-* Index 0 is smaller than `nums[1] = 2`
-* Treated as valley because left is `+∞` → ✅
-
-#### 2. `nums = [1, 2, 3, 5, 3, 4, 3, 1, 6]`
-
-* Index 4: `nums[4] = 3 < nums[3] = 5` and `nums[4] < nums[5] = 4` → ✅
-
-#### 3. `nums = [3, 2, 3, 4, 3, 2]`
-
-* Index 1: `nums[1] = 2` is smaller than `nums[0] = 3` and `nums[2] = 3` → ✅
-
-#### 4. `nums = [1, 2, 3, 4, 3, 2]`
-
-* Index 0 is smaller than `nums[1] = 2` and treated as valley → ✅
-
-#### 5. `nums = [1, 2, 3, 2, 1, 0]`
-
-* Index 5: `nums[5] = 0` is last element → treated as right `+∞` → valid valley → ✅
-
-#### 6. `nums = [1, 2, 3, 2, 1, 6]`
-
-* Index 4: `nums[4] = 1` is less than both `nums[3] = 2`, `nums[5] = 6` → ✅
+* Beginning (`nums[0] < nums[1]`)
+* Ending (`nums[n-1] < nums[n-2]`)
+* Single element (`[5]`) is a valley by definition
 
 ---
 
-### ⏱️ Time and Space Complexity
+Would you like to:
 
-| Metric           | Value      |
-| ---------------- | ---------- |
-| Time Complexity  | `O(log n)` |
-| Space Complexity | `O(1)`     |
+* 🔄 Combine peak & valley logic into one function?
+* 🧪 Add JUnit test class for assertion-based testing?
+* 📊 Solve **2D valley search** similar to peak in a matrix?
 
----
-
-### ✅ Summary
-
-| Feature         | Explanation                               |
-| --------------- | ----------------------------------------- |
-| Edge Safe       | Yes, due to `mid == 0` and `mid == n - 1` |
-| Direction Logic | Always moves toward decreasing slope      |
-| Binary Search   | Yes, efficient `O(log n)`                 |
-| Edge Handling   | Treats out-of-bound as `+∞`               |
-
----
-
-Would you like to **combine both peak & valley detection**, or extend this logic to a **2D grid** (like "Find Valley in Matrix")?
+You're on a great path — let me know what you'd like to do next!
