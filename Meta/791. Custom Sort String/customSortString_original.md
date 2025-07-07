@@ -1,85 +1,101 @@
-Here's a **detailed explanation with comments** for your solution to **"Custom Sort String"** (Leetcode 791):
+Absolutely! Here's the **Java version** of the `customSortString` problem (Leetcode 791) with:
+
+* ✅ Clean structure
+* ✅ Telugu-style comments (transliterated in English)
+* ✅ Time and Space Complexity analysis
+* ✅ Edge case-friendly logic
+* ✅ Sample test cases (as a main method)
 
 ---
 
-### ✅ Problem Summary
+## ✅ Java Code with Detailed Telugu Comments
 
-Given:
+```java
+import java.util.*;
 
-* A custom order string `order` (a permutation of unique letters),
-* A string `s` (can contain duplicates),
+public class Solution {
+    public String customSortString(String order, String s) {
+        // Step 1: Frequency map ni build cheddam for 's' string
+        Map<Character, Integer> freq = new HashMap<>();
+        for (char ch : s.toCharArray()) {
+            freq.put(ch, freq.getOrDefault(ch, 0) + 1);
+        }
 
-**Goal**: Reorder `s` so that the characters in `order` appear first (in the same order as `order`), followed by any leftover characters (in any order).
+        // Step 2: Result build cheyyadam ki StringBuilder use cheddam
+        StringBuilder result = new StringBuilder();
 
----
+        // Step 3: 'order' lo unna characters ni order lo result lo add cheddam
+        for (char ch : order.toCharArray()) {
+            if (freq.containsKey(ch)) {
+                int count = freq.get(ch);
+                // ch ni count times append cheyyadam
+                for (int i = 0; i < count; i++) {
+                    result.append(ch);
+                }
+                freq.remove(ch); // already used characters remove cheyyadam
+            }
+        }
 
-### ✅ Python Code with Detailed Comments
+        // Step 4: 'order' lo leni remaining characters ni append cheyyadam
+        for (Map.Entry<Character, Integer> entry : freq.entrySet()) {
+            char ch = entry.getKey();
+            int count = entry.getValue();
+            for (int i = 0; i < count; i++) {
+                result.append(ch);
+            }
+        }
 
-```python
-from collections import Counter
+        return result.toString();
+    }
 
-class Solution:
-    def customSortString(self, order: str, s: str) -> str:
-        # Step 1: Count frequency of each character in s
-        freq = Counter(s)
+    // ✅ Sample Test Cases
+    public static void main(String[] args) {
+        Solution sol = new Solution();
 
-        # Step 2: Initialize result list
-        result = []
-
-        # Step 3: Add characters from s that are in the custom order
-        for char in order:
-            if char in freq:
-                result.extend([char] * freq[char])  # Add char `freq[char]` times
-                freq[char] = 0  # Mark it as used
-
-        # Step 4: Add remaining characters not in `order`
-        for remaining_char, f in freq.items():
-            if f > 0:
-                result.extend([remaining_char] * f)
-
-        # Step 5: Return as a string
-        return "".join(result)
+        System.out.println(sol.customSortString("cba", "abcdabc")); // Example: ccbbaad
+        System.out.println(sol.customSortString("xyz", "abc"));     // Output: abc (order lo characters ledu)
+        System.out.println(sol.customSortString("abc", "abcabc"));  // Output: aabbcc
+        System.out.println(sol.customSortString("bca", "aabbccdd")); // Output: bbccaadd
+    }
+}
 ```
 
 ---
 
-### 🧠 Example Walkthrough
+## 🧠 Example Walkthrough
 
-```python
+```java
 order = "cba"
 s = "abcdabc"
 ```
 
-* Frequency of `s`: `{'a':2, 'b':2, 'c':2, 'd':1}`
-* Output: All `c`, then all `b`, then all `a`, then the leftover `d`
-
-👉 Result: `"ccbbaa" + "d"` → `"ccbbaad"`
-
----
-
-### 🕰️ Time and Space Complexity
-
-* **Time Complexity**: O(n + m)
-
-  * n = length of `s`, for `Counter(s)`
-  * m = length of `order`, for iteration
-* **Space Complexity**: O(n) for `Counter` and result list
+* Frequency map of `s`: `{a=2, b=2, c=2, d=1}`
+* First append c → "cc"
+* Then b → "ccb"
+* Then a → "ccbb"
+* Remaining: d → "ccbbaad"
 
 ---
 
-### ✅ Test Cases
+## 🕰️ Time and Space Complexity
 
-```python
-assert Solution().customSortString("cba", "abcdabc") in ["ccbbaad"]
-assert Solution().customSortString("xyz", "abc") in ["abc"]  # None in order
-assert Solution().customSortString("abc", "abcabc") == "aabbcc"
-assert Solution().customSortString("bca", "aabbccdd") == "bbccaadd"
-```
+### ✅ Time Complexity: `O(n + m)`
+
+* `n = length of s` → building frequency map
+* `m = length of order` → iterating through custom order
+* Remaining characters loop → `O(n)` worst case
+
+### ✅ Space Complexity: `O(n)`
+
+* HashMap for `s` frequencies → O(n)
+* Result StringBuilder → O(n) characters
 
 ---
 
 Would you like:
 
-* A Java version?
-* A version that preserves relative order for chars not in `order`?
-* An in-place or streaming optimization?
+* 🔄 A version that preserves the relative order for characters not in `order`?
+* 🔧 An optimized streaming approach without HashMap?
+* 📦 JUnit-based unit tests for the same problem?
+
+Let me know!
