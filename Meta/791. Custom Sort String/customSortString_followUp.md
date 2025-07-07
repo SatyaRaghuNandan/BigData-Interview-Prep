@@ -1,77 +1,90 @@
-Here's a **detailed breakdown** of your alternate implementation of the **Custom Sort String** problem using an **array of fixed size 26** (more space-efficient than a dictionary):
+Absolutely! Here's the **Java version** of this space-efficient implementation of the **Custom Sort String** problem using a **fixed array of size 26** — tailored for lowercase English letters (`'a'` to `'z'`).
 
 ---
 
-### ✅ Code with Line-by-Line Explanation and Comments
+## ✅ Java Version with Telugu + English Comments and Analysis
 
-```python
-class Solution:
-    def customSortString(self, order: list[str], s: str) -> str:
-        # Step 1: Create a frequency array for all lowercase English letters
-        # Telugu: 'a' to 'z' ki count store cheyyadaaniki 26 size array create chesthunnaam
-        freqs = [0] * 26
-        
-        # Step 2: Count frequencies of each character in s
-        for ch in s:
-            freqs[ord(ch) - ord('a')] += 1  # Telugu: ch ni 'a' base chesi index lo count penchutunnam
+```java
+public class Solution {
+    public String customSortString(char[] order, String s) {
+        // Step 1: Create frequency array for 26 lowercase letters (a-z)
+        // Telugu: a-z characters ki count store cheyyadam kosam 26 size array
+        int[] freq = new int[26];
 
-        # Step 3: Build result using characters from 'order' first
-        result = ""
-        for ch in order:
-            idx = ord(ch) - ord('a')  # Telugu: character ki index calculate chesthunnaam
-            result += ch * freqs[idx]  # Telugu: freq sari character ni add chesthunnaam
-            freqs[idx] = 0  # Telugu: use ayyaka freq ni zero cheyyadam
+        // Step 2: Count frequency of each character in input string s
+        for (char ch : s.toCharArray()) {
+            freq[ch - 'a']++; // Telugu: ch - 'a' is index calculation
+        }
 
-        # Step 4: Add remaining characters (those not in 'order')
-        for i in range(26):
-            result += chr(i + ord('a')) * freqs[i]  # Telugu: remaining characters ni add chesthunnaam
+        // Step 3: Build result using characters from 'order' array first
+        StringBuilder result = new StringBuilder();
+        for (char ch : order) {
+            int index = ch - 'a';
+            while (freq[index] > 0) {
+                result.append(ch);   // Telugu: character ni freq times append cheyyadam
+                freq[index]--;       // Telugu: character ni use chesaka count tagginchadam
+            }
+        }
 
-        # Step 5: Return the final result
-        return result
+        // Step 4: Add remaining characters (not in order)
+        for (int i = 0; i < 26; i++) {
+            while (freq[i] > 0) {
+                result.append((char) (i + 'a')); // Telugu: index to char convert chesi add cheyyadam
+                freq[i]--;
+            }
+        }
+
+        // Step 5: Return final result
+        return result.toString();
+    }
+
+    // ✅ Test Case
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        char[] order = {'c', 'b', 'a'};
+        String s = "abcdabc";
+        System.out.println(sol.customSortString(order, s)); // Output: ccbbaad
+    }
+}
 ```
 
 ---
 
-### 🧪 Example
+## ✅ Time & Space Complexity
 
-```python
-order = ['c', 'b', 'a']
-s = "abcdabc"
-```
-
-* Frequencies: `a:2, b:2, c:2, d:1`
-* Order string: `['c', 'b', 'a']`
-* Output: `ccbb + aa + d` → `"ccbbaad"`
+| Metric   | Complexity                      | Notes                                                          |
+| -------- | ------------------------------- | -------------------------------------------------------------- |
+| ⏱️ Time  | **O(n)** where `n = s.length()` | Building frequency + processing order + leftover (constant 26) |
+| 🧠 Space | **O(1)** (Fixed size array)     | Always 26 for lowercase a-z                                    |
 
 ---
 
-### ✅ Time and Space Complexity
+## 🧪 Example
 
-* **Time Complexity**:
-
-  * O(n + 26) ≈ O(n), where n = len(s)
-* **Space Complexity**:
-
-  * O(1) → Uses fixed-size array of 26 elements
-
----
-
-### 🆚 Compared to Dictionary Version:
-
-| Approach              | Frequency Storage | Time     | Space | Advantage                   |
-| --------------------- | ----------------- | -------- | ----- | --------------------------- |
-| `collections.Counter` | HashMap (Dict)    | O(n + m) | O(n)  | Simpler for arbitrary chars |
-| Fixed Array           | Array of size 26  | O(n)     | O(1)  | More efficient for 'a'-'z'  |
-
----
-
-### ✅ Test Case
-
-```python
-solution = Solution()
-print(solution.customSortString(['c','b','a'], "abcdabc"))  # Output: "ccbbaad"
+```java
+Input: order = {'c','b','a'}, s = "abcdabc"
+Step-by-step:
+- freq = [a=2, b=2, c=2, d=1]
+- order first: ccbbaa
+- then remaining d → ccbbaad
 ```
 
 ---
 
-Would you like this version in **Java** or extended to support **Unicode characters** beyond `a-z`?
+## ✅ When to Use This Variant
+
+| Use Case                       | Prefer This Version |
+| ------------------------------ | ------------------- |
+| Only lowercase `a-z`           | ✅ Yes               |
+| Want speed + memory efficiency | ✅ Yes               |
+| Need Unicode/uppercase         | ❌ No (use HashMap)  |
+
+---
+
+Would you like:
+
+* 🆙 A version that supports **Unicode or mixed-case** characters?
+* 🧪 Unit tests using **JUnit or TestNG**?
+* 🚀 Streaming version using **custom comparator**?
+
+Let me know your direction!
