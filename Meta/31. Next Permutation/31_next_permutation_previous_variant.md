@@ -98,3 +98,141 @@ Let me know if you'd like:
 * A generator to get **all permutations in reverse order**
 * Extension to **k-th previous permutation**
 * A **visual representation** of step-by-step transformation
+
+
+
+
+Absolutely! Below is the **Java version** of the **Previous Permutation** algorithm — the **reverse counterpart** of LeetCode 31's **Next Permutation** — with:
+
+✅ Telugu-style inline comments (transliterated)
+✅ `O(n)` time and `O(1)` space complexity
+✅ Full main class with test cases for demonstration
+
+---
+
+## ✅ Java Implementation: Previous Permutation (with Telugu Comments)
+
+```java
+import java.util.Arrays;
+
+public class Solution {
+    public void previousPermutation(int[] nums) {
+        int n = nums.length;
+        int peak = -1;
+
+        // Step 1: Right to Left lo chusi, first decreasing element ni identify cheyyali
+        // Condition: nums[i-1] > nums[i]
+        for (int i = n - 1; i > 0; i--) {
+            if (nums[i - 1] > nums[i]) {
+                peak = i - 1;
+                break;
+            }
+        }
+
+        // Step 2: If peak not found ante → already smallest permutation → reverse to get largest
+        if (peak == -1) {
+            reverse(nums, 0, n - 1);
+            return;
+        }
+
+        // Step 3: Right side lo smallest element find cheyyali which is < nums[peak]
+        int nextLower = n - 1;
+        while (nums[nextLower] >= nums[peak]) {
+            nextLower--;
+        }
+
+        // Step 4: Swap nums[peak] and nums[nextLower]
+        swap(nums, peak, nextLower);
+
+        // Step 5: Reverse the suffix (peak+1 to end) to get largest possible suffix
+        reverse(nums, peak + 1, n - 1);
+    }
+
+    // Swap helper method
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    // Reverse helper method
+    private void reverse(int[] nums, int start, int end) {
+        while (start < end) {
+            swap(nums, start++, end--);
+        }
+    }
+
+    // Main method with test cases
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+
+        int[][] testCases = {
+            {1, 2, 3},          // → [3, 2, 1]
+            {3, 2, 1},          // → [3, 1, 2]
+            {1, 1, 5},          // → [5, 1, 1]
+            {1},                // → [1]
+            {1, 5, 1},          // → [1, 1, 5]
+            {3, 1, 2},          // → [2, 3, 1]
+            {2, 3, 1},          // → [2, 1, 3]
+            {1, 2, 3, 6, 5, 4}, // → [1, 2, 3, 6, 4, 5]
+            {2, 4, 3, 2, 1}     // → [2, 4, 3, 1, 2]
+        };
+
+        for (int i = 0; i < testCases.length; i++) {
+            int[] input = testCases[i];
+            System.out.println("Test Case " + (i + 1) + ": Input = " + Arrays.toString(input));
+            sol.previousPermutation(input);
+            System.out.println("          Previous Permutation = " + Arrays.toString(input));
+            System.out.println();
+        }
+    }
+}
+```
+
+---
+
+## ✅ Example Output (Expected)
+
+```
+Test Case 1: Input = [1, 2, 3]
+          Previous Permutation = [3, 2, 1]
+
+Test Case 2: Input = [3, 2, 1]
+          Previous Permutation = [3, 1, 2]
+
+Test Case 3: Input = [1, 1, 5]
+          Previous Permutation = [5, 1, 1]
+
+...
+```
+
+---
+
+## ✅ Time & Space Complexity
+
+| Metric             | Value  |
+| ------------------ | ------ |
+| Time Complexity    | `O(n)` |
+| Space Complexity   | `O(1)` |
+| In-place operation | ✅      |
+
+---
+
+## ✅ Summary: Previous vs. Next Permutation
+
+| Feature             | Next Permutation        | Previous Permutation    |
+| ------------------- | ----------------------- | ----------------------- |
+| Pivot condition     | `nums[i-1] < nums[i]`   | `nums[i-1] > nums[i]`   |
+| Swap candidate      | First element > pivot   | First element < pivot   |
+| Post-swap operation | Reverse suffix (to min) | Reverse suffix (to max) |
+| Goal                | Get next greater perm   | Get next smaller perm   |
+
+---
+
+Would you like:
+
+* ✅ A version that **returns** the array instead of modifying in-place?
+* ✅ A function to generate the **k-th previous permutation**?
+* ✅ Full suite of **unit tests** with JUnit?
+
+Let me know — I’ll help with the next step!
