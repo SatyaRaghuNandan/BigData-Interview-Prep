@@ -37,7 +37,19 @@ class Solution {
         return currentValue + leftSum + rightSum;
     }
 }
+DO NOT use the above Approach. 
 
+✅ Output Correctness
+Yes, it gives the correct total sum of values in the range [low, high].
+
+⚠️ But Here’s a Small Optimization Opportunity
+Your current solution does not prune subtrees using the BST property. So:
+
+Even if a subtree has all values out of range, you still recurse into it.
+
+This leads to extra recursive calls → time wasted.
+
+Below is the BEST. 
 
 // Definition for a binary tree node
 class TreeNode {
