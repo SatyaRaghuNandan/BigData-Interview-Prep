@@ -1,69 +1,85 @@
-You're sharing a C++ implementation of **LeetCode 398: Random Pick Index**, where the goal is to:
-
-> Given an integer array with possible duplicates, randomly return the **index** of a given `target` number such that each index has **equal probability** of being returned.
+Here is the **Java version** of **Leetcode 398: Random Pick Index** using **Reservoir Sampling** — an efficient, **space-optimized solution** that doesn't store all the indices of the target number.
 
 ---
 
-### ✅ Problem Strategy
+## ✅ Java Implementation (with Telugu-style comments)
 
-This solution precomputes a mapping of each number → all indices where it appears. Then, to pick an index for a target:
+```java
+import java.util.Random;
 
-1. Get the list of indices from the map.
-2. Pick one at **random** using `rand() % size`.
+public class Solution {
+    private int[] nums;
+    private Random rand;
 
----
+    public Solution(int[] nums) {
+        this.nums = nums;        // ✅ Input array ni store cheyyadam
+        this.rand = new Random(); // ✅ Random number generator
+    }
 
-## ✅ Python Version with Detailed Telugu Comments
+    public int pick(int target) {
+        int count = 0;       // ✅ Target values count
+        int result = -1;     // ✅ Picked index
 
-```python
-import random
-from collections import defaultdict
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == target) {
+                count++; // Idi 'count-th' occurrence of target
 
-class Solution398:
-    def __init__(self, nums: list[int]):
-        # num_to_indices lo prathi number ki tana indices ni list ga map cheddam
-        self.num_to_indices = defaultdict(list)
-        for i, num in enumerate(nums):
-            self.num_to_indices[num].append(i)
+                // ✅ 1/count chance to replace result
+                if (rand.nextInt(count) == 0) {
+                    result = i;
+                }
+            }
+        }
 
-    def pick(self, target: int) -> int:
-        # Target number ki corresponding indices list ni fetch cheyyadam
-        indices = self.num_to_indices[target]
-        # Random ga oka index pick cheyyadam
-        return random.choice(indices)
+        return result;
+    }
+}
 ```
 
 ---
 
-### 🧪 Example
+## ✅ Example Usage
 
-```python
-solution = Solution398([1, 2, 3, 3, 3])
-print(solution.pick(3))  # Output: Randomly one of [2, 3, 4]
-print(solution.pick(1))  # Output: 0
+```java
+public class Main {
+    public static void main(String[] args) {
+        Solution sol = new Solution(new int[]{1, 2, 3, 3, 3});
+
+        // Repeated calls will randomly return one of the indices of 3 → [2, 3, 4]
+        System.out.println(sol.pick(3));  // Example: 3
+        System.out.println(sol.pick(3));  // Example: 2
+        System.out.println(sol.pick(1));  // Always 0
+    }
+}
 ```
 
-Each index has equal probability. If `3` occurs at `[2, 3, 4]`, each index should be picked \~33% of the time over many calls.
+---
+
+## ✅ Time and Space Complexity
+
+| Operation      | Time   | Space  | Explanation                       |
+| -------------- | ------ | ------ | --------------------------------- |
+| Constructor    | `O(1)` | `O(1)` | Only stores input array           |
+| `pick(target)` | `O(n)` | `O(1)` | One pass to randomly select index |
 
 ---
 
-### ⏱️ Time & Space Complexity
+## ✅ How Reservoir Sampling Works
 
-| Method         | Time Complexity | Space Complexity                              |
-| -------------- | --------------- | --------------------------------------------- |
-| `__init__`     | `O(n)`          | `O(n)`                                        |
-| `pick(target)` | `O(1)`          | `O(1)`           (for lookup and random pick) |
+Every time we encounter a new instance of the `target`, we pick it with probability `1/count`, where `count` is the number of times we've seen the `target` so far. This ensures **each index** of the `target` has **equal probability** of being selected.
 
 ---
 
-### ✅ Summary
+## ✅ Interview Summary
 
-| Feature                  | ✅ Implemented |
-| ------------------------ | ------------- |
-| Handles duplicates       | ✅             |
-| Uniform random selection | ✅             |
-| Preprocessed for speed   | ✅             |
+> "This approach uses **Reservoir Sampling** to pick a random index for the target without using extra space. For each match with `target`, I decide whether to replace the current choice based on probability `1/count`. This keeps space `O(1)` and works well for **large arrays** or **streaming data**."
 
 ---
 
-Would you like a **space-optimized version using Reservoir Sampling**, which doesn't store all indices in memory? That works better for **large streams**.
+Would you like me to include:
+
+* ✅ Unit test class for this?
+* ✅ Simulation to verify uniform distribution?
+* ✅ Conversion to return **all indices** if needed?
+
+Let me know!
