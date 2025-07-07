@@ -95,3 +95,27 @@ Let me know if you want:
 
 * A **verification pass** to confirm that the candidate is truly a majority.
 * Or an **extension** for when majority is not guaranteed (i.e., return element > n/2 if it exists, else `-1`).
+
+
+```java
+
+class Solution {
+    public int majorityElement(int[] num) {
+
+        int majority=num[0], count = 1; // This is already the MAJOR Element. 
+
+        for(int i=1; i<num.length;i++){
+            if(count==0){// But Count Already 1 ani antunnam. 
+                count++;
+                majority=num[i];
+            }else if(majority==num[i]){
+                count++;
+            }else count--;
+            
+        } // What is the significance of the count here ? 
+        return majority;
+    }
+}
+
+
+```
