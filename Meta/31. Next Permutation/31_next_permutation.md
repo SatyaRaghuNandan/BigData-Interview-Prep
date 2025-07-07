@@ -129,3 +129,138 @@ Let me know if you’d like:
 * A **recursive version**
 * To generate the **k-th next permutation**
 * A **generator** for all permutations in order
+
+
+
+
+Here is the full **Java version** of **Leetcode 31: Next Permutation**, converted from the Python version you provided, with **detailed Telugu-style comments (in English script)** and test cases similar to the Python `main()` function.
+
+---
+
+## ✅ Java Code with Telugu Comments (Transliterated)
+
+```java
+import java.util.Arrays;
+
+public class Solution {
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        int valley = -1;
+
+        // Step 1: End nunchi left ki iterate cheyyadam
+        // First decreasing element ni identify cheyyali
+        for (int i = n - 1; i > 0; i--) {
+            if (nums[i - 1] < nums[i]) {
+                valley = i - 1;
+                break;
+            }
+        }
+
+        // Step 2: Already highest permutation unte → reverse to lowest
+        if (valley == -1) {
+            reverse(nums, 0, n - 1);
+            return;
+        }
+
+        // Step 3: Find next_higher → right side lo smallest element which is > nums[valley]
+        int nextHigher = n - 1;
+        while (nums[nextHigher] <= nums[valley]) {
+            nextHigher--;
+        }
+
+        // Step 4: Swap nums[valley] and nums[nextHigher]
+        swap(nums, valley, nextHigher);
+
+        // Step 5: Reverse the suffix after valley
+        reverse(nums, valley + 1, n - 1);
+    }
+
+    // Helper to swap 2 elements
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    // Helper to reverse array from left to right
+    private void reverse(int[] nums, int left, int right) {
+        while (left < right) {
+            swap(nums, left++, right--);
+        }
+    }
+
+    // --- Test cases ---
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+
+        int[][] testCases = {
+            {1, 2, 3},          // next: [1, 3, 2]
+            {3, 2, 1},          // next: [1, 2, 3]
+            {1, 1, 5},          // next: [1, 5, 1]
+            {1, 3, 2},          // next: [2, 1, 3]
+            {2, 3, 1},          // next: [3, 1, 2]
+            {1},                // next: [1]
+            {1, 5, 1},          // next: [5, 1, 1]
+            {2, 4, 3, 2, 1},    // next: [3, 1, 2, 2, 4]
+            {1, 2, 3, 6, 5, 4}  // next: [1, 2, 4, 3, 5, 6]
+        };
+
+        for (int i = 0; i < testCases.length; i++) {
+            int[] test = testCases[i];
+            System.out.println("Test Case " + (i + 1) + ": Input = " + Arrays.toString(test));
+            sol.nextPermutation(test);
+            System.out.println("           Next Permutation = " + Arrays.toString(test));
+            System.out.println();
+        }
+    }
+}
+```
+
+---
+
+## ✅ Output (Expected)
+
+```
+Test Case 1: Input = [1, 2, 3]
+           Next Permutation = [1, 3, 2]
+
+Test Case 2: Input = [3, 2, 1]
+           Next Permutation = [1, 2, 3]
+
+Test Case 3: Input = [1, 1, 5]
+           Next Permutation = [1, 5, 1]
+
+Test Case 4: Input = [1, 3, 2]
+           Next Permutation = [2, 1, 3]
+
+Test Case 5: Input = [2, 3, 1]
+           Next Permutation = [3, 1, 2]
+
+...
+```
+
+---
+
+## ✅ Time and Space Complexity
+
+| Metric   | Value  | Reason                         |
+| -------- | ------ | ------------------------------ |
+| ⏱ Time   | `O(n)` | One pass to find + one reverse |
+| 🧠 Space | `O(1)` | In-place, no extra array       |
+
+---
+
+## ✅ Interview Summary
+
+> "To find the next lexicographical permutation, we find the first decreasing element from the right, find the next higher element to the right, swap them, and then reverse the suffix. If the input is the highest permutation, we reverse the whole array to get the lowest one."
+
+---
+
+Let me know if you'd like:
+
+* ✅ Recursive version
+* ✅ Generate all permutations in order
+* ✅ K-th next permutation calculator
+
+Happy to help further!
+
