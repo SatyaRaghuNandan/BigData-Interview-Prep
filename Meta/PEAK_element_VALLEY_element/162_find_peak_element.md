@@ -1,102 +1,111 @@
-Your `findPeakElement` function is correct and efficiently implements a **binary search-based approach** to find any **peak element** index in a 1D array. Let me break it down clearly for you, including:
+Absolutely! Below is the **Java implementation** of the **`findPeakElement`** problem (Leetcode 162) using the optimal **binary search approach**.
 
 ---
 
-### ✅ What This Code Does:
+## ✅ Problem Summary
 
-It finds a **peak element**, which is defined as:
-
-* `nums[i]` such that:
-
-  * `nums[i - 1] < nums[i] > nums[i + 1]`
-  * Edge elements are valid peaks too (e.g., `nums[0] > nums[1]`)
-
-This implementation returns **any one** peak index using **binary search**, which guarantees:
-
-* **Time Complexity**: `O(log n)`
-* **Space Complexity**: `O(1)`
+> Given an array `nums`, find a **peak element** and return its index.
+> A peak is an element strictly greater than its neighbors.
+> You may assume that `nums[-1] = nums[n] = -∞` (virtual boundary).
 
 ---
 
-### 📝 Code with Detailed Telugu Comments (Transliterated):
+## ✅ Java Code (Binary Search) with Telugu + English Comments
 
-```python
+```java
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
 
-class Solution:
-    def findPeakElement(self, nums):
-        left = 0
-        right = len(nums) - 1
-        
-        while left <= right:
-            # Mid calculate cheyyadam – overflow avoid cheyyadaniki
-            mid = (right - left) // 2 + left
+        // Telugu: Binary Search apply cheyyadam
+        while (left < right) {
+            int mid = left + (right - left) / 2; // Overflow avoid cheyyadam kosam
 
-            # Check if mid oka peak element
-            if (mid == len(nums) - 1 or nums[mid + 1] < nums[mid]) and \
-               (mid == 0 or nums[mid - 1] < nums[mid]):
-                return mid  # Idi oka valid peak
+            // Telugu: mid value kanna right side value ekkuva undi ante → peak right lo untundi
+            if (nums[mid] < nums[mid + 1]) {
+                left = mid + 1; // Telugu: right side search continue cheyyadam
+            } else {
+                // Telugu: mid peak kaani possibility undi. So include left side
+                right = mid;
+            }
+        }
 
-            # Right neighbor ekkuva undi ante → peak right side lo untadi
-            if nums[mid + 1] > nums[mid]:
-                left = mid + 1  # Search in right half
-            else:
-                right = mid - 1  # Search in left half
-
-        return -1  # Ideally unreachable
-
-
-
-class Solution:
-    def findPeakElement(self, nums):
-        left = 0
-        right = len(nums) - 1
-
-        while left < right:
-            mid = (right - left) // 2 + left
-            
-            if nums[mid] < nums[mid + 1]:
-                # Peak must be on the right
-                left = mid + 1
-            else:
-                # Peak is mid or on the left
-                right = mid
-
-        return left  # left == right is the peak index return right kuda work avutundhi.... I don'w know How
-
+        // Telugu: Left == right ayyaka loop break avutundi → Peak found
+        return left; // Or right (same)
+    }
+}
 ```
 
 ---
 
-### 🔍 Example Runs:
+## ✅ Time & Space Complexity
 
-```python
-nums = [1, 2, 1, 3, 5, 6, 4]
-# Possible outputs: 1 or 5 (both are peaks)
+| Metric               | Value      | Explanation                    |
+| -------------------- | ---------- | ------------------------------ |
+| **Time Complexity**  | `O(log n)` | Binary Search halves each step |
+| **Space Complexity** | `O(1)`     | No extra memory used           |
 
-nums = [1, 2, 3, 1]
-# Output: 2 (3 is a peak)
+---
 
-nums = [3, 4, 5, 1]
-# Output: 2 (5 is a peak)
+## ✅ Sample Input/Output
+
+```java
+Input: [1, 2, 3, 1]
+Output: 2  // nums[2] = 3 is a peak
+
+Input: [1, 2, 1, 3, 5, 6, 4]
+Output: 1 or 5  // nums[1]=2 and nums[5]=6 are both valid peaks
 ```
 
 ---
 
-### 🔐 Safety Note:
+## 🧠 Why Does This Work?
 
-* The line `nums[mid + 1] > nums[mid]` is **safe** because:
-
-  * You only access `nums[mid + 1]` when `mid < len(nums) - 1` because of the `if` structure before.
-
-But to make it safer in **strict coding interviews**, you could slightly adjust the logic to explicitly check bounds before accessing:
-
-```python
-if mid < len(nums) - 1 and nums[mid + 1] > nums[mid]:
-    left = mid + 1
-else:
-    right = mid - 1
-```
+* If `nums[mid] < nums[mid + 1]`, then peak must lie **to the right**
+* Else, a peak lies **on the left or at mid**
+* Eventually, `left == right` → that index is a peak (guaranteed by the problem)
 
 ---
 
-Would you like the **recursive version** or want to explore the **2D Peak Element** problem next?
+## ✅ Edge Cases Covered
+
+| Input             | Output | Explanation                              |
+| ----------------- | ------ | ---------------------------------------- |
+| `[1]`             | `0`    | Single element is a peak                 |
+| `[2, 1]`          | `0`    | First element is a peak                  |
+| `[1, 2]`          | `1`    | Last element is a peak                   |
+| `[1, 2, 3, 4, 5]` | `4`    | Monotonically increasing → last is peak  |
+| `[5, 4, 3, 2, 1]` | `0`    | Monotonically decreasing → first is peak |
+
+---
+
+## 📌 Optional Variation: Safer Version with Bounds
+
+```java
+if (mid < nums.length - 1 && nums[mid] < nums[mid + 1]) {
+    left = mid + 1;
+} else {
+    right = mid;
+}
+```
+
+This ensures you never go out of bounds. But in this exact implementation, `mid + 1` is safe because the loop always maintains `left < right`.
+
+---
+
+## ✅ Final Thought
+
+This is **Meta-level efficient**:
+
+* Optimal `O(log n)` solution
+* Clean and boundary-safe
+* No extra space
+
+Would you like the:
+
+* 🔁 **Recursive version** of this approach?
+* 🔄 **2D Peak Element** variant using Divide and Conquer (`O(m log n)`)?
+* 🧪 JUnit test cases for verification?
+
+Let me know and I’ll walk you through them!
