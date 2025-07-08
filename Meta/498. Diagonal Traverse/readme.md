@@ -1,3 +1,136 @@
+Absolutely! Let's rewrite the **pointer-based approach** for **`findDiagonalOrder()`** with:
+
+---
+
+### ✅ Clean Code
+
+### ✅ Easy-to-understand variables
+
+### ✅ Clear direction logic
+
+### ✅ Time and space complexity at **each level**
+
+---
+
+## ✅ Optimized and Clear Pointer-Based Java Code
+
+```java
+class Solution {
+    public int[] findDiagonalOrder(int[][] matrix) {
+        // Base case: check for empty matrix
+        if (matrix == null || matrix.length == 0) return new int[0];
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int[] result = new int[m * n]; // Final output
+        int row = 0, col = 0;          // Current position in matrix
+        int dir = 1;                   // 1 = Up ↗, -1 = Down ↙
+        int idx = 0;                   // Index in result array
+
+        while (idx < result.length) {
+            result[idx++] = matrix[row][col];
+
+            // Calculate next position based on current direction
+            int nextRow = row + (dir == 1 ? -1 : 1);
+            int nextCol = col + (dir == 1 ? 1 : -1);
+
+            // If next cell is out of bounds, bounce from edge
+            if (nextRow < 0 || nextRow >= m || nextCol < 0 || nextCol >= n) {
+                // Handle direction switch at borders
+                if (dir == 1) { // Moving Up ↗
+                    if (col == n - 1) {
+                        row++;  // At last column → go down
+                    } else {
+                        col++;  // Else → move right
+                    }
+                } else { // Moving Down ↙
+                    if (row == m - 1) {
+                        col++;  // At last row → move right
+                    } else {
+                        row++;  // Else → move down
+                    }
+                }
+                dir = -dir; // Flip direction
+            } else {
+                row = nextRow;
+                col = nextCol;
+            }
+        }
+
+        return result;
+    }
+}
+```
+
+---
+
+## ✅ Clean Variable Explanation
+
+| Variable   | Meaning                                      |
+| ---------- | -------------------------------------------- |
+| `m, n`     | Number of rows and columns                   |
+| `row, col` | Current position in the matrix               |
+| `dir`      | 1 means up-right (↗), -1 means down-left (↙) |
+| `idx`      | Index in the output array                    |
+| `result`   | Final result array of size `m × n`           |
+
+---
+
+## ✅ Dry Run Summary (3×3 matrix)
+
+```
+Step 1: (0,0) → 1
+Step 2: ↗ → (0,1)
+Step 3: ↗ → (0,2)
+Step 4: ↗ hits boundary → bounce ↓ → (1,2)
+Step 5: ↙ → (2,1)
+Step 6: ↙ → (2,0)
+...
+```
+
+---
+
+## ✅ Time and Space Complexity at Each Level
+
+### 1. `while (idx < result.length)`
+
+* Visits each cell **once**
+* ✅ **Time: O(M × N)**
+
+### 2. `result[idx++] = matrix[row][col]`
+
+* Constant-time assignment
+* ✅ **Time: O(1)** per cell → total O(M × N)
+
+### 3. Direction logic + bounce handling
+
+* Only simple `if` checks per cell
+* ✅ **Time: O(1)** per cell → total O(M × N)
+
+---
+
+### ✅ Final Time & Space Complexity
+
+| Metric             | Complexity |
+| ------------------ | ---------- |
+| **Time**           | ✅ O(M × N) |
+| **Space (extra)**  | ✅ O(1)     |
+| **Space (output)** | ✅ O(M × N) |
+
+> No extra space like `Map` or `List` — pointer-based logic only!
+
+---
+
+## ✅ Meta Interview Style Summary
+
+> "I use a pointer-based approach to traverse the matrix diagonally by flipping direction when hitting edges. Each element is visited once, so the time complexity is O(M × N), and since I only use constant space apart from the result, space complexity is O(1). It’s highly efficient and clean for large input sizes."
+
+---
+
+Let me know if you want the same solution with Telugu-style inline comments or a storytelling format for the interview!
+
+
 Excellent! You're asking the right questions — this level of thinking shows you're **Meta interview-ready**. Let's now break down **Time and Space Complexity at every level** of this final loop:
 
 ---
