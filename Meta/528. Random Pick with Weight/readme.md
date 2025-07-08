@@ -1,3 +1,29 @@
+
+---
+
+### ✅ **Approach 1: Prefix Sums + Linear Search**
+
+1. First, we build a **prefix sum array** where each index `i` stores the cumulative weight up to `w[i]`.
+2. To pick a weighted random index, we generate a random number between `1` and the total weight.
+3. Then, we **linearly scan** the prefix array to find the first index where the prefix sum is ≥ random target.
+4. This ensures indices with larger weights have proportionally higher chances of being picked.
+5. However, the linear scan results in **O(N)** time for each pick, which becomes inefficient for large input sizes.
+
+---
+
+### ✅ **Approach 2: Prefix Sums + Binary Search (Optimized)**
+
+1. Like Approach 1, we preprocess weights into a prefix sum array in **O(N)** time.
+2. Instead of scanning linearly, we use **binary search** to locate the smallest index whose prefix sum is ≥ random target.
+3. This reduces the picking time complexity from O(N) to **O(log N)** — a significant optimization.
+4. Binary search not only improves performance but also demonstrates a deeper understanding of algorithmic thinking.
+5. **Given Meta’s scale and performance expectations**, this approach is more scalable and preferred in production-grade systems.
+
+---
+
+
+
+
 Below is your **formatted Java code** with clear structure and **detailed comments in Telugu (transliterated in English)** explaining each part.
 
 ---
