@@ -1,35 +1,7 @@
+✅ **BFS is preferred** in this problem because it explores all cells level by level, guaranteeing the **shortest path** is found first in an unweighted grid.
+Unlike DFS, which can go deep into longer paths, BFS ensures that the **first time we reach the destination**, it's via the **minimum number of steps**.
 
-Absolutely! Here's a **verbal, interview-ready explanation** to answer:
 
-> ❓ *"Why did you choose BFS over DFS for finding the shortest path in a binary matrix?"*
-
----
-
-### ✅ **Interview-Ready Answer (Meta-style, \~5–6 points)**
-
-1. **BFS is naturally suited for shortest path problems** in unweighted graphs or grids, like this one.
-
-   * Each valid move has equal cost (i.e., cost = 1), so BFS guarantees that the **first time we reach the target, it’s via the shortest path**.
-
-2. **DFS doesn't guarantee the shortest path**, especially in unweighted graphs.
-
-   * It may reach the target node early, but **not via the shortest route**, and it may continue exploring deeper unnecessarily.
-
-3. **BFS explores level by level**, ensuring all positions reachable in N steps are considered **before** exploring paths of N+1 steps.
-
-   * This **level-wise expansion** ensures minimum steps to destination.
-
-4. **In terms of memory and runtime**, BFS is **more predictable and efficient** in this context.
-
-   * DFS may go too deep and require backtracking, especially for large or dense grids, increasing call stack size.
-
-5. **We can use the grid itself to track distance and visited state**—this is ideal for BFS.
-
-   * Each cell in the grid stores the step count (`distance = previous + 1`), which allows us to avoid using extra visited arrays.
-
-6. **In an interview setting**, BFS demonstrates better clarity, correctness, and optimality for this problem.
-
-   * It aligns with real-world routing algorithms (e.g., shortest path in maps, networks, games).
 
 ---
 
