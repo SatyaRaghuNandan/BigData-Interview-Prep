@@ -1,4 +1,45 @@
 
+Absolutely! Here's the **entire logic of your diagonal traversal** condensed into **6 easy-to-remember lines**, with special focus on **direction change and boundary logic** — ideal for interview memorization.
+
+---
+
+### ✅ **Diagonal Traverse in 6 Lines (with Telugu-friendly meaning)**
+
+1. **Start at top-left `(0,0)`**, go **up-right (↗)** initially; use `direction = 1` for up, `0` for down.
+   → `int direction = 1; // ↗ = 1, ↙ = 0`
+
+2. **Move to next cell**:
+   → `newRow = row + (direction == 1 ? -1 : 1);`
+   → `newCol = col + (direction == 1 ? 1 : -1);`
+
+3. **If out of bounds**, reset to next diagonal's starting point based on `direction`:
+
+   * If `↗` and at **last column**, go `down` one row.
+   * Else if `↗`, move `right` one column.
+   * If `↙` and at **last row**, move `right` one column.
+   * Else if `↙`, move `down` one row.
+
+4. **Flip direction** when boundary is hit:
+   → `direction = 1 - direction;`
+
+5. **If within bounds**, just move to `newRow`, `newCol`.
+
+6. **Repeat until all `rows * cols` elements are added to result.**
+
+---
+
+### ✅ Summary Visualization:
+
+```
+↗: (i-1, j+1) → Up & Right  
+↙: (i+1, j-1) → Down & Left  
+Change direction on hitting matrix borders!
+```
+
+Let me know if you want a dry run or cheat sheet style version too!
+
+
+
 You're solving **Leetcode 498 – Diagonal Traverse**. This matrix traversal alternates between diagonals that go **up-right ↗️** and **down-left ↙️**, and your code handles this pattern correctly.
 
 ---
