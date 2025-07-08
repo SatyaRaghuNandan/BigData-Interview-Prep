@@ -1,3 +1,40 @@
+Absolutely — let's break this down in a simple and **Meta interview-friendly** way.
+
+---
+
+### 🔍 **Linearly scan the prefix array to find the first index ≥ target**
+
+#### ✅ Why do we do this?
+
+* After building a **prefix sum array**, each index represents the **cumulative probability range** for an element.
+* We generate a **random number between `1` and `totalWeight`**.
+* We want to find **which weight range this random number falls into** — and that corresponds to the **first prefix sum ≥ random target**.
+
+---
+
+### ✅ Why does this give higher-weight elements more chance?
+
+Imagine weights `w = [1, 3, 2]` →
+Prefix Sum: `[1, 4, 6]`
+
+* Total weight = 6 → Generate random number `r` in `[1,6]`
+* Ranges:
+
+  * Index 0 covers `[1]` → 1/6 chance
+  * Index 1 covers `[2,3,4]` → 3/6 chance
+  * Index 2 covers `[5,6]` → 2/6 chance
+
+So, higher weights take up **larger ranges in the prefix sum**, making them **more likely to be picked**.
+
+---
+
+### 💡 Summary Sentence for Interview:
+
+> “Each index's weight translates into a proportional interval in the prefix sum. By finding the first index where the prefix sum ≥ a randomly picked target, we simulate weighted randomness — larger weights cover more of the random range, hence have a higher probability of being picked.”
+
+Would you like this explained visually (ASCII or diagram style) or with a quick dry run?
+
+
 
 ---
 
