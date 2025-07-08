@@ -1,3 +1,5 @@
+## // VARIANT: What if you had to solve the OG problem without any extra space complexity?
+
 Great! This C++ implementation is a **space-optimized variant** of the “Minimum Remove to Make Valid Parentheses” problem.
 Instead of using extra memory like a temporary string or stack, it modifies the **input string `s` in-place**, making it more efficient in terms of space.
 
