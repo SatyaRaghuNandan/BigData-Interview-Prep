@@ -1,3 +1,112 @@
+Excellent! You're asking the right questions — this level of thinking shows you're **Meta interview-ready**. Let's now break down **Time and Space Complexity at every level** of this final loop:
+
+---
+
+### 🔁 Code Under Analysis:
+
+```java
+for (int key = 0; key <= rows + cols - 2; key++) {
+    List<Integer> diagonal = diagonalMap.get(key);
+
+    if (key % 2 == 0) {
+        Collections.reverse(diagonal);
+    }
+
+    for (int val : diagonal) {
+        result[index++] = val;
+    }
+}
+```
+
+---
+
+### 🧠 Goal:
+
+You want to know:
+
+1. ✅ **Outer loop** — how many times it runs
+2. ✅ **Inner `reverse()` call** — how much it costs
+3. ✅ **Inner `for-each` loop** — how many elements are visited
+4. ✅ Final total **Time & Space**
+
+---
+
+## ✅ Let’s Analyze Step-by-Step
+
+---
+
+### 1. 🔁 Outer loop: `for (key = 0; key <= rows + cols - 2)`
+
+* Runs for all possible diagonals.
+* There are **(rows + cols - 1)** diagonals.
+* ✅ **Time: O(M + N)** iterations.
+
+⚠️ But this is **not the dominant cost**, because inside we visit multiple elements per key.
+
+---
+
+### 2. 🔁 `Collections.reverse(diagonal)` (only if key % 2 == 0)
+
+Let’s say the total number of elements in the matrix is **`T = M × N`**.
+
+* We reverse only **half** the diagonals (even keys).
+* Let’s assume worst-case: each diagonal has `K` elements.
+
+Across all reversals:
+
+* Total cost of all `reverse()` calls combined is **O(T)**.
+
+✅ **Time: O(M × N)** across the whole loop.
+
+---
+
+### 3. 🔁 `for (int val : diagonal)`
+
+* We process every element **once**.
+* So, over all diagonals, we touch **M × N** elements exactly once.
+
+✅ **Time: O(M × N)**
+
+---
+
+### ✅ Final Time Complexity: **O(M × N)**
+
+* Reverse operations: O(M × N)
+* Iteration over all diagonals: O(M × N)
+
+👉 So, even though it **looks like nested loops**, you're touching each matrix element **only once**, making the total cost **linear in the number of elements**.
+
+---
+
+### ✅ Final Space Complexity: **O(M × N)**
+
+| Part             | Space Complexity  |
+| ---------------- | ----------------- |
+| `diagonalMap`    | O(M × N)          |
+| `result[]` array | O(M × N)          |
+| Local variables  | Negligible (O(1)) |
+
+---
+
+## ✅ Summary
+
+| Component                   | Time Complexity | Space Complexity |
+| --------------------------- | --------------- | ---------------- |
+| Building `diagonalMap`      | O(M × N)        | O(M × N)         |
+| Final loop (reverse + copy) | O(M × N)        | O(1)             |
+| Total                       | **O(M × N)**    | **O(M × N)**     |
+
+---
+
+### 🧠 Meta-Style Takeaway for Interview:
+
+> Even though the loop structure looks nested, we’re only visiting each matrix element once. So the time complexity remains linear in total number of elements — O(M×N). We trade some space for clean code using a HashMap to group by diagonals.
+
+---
+
+Let me know if you want to turn this into a perfect "trade-off" explanation for interviews!
+
+
 Absolutely! That solution works, but it can feel **confusing** due to all the boundary logic. Let's simplify it for you with a much **easier to understand approach** using **HashMap-based buckets** for each diagonal.
 
 ---
