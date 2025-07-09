@@ -1,6 +1,169 @@
 
 
 
+
+// ✅ Leetcode 121: Best Time to Buy and Sell Stock (One Transaction)
+class Stock121 {
+    public int maxProfit(int[] prices) {
+        int minPrice = Integer.MAX_VALUE;
+        int maxProfit = 0;
+
+        for (int price : prices) {
+            if (price < minPrice) {
+                minPrice = price;
+            } else {
+                maxProfit = Math.max(maxProfit, price - minPrice);
+            }
+        }
+
+        return maxProfit;
+    }
+}
+
+// ✅ Leetcode 122: Best Time to Buy and Sell Stock II (Unlimited Transactions)
+class Stock122 {
+    public int maxProfit(int[] prices) {
+        int profit = 0;
+
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > prices[i - 1]) {
+                profit += prices[i] - prices[i - 1];
+            }
+        }
+
+        return profit;
+    }
+}
+
+// ✅ Leetcode 123: Best Time to Buy and Sell Stock III (At Most Two Transactions)
+class Stock123 {
+    public int maxProfit(int[] prices) {
+        int buy1 = Integer.MIN_VALUE, sell1 = 0;
+        int buy2 = Integer.MIN_VALUE, sell2 = 0;
+
+        for (int price : prices) {
+            buy1 = Math.max(buy1, -price);          // Buy first time
+            sell1 = Math.max(sell1, buy1 + price);  // Sell first time
+            buy2 = Math.max(buy2, sell1 - price);   // Buy second time
+            sell2 = Math.max(sell2, buy2 + price);  // Sell second time
+        }
+
+        return sell2;
+    }
+}
+
+// 🔁 You can now test each of these in your main function with example arrays.
+
+
+
+
+
+Absolutely! Here's how you can **explain each of the three problems** in a **verbal, interview-style manner** — covering the **core logic**, **intuition**, and **code approach** for each.
+
+---
+
+### ✅ **Leetcode 121 — Best Time to Buy and Sell Stock (One Transaction)**
+
+> **Question:** You are given an array where `prices[i]` is the price of a stock on day `i`. You can **only buy and sell once**. Find the maximum profit you can achieve.
+
+---
+
+### 🔊 **Interview Explanation:**
+
+> "The key observation is that to maximize profit, I need to **buy at the lowest point** and **sell at a later higher point**. So I track the minimum price seen so far while iterating, and for each day I calculate `current price - min price so far`. I update max profit accordingly."
+
+### 🧠 Code Logic:
+
+* Initialize `minPrice = ∞`
+* For each price:
+
+  * Update `minPrice` if current price is smaller
+  * Calculate `profit = current price - minPrice`
+  * Track the `maxProfit`
+
+### ⏱ Time: `O(N)` | 📦 Space: `O(1)`
+
+---
+
+### ✅ **Leetcode 122 — Best Time to Buy and Sell Stock II (Unlimited Transactions)**
+
+> **Question:** You may complete as many transactions as you like (buy/sell multiple times), but you must sell before buying again.
+
+---
+
+### 🔊 **Interview Explanation:**
+
+> "We’re allowed multiple transactions, so I treat every **ascending pair of days as profit**. If today’s price is more than yesterday’s, I can just buy yesterday and sell today for that gain. I accumulate all such gains over the array."
+
+### 🧠 Code Logic:
+
+* Loop through prices
+* If `price[i] > price[i-1]`, then `profit += price[i] - price[i-1]`
+
+### ⏱ Time: `O(N)` | 📦 Space: `O(1)`
+
+---
+
+### ✅ **Leetcode 123 — Best Time to Buy and Sell Stock III (At Most Two Transactions)**
+
+> **Question:** You may complete at most two transactions. Find the maximum profit.
+
+---
+
+### 🔊 **Interview Explanation:**
+
+> "Here we are limited to **2 transactions max**, so I track two pairs of states:
+>
+> * `buy1` and `sell1` → best profit after 1st transaction
+> * `buy2` and `sell2` → best profit after 2nd transaction
+>
+> I simulate buying twice and selling twice in a loop:
+>
+> * When I 'buy1', I want to minimize price
+> * When I 'sell1', I calculate profit = price - buy1
+> * When I 'buy2', I want to use profit from sell1
+> * When I 'sell2', I get max final profit"
+
+### 🧠 Code Logic:
+
+```java
+buy1 = Integer.MIN_VALUE
+sell1 = 0
+buy2 = Integer.MIN_VALUE
+sell2 = 0
+
+for price in prices:
+    buy1 = max(buy1, -price)
+    sell1 = max(sell1, buy1 + price)
+    buy2 = max(buy2, sell1 - price)
+    sell2 = max(sell2, buy2 + price)
+```
+
+* Final answer is `sell2`
+
+### ⏱ Time: `O(N)` | 📦 Space: `O(1)`
+
+---
+
+## ✅ Summary Table
+
+| Problem | Max Transactions | Strategy                       | Time | Space |
+| ------- | ---------------- | ------------------------------ | ---- | ----- |
+| LC 121  | 1                | Track min price and max profit | O(N) | O(1)  |
+| LC 122  | ∞ (unlimited)    | Accumulate all rising profits  | O(N) | O(1)  |
+| LC 123  | 2                | DP with 2 buys/sells           | O(N) | O(1)  |
+
+---
+
+Let me know if you'd like:
+
+* Dry run visual walkthroughs
+* Code memorization tricks
+* Extension to **K transactions** (`LC 188`)
+* Or **cooldown / fee** versions (`LC 309`, `LC 714`)
+
+
+
 Great question! Let's break down the **difference between Leetcode 121** and **Leetcode 122** – both are about buying and selling stocks, but they follow **different trading rules**:
 
 ---
