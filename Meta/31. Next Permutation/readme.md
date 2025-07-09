@@ -1,3 +1,138 @@
+
+Here is your exact requested **Java version of Leetcode 31: Next Permutation** based on the Python version you shared, including:
+
+✅ Telugu-style comments (transliterated)
+✅ Clean helper methods (`swap`, `reverse`)
+✅ Dry run test cases
+✅ Time & space complexity
+✅ Interview explanation
+
+---
+
+### ✅ Java Code: `nextPermutation` with Detailed Comments
+
+```java
+import java.util.Arrays;
+
+public class Solution {
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        int valley = -1;
+
+        // ✅ Step 1: Right nunchi left ki check cheyyadam
+        // First decreasing index ni identify cheyyali (valley)
+        for (int i = n - 1; i > 0; i--) {
+            if (nums[i - 1] < nums[i]) {
+                valley = i - 1;
+                break;
+            }
+        }
+
+        // 🛑 If no valley found ante array is in descending → highest permutation
+        // So, just reverse the entire array to get the smallest permutation
+        if (valley == -1) {
+            reverse(nums, 0, n - 1);
+            return;
+        }
+
+        // ✅ Step 2: Right side lo smallest number ni find cheyyali which is > nums[valley]
+        int nextHigher = n - 1;
+        while (nums[nextHigher] <= nums[valley]) {
+            nextHigher--;
+        }
+
+        // ✅ Step 3: Swap valley and nextHigher
+        swap(nums, valley, nextHigher);
+
+        // ✅ Step 4: Reverse the suffix starting from valley + 1 to end
+        reverse(nums, valley + 1, n - 1);
+    }
+
+    // Swap helper method
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
+    // Reverse helper method
+    private void reverse(int[] nums, int left, int right) {
+        while (left < right) {
+            swap(nums, left++, right--);
+        }
+    }
+
+    // --- Test Driver ---
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+
+        int[][] testCases = {
+            {1, 2, 3},         // ✅ Output: [1, 3, 2]
+            {3, 2, 1},         // ✅ Output: [1, 2, 3]
+            {1, 1, 5},         // ✅ Output: [1, 5, 1]
+            {1, 3, 2},         // ✅ Output: [2, 1, 3]
+            {2, 3, 1},         // ✅ Output: [3, 1, 2]
+            {1},               // ✅ Output: [1]
+            {1, 5, 1},         // ✅ Output: [5, 1, 1]
+            {2, 4, 3, 2, 1},   // ✅ Output: [3, 1, 2, 2, 4]
+            {1, 2, 3, 6, 5, 4} // ✅ Output: [1, 2, 4, 3, 5, 6]
+        };
+
+        for (int i = 0; i < testCases.length; i++) {
+            int[] input = testCases[i];
+            int[] copy = Arrays.copyOf(input, input.length);
+            System.out.println("Test Case " + (i + 1) + ": Input = " + Arrays.toString(copy));
+            sol.nextPermutation(copy);
+            System.out.println("            Next Permutation = " + Arrays.toString(copy));
+            System.out.println();
+        }
+    }
+}
+```
+
+---
+
+### 🔁 Example Dry Run
+
+#### Input: `[1, 2, 3, 6, 5, 4]`
+
+```
+1. Find valley: 3 < 6 → valley = 2
+2. Find nextHigher: 4 > 3 → nextHigher = 5
+3. Swap(2, 5): → [1, 2, 4, 6, 5, 3]
+4. Reverse(3, 5): → [1, 2, 4, 3, 5, 6]
+```
+
+✅ Final output: `[1, 2, 4, 3, 5, 6]`
+
+---
+
+### ⏱ Time and Space Complexity
+
+| Metric | Complexity | Explanation                                |
+| ------ | ---------- | ------------------------------------------ |
+| Time   | O(n)       | 1 scan for valley + 1 reverse = 2 passes   |
+| Space  | O(1)       | Done in-place using swap and reverse logic |
+
+---
+
+### 🧠 Interview Recap
+
+> “We scan from the end to find the first decreasing point, then swap it with the next higher number to the right and reverse the suffix. This generates the next lexicographical permutation in-place.”
+
+---
+
+Let me know if you'd like:
+
+* ✅ Recursive implementation
+* ✅ Generator for all permutations
+* ✅ `k`-th next permutation logic
+
+I’m here to help.
+
+
+
+
 To **easily remember the `nextPermutation()` algorithm**, especially in interviews, associate each step with a **visual and logical metaphor**. Here’s a structured memory guide that breaks the process into an intuitive 3-step pattern, along with a mnemonic and visual reasoning:
 
 ---
