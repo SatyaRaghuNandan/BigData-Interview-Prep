@@ -84,3 +84,122 @@ Let me know if you’d like:
 * 🧪 Unit tests with sample trees
 
 I'm ready to assist further!
+
+
+
+Here's the full **Java conversion** of the `lowestCommonAncestor` function for an **N-ary Tree**, including:
+
+* ✅ Clean class structure
+* ✅ Telugu-style comments for clarity
+* ✅ Main method with test cases
+* ✅ Time and space complexity
+
+---
+
+## ✅ Java Code for N-ary Tree LCA (Recursive)
+
+```java
+import java.util.*;
+
+// 🧱 N-ary Tree Node definition
+class Node {
+    int val;
+    List<Node> children;
+
+    Node(int val) {
+        this.val = val;
+        this.children = new ArrayList<>();
+    }
+}
+
+public class Solution {
+
+    // ✅ N-ary Tree LCA Recursive Function
+    public Node lowestCommonAncestor(Node root, Node p, Node q) {
+        if (root == null) return null;
+
+        // Base case: current node is either p or q
+        if (root == p || root == q)
+            return root;
+
+        // Children lo search cheyyadam
+        List<Node> matches = new ArrayList<>();
+        for (Node child : root.children) {
+            Node found = lowestCommonAncestor(child, p, q);
+            if (found != null)
+                matches.add(found);
+        }
+
+        // 🧠 If we found both p and q in two different subtrees
+        if (matches.size() == 2) {
+            return root;
+        } else if (matches.size() == 1) {
+            return matches.get(0); // p or q found deeper
+        }
+
+        return null; // nothing found in this subtree
+    }
+
+    // ✅ Test Code with Main
+    public static void main(String[] args) {
+        /*
+                Tree:
+                      1
+                   /  |  \
+                 2    3   4
+                    / \
+                   5   6
+         */
+        Node root = new Node(1);
+        Node n2 = new Node(2);
+        Node n3 = new Node(3);
+        Node n4 = new Node(4);
+        Node n5 = new Node(5);
+        Node n6 = new Node(6);
+
+        root.children.add(n2);
+        root.children.add(n3);
+        root.children.add(n4);
+        n3.children.add(n5);
+        n3.children.add(n6);
+
+        Solution sol = new Solution();
+
+        // ✅ Test 1: LCA(5, 6) → 3
+        Node lca1 = sol.lowestCommonAncestor(root, n5, n6);
+        System.out.println("LCA of 5 and 6: " + (lca1 != null ? lca1.val : "null"));
+
+        // ✅ Test 2: LCA(2, 6) → 1
+        Node lca2 = sol.lowestCommonAncestor(root, n2, n6);
+        System.out.println("LCA of 2 and 6: " + (lca2 != null ? lca2.val : "null"));
+
+        // ✅ Test 3: LCA(5, 3) → 3 (ancestor itself)
+        Node lca3 = sol.lowestCommonAncestor(root, n5, n3);
+        System.out.println("LCA of 5 and 3: " + (lca3 != null ? lca3.val : "null"));
+
+        // ✅ Test 4: LCA(4, 2) → 1
+        Node lca4 = sol.lowestCommonAncestor(root, n4, n2);
+        System.out.println("LCA of 4 and 2: " + (lca4 != null ? lca4.val : "null"));
+    }
+}
+```
+
+---
+
+## 🔍 Time and Space Complexity
+
+| Metric           | Value  | Explanation                            |
+| ---------------- | ------ | -------------------------------------- |
+| Time Complexity  | `O(N)` | Every node is visited once recursively |
+| Space Complexity | `O(H)` | Call stack size = height of the tree   |
+
+---
+
+Let me know if you'd like:
+
+* Iterative version for N-ary trees
+* Visual walkthrough of the tree traversal and dry run
+* LeetCode-style TreeNode deserializer for inputs
+
+
+
