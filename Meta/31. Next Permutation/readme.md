@@ -133,6 +133,103 @@ I’m here to help.
 
 
 
+
+Absolutely! Let’s walk through **5 dry-run examples** of the `nextPermutation()` logic — step by step — so you can deeply understand how it works.
+
+---
+
+## 🔁 **Overview of Logic**
+
+To find the **next permutation** in lexicographical order:
+
+1. 🔍 Find the first index `i` from right such that `nums[i] < nums[i+1]`. Call it `valley`.
+2. 🔍 From the right end again, find the first number > `nums[valley]`. Call it `nextHigher`.
+3. 🔄 Swap `nums[valley]` and `nums[nextHigher]`.
+4. 🔁 Reverse the suffix from `valley + 1` to end of array.
+
+---
+
+## ✅ Example 1: `nums = [1, 2, 3]`
+
+```
+Step 1: Find first decreasing pair from right → 2 < 3 at index 1 → valley = 1
+Step 2: Find number > 2 from end → 3 at index 2
+Step 3: Swap(1,2): [1, 3, 2]
+Step 4: Reverse from index 2 to end → already one element → [1, 3, 2]
+```
+
+✅ **Output: \[1, 3, 2]**
+
+---
+
+## ✅ Example 2: `nums = [3, 2, 1]`
+
+```
+Step 1: No decreasing pair found → valley = -1
+→ Reverse whole array → [1, 2, 3]
+```
+
+✅ **Output: \[1, 2, 3]** (It was the last permutation, so we go back to the first one)
+
+---
+
+## ✅ Example 3: `nums = [1, 1, 5]`
+
+```
+Step 1: 1 < 5 at index 1 → valley = 1
+Step 2: Find nextHigher > 1 → 5 at index 2
+Step 3: Swap(1,5) → [1, 5, 1]
+Step 4: Reverse from 2 to end → [1] → final → [1, 5, 1]
+```
+
+✅ **Output: \[1, 5, 1]**
+
+---
+
+## ✅ Example 4: `nums = [1, 3, 2]`
+
+```
+Step 1: 1 < 3 → valley = 0
+Step 2: From end → find > 1 → 2 at index 2
+Step 3: Swap(1,2) → [2, 3, 1]
+Step 4: Reverse from index 1 to 2 → [3,1] → [1,3]
+Final: [2, 1, 3]
+```
+
+✅ **Output: \[2, 1, 3]**
+
+---
+
+## ✅ Example 5: `nums = [2, 3, 1]`
+
+```
+Step 1: 2 < 3 → valley = 0
+Step 2: Find nextHigher > 2 → 3 at index 1
+Step 3: Swap(2,3) → [3, 2, 1]
+Step 4: Reverse from 1 to 2 → [2,1] → [1,2]
+Final: [3, 1, 2]
+```
+
+✅ **Output: \[3, 1, 2]**
+
+---
+
+## 🧠 Summary Table:
+
+| Input     | Valley Index | Next Higher | Swap      | Reversed Suffix | Final Output |
+| --------- | ------------ | ----------- | --------- | --------------- | ------------ |
+| `[1,2,3]` | 1            | 2           | `[1,3,2]` | -               | `[1,3,2]`    |
+| `[3,2,1]` | -1           | -           | -         | `[1,2,3]`       | `[1,2,3]`    |
+| `[1,1,5]` | 1            | 2           | `[1,5,1]` | -               | `[1,5,1]`    |
+| `[1,3,2]` | 0            | 2           | `[2,3,1]` | `[1,3]`         | `[2,1,3]`    |
+| `[2,3,1]` | 0            | 1           | `[3,2,1]` | `[1,2]`         | `[3,1,2]`    |
+
+---
+
+If you want me to **simulate custom input** or give you a **visual dry run for interview preparation**, I can help you with that too.
+
+
+
 To **easily remember the `nextPermutation()` algorithm**, especially in interviews, associate each step with a **visual and logical metaphor**. Here’s a structured memory guide that breaks the process into an intuitive 3-step pattern, along with a mnemonic and visual reasoning:
 
 ---
