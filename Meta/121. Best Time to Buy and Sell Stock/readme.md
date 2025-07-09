@@ -1,6 +1,6 @@
 
 
-
+```java
 
 // ✅ Leetcode 121: Best Time to Buy and Sell Stock (One Transaction)
 class Stock121 {
@@ -54,7 +54,7 @@ class Stock123 {
 
 // 🔁 You can now test each of these in your main function with example arrays.
 
-
+```
 
 
 
