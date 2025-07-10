@@ -1,4 +1,7 @@
 
+# // VARIANT: What if you had to add two strings of numbers that could contain decimals?
+# // Both, one or neither could have decimals. Very, very tricky...
+
 
 Great! Here's your full **Java implementation** of `add_string_decimals_415()` that:
 
