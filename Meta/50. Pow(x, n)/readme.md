@@ -6,6 +6,8 @@ Here’s your complete **Java implementation** of **Binary Exponentiation** (bot
 ✅ **Test cases with dry run explanations**
 ✅ **Walkthrough of how the code works**
 
+
+# // Follow-up: What if you had to solve the problem in SC O(1)? // Retain the TC of O(LOG N).
 ---
 
 ## ✅ Java Code: Recursive Binary Exponentiation
