@@ -1,3 +1,6 @@
+# // VARIANT: What if you had to define the data structures yourself and clone the 
+# // disconnected graph?
+
 Excellent! This is a **variant** of LeetCode 133 where the graph might be **disconnected** (i.e., multiple connected components). You’ve introduced a custom `Graph` structure that maintains a list of root nodes (`input.roots`), allowing for disconnected components.
 
 Let’s walk through this **step-by-step** with **detailed explanations**, Telugu comments (if translated to Python), and visual tracing.
