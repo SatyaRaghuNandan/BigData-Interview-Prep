@@ -1,3 +1,6 @@
+# // VARIANT: What if you had to return all of the buildings that either have an ocean view
+# // to its left and/or its right? This becomes very similar to Leetcode 42 Trapping Rain Water
+
 Great! You're now exploring a **more advanced variant** of the **"Buildings With Ocean View"** problem.
 
 ---
