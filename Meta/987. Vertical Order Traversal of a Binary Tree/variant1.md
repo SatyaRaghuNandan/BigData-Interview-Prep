@@ -160,3 +160,53 @@ Would you like:
 ✅ Dry run for a custom tree?
 
 Let me know!
+
+
+Great point — let’s **explicitly list the differences** between the **original Leetcode 987 problem** and the **print-based variant** you’re analyzing. We'll break it down clearly across **input/output, purpose, structure, and usage**.
+
+---
+
+## ✅ Difference Between Original (Leetcode 987) and Print Variant
+
+| Feature / Aspect       | 🔷 Original Problem (Leetcode 987)                       | ✅ Variant (Your Code)                              |
+| ---------------------- | -------------------------------------------------------- | -------------------------------------------------- |
+| **Problem Goal**       | Return `List<List<Integer>>` for vertical order          | **Print** each vertical column to console          |
+| **Output Format**      | Structured, nested list: `[[col1], [col2], ..., [coln]]` | Flat console output: one column per line           |
+| **Return Value**       | Returns result to caller for further use or testing      | No return value – side effect is printing          |
+| **Usage Scenario**     | Integration into other logic / test harness              | Visualization, debugging, manual inspection        |
+| **Testability**        | Can be unit-tested with assertions                       | Requires output capture (e.g., stdout) for testing |
+| **Consumer of Output** | Programmatic → function/method calls                     | Human → console reader or log file                 |
+| **Language Construct** | Uses data structures (lists/maps) for return             | Uses `System.out.print` or `std::cout`             |
+| **Performance Intent** | Return result as efficiently as possible                 | Visual clarity more important than efficiency      |
+| **Common Use Case**    | Production-grade solution                                | Debugging or interview whiteboard version          |
+| **Sorting Behavior**   | Explicit `(row, value)` sorting required                 | Same sorting logic used but directly printed       |
+| **Final Step**         | Aggregate into a list                                    | Iterate and print each column directly             |
+
+---
+
+## 🧠 Why This Difference Matters
+
+| Context                       | Original Version                              | Print Variant                                    |
+| ----------------------------- | --------------------------------------------- | ------------------------------------------------ |
+| ✅ Leetcode/Test Cases         | Needs return format → list of lists           | ❌ Will fail if only `System.out.print` is used   |
+| 🧪 Unit Testing               | Easy to write `assertEquals(...)` tests       | Needs capturing console output or mock print     |
+| 🧑‍🏫 Interviews (Whiteboard) | Return version preferred for clean API design | Print version acceptable for "show the result"   |
+| 🛠️ Debugging                 | Less useful unless you manually inspect list  | More helpful to visually verify column alignment |
+
+---
+
+## 🏁 Summary
+
+> The **core traversal and grouping logic is the same** between Leetcode 987 and your variant.
+> The key difference is: **one returns structured data**, while the other **prints output for visual debugging or console-based interpretation**.
+
+---
+
+Let me know if you’d like:
+
+* A **side-by-side code comparison**
+* A **return-based version** of the print variant
+* How to **unit test** a print-based implementation
+
+Happy to provide all!
+
