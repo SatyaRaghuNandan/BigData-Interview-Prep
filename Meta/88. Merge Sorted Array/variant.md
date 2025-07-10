@@ -1,5 +1,5 @@
-// VARIANT: What if the sizes - m and n - weren't given? Instead, we're guaranteed
-// that one list is double in size of the other. Merge them like you would in the original problem.
+# // VARIANT: What if the sizes - m and n - weren't given? Instead, we're guaranteed
+# // that one list is double in size of the other. Merge them like you would in the original problem.
 
 
 Here's the **Java version** of your **Leetcode 88 Variant**, where `listA` has **twice the size** of `listB`, with zero placeholders at the end.
