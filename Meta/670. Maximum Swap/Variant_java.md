@@ -1,3 +1,4 @@
+# // VARIANT: What if you had to build the second largest number?
 You're working on a **variant of Maximum Swap** where the goal is to build the **second-largest number** by sorting digits in descending order and performing **only one swap** between the last unequal adjacent pair.
 
 Let’s convert your **Python logic** into **Java**, with:
