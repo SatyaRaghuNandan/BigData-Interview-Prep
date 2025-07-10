@@ -125,3 +125,112 @@ public class ValidPalindromeVariant {
 ---
 
 Would you like a **case-insensitive version** of the variant as well? Or should we convert the `List<Character>` into a more efficient input like `String` or `char[]`?
+
+
+
+Great question! Let’s break down the **differences** between the two palindrome problems — the **original Leetcode 125** and its **custom variant** — in a clear and structured way.
+
+---
+
+## ✅ Problem Definitions
+
+| Aspect         | Original (Leetcode 125)                  | Variant (Custom Inclusion Set)                        |
+| -------------- | ---------------------------------------- | ----------------------------------------------------- |
+| Input          | String `s`                               | String `s` and a list of characters `include[]`       |
+| Goal           | Check if `s` is a palindrome             | Check if filtered characters in `s` form a palindrome |
+| Filtering Rule | Only consider alphanumeric characters    | Only consider characters in `include[]`               |
+| Case Handling  | Case-insensitive (uses `.toLowerCase()`) | Case-sensitive by default                             |
+
+---
+
+## ✅ Key Differences
+
+### 1. **Character Filtering**
+
+| Feature        | Leetcode 125                           | Variant                                    |
+| -------------- | -------------------------------------- | ------------------------------------------ |
+| What to keep   | Only letters and digits (`isalnum`)    | Only characters present in `include[]`     |
+| What to ignore | All punctuation, spaces, symbols       | Everything not in `include[]`              |
+| Example        | `"A man, a plan, a canal: Panama"` → ✅ | With `include = ['a', 'm', 'n']` → depends |
+
+---
+
+### 2. **Case Sensitivity**
+
+| Behavior         | Leetcode 125                       | Variant                     |
+| ---------------- | ---------------------------------- | --------------------------- |
+| `A` vs `a`       | Treated as equal                   | Treated as different        |
+| How it's handled | By using `Character.toLowerCase()` | No normalization by default |
+
+👉 If needed, you can modify the variant to make it case-insensitive too by normalizing characters in `include[]` and `s`.
+
+---
+
+### 3. **Inclusion Set**
+
+| Feature               | Leetcode 125      | Variant                                  |
+| --------------------- | ----------------- | ---------------------------------------- |
+| Custom filter support | ❌ Not supported   | ✅ Yes (`HashSet<Character>`)             |
+| Adaptability          | Rigid filter rule | Flexible (supports any custom char list) |
+
+---
+
+## ✅ Real Examples
+
+### Example 1:
+
+```text
+s = "Yo, banana boY!"
+include = ['Y', 'o', 'b', 'a', 'n']
+```
+
+**Original:**
+
+* All letters → lowercased → `"yobananaboy"` → Palindrome ✅
+
+**Variant:**
+
+* Includes only the given chars in original case
+* `"YobananabY"` → Not equal due to `Y ≠ y` → ❌ unless case-insensitive logic added
+
+---
+
+### Example 2:
+
+```text
+s = "____1____133__________"
+include = ['1', '3']
+```
+
+**Original:**
+
+* Keeps only digits → `"1133"` → Not a palindrome ❌
+  **Variant:**
+* Keeps `1`, `3` → `"1133"` → Same → Not a palindrome ❌
+
+---
+
+## ✅ Summary Table
+
+| Feature                 | Leetcode 125      | Variant                                  |
+| ----------------------- | ----------------- | ---------------------------------------- |
+| Alphanumeric only       | ✅ Yes             | ❌ No (uses `include[]`)                  |
+| Case-insensitive        | ✅ Yes             | ❌ No (can modify to add)                 |
+| Supports custom filters | ❌ No              | ✅ Yes                                    |
+| Flexibility             | ❌ Limited         | ✅ High (set can include any chars)       |
+| Use-case example        | Web input cleanup | Domain-specific filter (e.g., DNA bases) |
+
+---
+
+## ✅ When to Use Which?
+
+| Use Case                                | Recommended Version             |
+| --------------------------------------- | ------------------------------- |
+| Checking general strings for palindrome | ✅ Leetcode 125                  |
+| Only a subset of characters matter      | ✅ Variant with `include[]`      |
+| You need case-insensitive + inclusion   | ✅ Variant + lowercase normalize |
+
+---
+
+Would you like me to show how to modify the variant to make it **case-insensitive** as well?
+
