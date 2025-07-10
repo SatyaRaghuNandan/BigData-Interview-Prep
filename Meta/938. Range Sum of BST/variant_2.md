@@ -1,3 +1,6 @@
+# // VARIANT: What if you had to optimize your solution for 10^4 function invocations?
+# // How would your algorithm change?
+
 Here's the **Java version** of the **Second Variant** — optimized for **10⁴+ range queries** over a static BST. We use **in-order traversal**, a **prefix sum array**, and **binary search** to handle each query in `O(log N)` time after a one-time `O(N)` preprocessing step.
 
 ---
