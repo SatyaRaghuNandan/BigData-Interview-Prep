@@ -1,3 +1,4 @@
+# // VARIANT: What if you had to implement two more functions: the del(key) and last() functions?
 Here's the **equivalent Java code** for your **`LRUCache_146_Variant`** C++ class, including the additional `del(key)` and `last()` methods:
 
 ---
