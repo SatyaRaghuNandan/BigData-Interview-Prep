@@ -1,3 +1,4 @@
+# // VARIANT: What if you had to find the previous permutation?
 Excellent! You're implementing the **Previous Permutation** algorithm — a reverse counterpart of LeetCode 31’s **Next Permutation**, and it’s perfectly structured.
 
 Below is a **fully annotated version** with:
