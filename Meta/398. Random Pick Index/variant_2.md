@@ -1,4 +1,4 @@
-
+# // VARIANT: What if you had to use reservoir sampling to pick an index of the maximum value in the array?
 
 
 
