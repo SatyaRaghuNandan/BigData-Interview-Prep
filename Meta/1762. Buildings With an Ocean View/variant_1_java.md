@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to return the number of buildings with an ocean view?
+
 Let's **convert your C++ variant** of the **"Buildings With an Ocean View"** problem — where we return the **count** of such buildings — into **Java**, and then compare it to the **original problem**.
 
 ---
