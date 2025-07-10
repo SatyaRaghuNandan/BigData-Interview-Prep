@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to use reservoir sampling to randomly sample K numbers without replacement probability?
+
 Great! You're tackling an excellent interview problem that combines **array traversal**, **randomization**, and **reservoir sampling** — a popular technique in large data streaming scenarios.
 
 ---
