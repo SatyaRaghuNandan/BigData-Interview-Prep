@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to deep copy a binary tree, not a linked list?
+
 Great! You're now working on the **variant of Leetcode 138**, where instead of copying a **linked list with random pointers**, you're copying a **binary tree** where each node has:
 
 * `left` and `right` pointers (normal binary tree)
