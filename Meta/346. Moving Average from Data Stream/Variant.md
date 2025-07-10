@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to return a resulting array of the averages of each subarray of size, "size"?
+
 Here is the **Java equivalent** of your C++ program for computing **averages of each subarray of size `k`**, including:
 
 * ✅ Full conversion with meaningful variable names
