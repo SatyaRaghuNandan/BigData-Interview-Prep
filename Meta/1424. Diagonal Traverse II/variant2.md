@@ -1,3 +1,4 @@
+# // VARIANT: What if you're given a full matrix and you had to print out the anti-diagonal order?
 Great! Let's break this **second variant** down clearly and understand what it's doing.
 
 ---
