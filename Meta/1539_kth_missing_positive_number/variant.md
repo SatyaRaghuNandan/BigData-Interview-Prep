@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to return the Kth missing positive number from the leftmost element?
+
 Here is the **Java version** of the **Leetcode 1539 variant** where you find the **k-th missing positive number relative to `arr[0]`**, with:
 
 * ✅ Telugu comments
