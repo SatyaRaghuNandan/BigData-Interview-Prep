@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to abide by 3 formatting requirements when capturing missing ranges?
+
 Absolutely! Let's now convert your **Python `findMissingRangesVariant`** to a **Java implementation** with:
 
 ✅ Clean structure
