@@ -1,3 +1,5 @@
+# // VARIANT: What happens if you have to return the path of a shortest path?
+
 You're exploring a **variant of Leetcode 1091 – Shortest Path in Binary Matrix**, where instead of returning just the **length of the shortest path**, you now need to **return the actual path**.
 
 ---
