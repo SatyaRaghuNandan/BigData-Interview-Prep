@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to return both the left- and right side views of a binary tree?
+
 You're testing a **custom tree traversal variant** that prints the **left-side view reversed + right-side view (excluding root duplication)** — a combination of left-to-right boundary visual layers of the tree. Let's break it down with:
 
 ---
