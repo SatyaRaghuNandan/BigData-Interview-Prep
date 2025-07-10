@@ -1,3 +1,5 @@
+# // VARIANT: What if the target parameter was given as an integer, not a double?
+
 Perfect! You're clearly exploring the **integer-only variant** of Leetcode 270, which simplifies comparisons and decisions slightly. Here's a deeper dive into:
 
 ---
