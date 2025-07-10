@@ -1,126 +1,76 @@
-The difference between the original `merge_3_sorted_lists_second_variant_21` function (which removes duplicates) and the modified `merge_3_sorted_lists_preserve_duplicates` function (which preserves duplicates) lies in two specific parts of the code. Below, I’ll highlight the exact differences in the relevant code sections.
+Here’s the **Java version** of your C++ solution for **Leetcode 88: Merge Sorted Array** using the **three-pointer approach** (merging from the end):
 
-### Original Function (Removes Duplicates)
-```python
-from typing import List
+---
 
-def merge_3_sorted_lists_second_variant_21(listA: List[int], 
-                                           listB: List[int], 
-                                           listC: List[int]) -> List[int]:
-    result = []
-    a, b, c = 0, 0, 0
-    while a < len(listA) or b < len(listB) or c < len(listC):
-        a_val = listA[a] if a < len(listA) else float('inf')
-        b_val = listB[b] if b < len(listB) else float('inf')
-        c_val = listC[c] if c < len(listC) else float('inf')
+## ✅ Java Code with Telugu-style Comments
 
-        min_val = min(a_val, b_val, c_val)
+```java
+public class MergeSortedArray {
 
-        if not result or result[-1] != min_val:
-            result.append(min_val)
+    // Merges nums2 into nums1 as one sorted array
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        // 🟢 a: nums1 valid elements index
+        int a = m - 1;
 
-        if a_val == min_val:
-            a += 1
-        elif b_val == min_val:
-            b += 1
-        else:
-            c += 1
+        // 🟢 b: nums2 index
+        int b = n - 1;
 
-    return result
+        // 🟢 i: nums1 final position index (merged array end)
+        int i = m + n - 1;
+
+        // 🔁 Loop till all nums2 elements are merged
+        while (b >= 0) {
+            if (a >= 0 && nums1[a] >= nums2[b]) {
+                nums1[i] = nums1[a];  // nums1 element is bigger
+                a--;
+            } else {
+                nums1[i] = nums2[b];  // nums2 element is bigger
+                b--;
+            }
+            i--;
+        }
+    }
+}
 ```
 
-### Modified Function (Preserves Duplicates)
-```python
-from typing import List
+---
 
-def merge_3_sorted_lists_preserve_duplicates(listA: List[int], 
-                                           listB: List[int], 
-                                           listC: List[int]) -> List[int]:
-    result = []
-    a, b, c = 0, 0, 0
-    while a < len(listA) or b < len(listB) or c < len(listC):
-        a_val = listA[a] if a < len(listA) else float('inf')
-        b_val = listB[b] if b < len(listB) else float('inf')
-        c_val = listC[c] if c < len(listC) else float('inf')
+## ✅ Example Test in `main()`
 
-        min_val = min(a_val, b_val, c_val)
+```java
+import java.util.Arrays;
 
-        # Count occurrences of min_val and append that many times
-        count = 0
-        if a < len(listA) and a_val == min_val:
-            count += 1
-            a += 1
-        if b < len(listB) and b_val == min_val:
-            count += 1
-            b += 1
-        if c < len(listC) and c_val == min_val:
-            count += 1
-            c += 1
-        
-        # Append min_val for each occurrence
-        for _ in range(count):
-            result.append(min_val)
+public class Main {
+    public static void main(String[] args) {
+        MergeSortedArray merger = new MergeSortedArray();
 
-    return result
+        int[] nums1 = {1, 2, 3, 0, 0, 0};
+        int[] nums2 = {2, 5, 6};
+        int m = 3, n = 3;
+
+        merger.merge(nums1, m, nums2, n);
+        System.out.println(Arrays.toString(nums1)); // Output: [1, 2, 2, 3, 5, 6]
+    }
+}
 ```
 
-### Exact Code Differences
-The differences are in the section where the minimum value is processed and pointers are incremented. Below are the exact code snippets that differ:
+---
 
-1. **Appending Logic**:
-   - **Original (Removes Duplicates)**:
-     ```python
-     if not result or result[-1] != min_val:
-         result.append(min_val)
-     ```
-   - **Modified (Preserves Duplicates)**:
-     ```python
-     # Count occurrences of min_val and append that many times
-     count = 0
-     if a < len(listA) and a_val == min_val:
-         count += 1
-         a += 1
-     if b < len(listB) and b_val == min_val:
-         count += 1
-         b += 1
-     if c < len(listC) and c_val == min_val:
-         count += 1
-         c += 1
-     
-     # Append min_val for each occurrence
-     for _ in range(count):
-         result.append(min_val)
-     ```
+## ✅ Time and Space Complexity
 
-2. **Pointer Increment Logic**:
-   - **Original (Removes Duplicates)**:
-     ```python
-     if a_val == min_val:
-         a += 1
-     elif b_val == min_val:
-         b += 1
-     else:
-         c += 1
-     ```
-   - **Modified (Preserves Duplicates)**:
-     ```python
-     if a < len(listA) and a_val == min_val:
-         count += 1
-         a += 1
-     if b < len(listB) and b_val == min_val:
-         count += 1
-         b += 1
-     if c < len(listC) and c_val == min_val:
-         count += 1
-         c += 1
-     ```
+| Metric           | Value           |
+| ---------------- | --------------- |
+| Time Complexity  | O(m + n)        |
+| Space Complexity | O(1) — in-place |
 
-### Explanation of Differences
-- **Appending Logic**:
-  - **Original**: Only appends `min_val` if the result list is empty or the last appended value differs from `min_val`, effectively removing duplicates.
-  - **Modified**: Counts how many lists have `min_val` (using `count`) and appends `min_val` that many times, preserving all duplicates.
-- **Pointer Increment**:
-  - **Original**: Increments only one pointer (the first list with `min_val`) using `if-elif-else`, which is sufficient for removing duplicates but misses additional instances of `min_val` in other lists.
-  - **Modified**: Increments all pointers for lists with `min_val`, ensuring all instances are processed, which is necessary to include every occurrence in the output.
+---
 
-These changes ensure the modified function outputs all elements, including duplicates, as in `[1, 2, 2, 3, 3, 3, 4, 4, 5]` for the input `listA = [1, 2, 3]`, `listB = [2, 3, 4]`, `listC = [3, 4, 5]`.
+## ✅ Interview Explanation Summary
+
+> “I use three pointers: one at the end of the valid portion of `nums1`, one at the end of `nums2`, and one at the end of the full `nums1` array.
+> I compare and insert elements from the back to avoid overwriting.
+> This ensures an in-place `O(m + n)` merge in sorted order.”
+
+---
+
+Would you like a version that merges into a **new array** or handles edge cases like null/empty arrays?
