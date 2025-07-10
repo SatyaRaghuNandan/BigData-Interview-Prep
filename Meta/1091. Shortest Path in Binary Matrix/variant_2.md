@@ -1,3 +1,4 @@
+# // VARIANT: What if you had to return a single path? Note it's not necessarily the shortest.
 You're exploring a new **variant of Leetcode 1091**:
 
 > **"What if you had to return *a single valid path* (not necessarily the shortest) from top-left to bottom-right in a binary matrix?"**
