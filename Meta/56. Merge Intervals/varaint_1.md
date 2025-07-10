@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to merge two interval lists instead of one?
+
 Excellent! You're now working on a powerful **variant** of the classic **Merge Intervals** problem:
 
 > 🔁 **LeetCode 56 – Variant**:
