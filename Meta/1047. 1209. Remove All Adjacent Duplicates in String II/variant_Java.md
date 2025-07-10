@@ -1,3 +1,6 @@
+# // VARIANT: What if you had to remove all adjacent duplicates as you iterate
+# // left-to-right?
+
 Here's a clean and efficient **Java solution** that fully replicates the **recursive removal of adjacent duplicates** behavior, just like your C++ test suite expects.
 
 ---
