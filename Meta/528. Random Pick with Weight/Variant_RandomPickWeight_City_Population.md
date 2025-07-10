@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to return the city that a person lives in? The input is given very differently.
+
 Here's your requested implementation of the **Leetcode 528 variant** — where we select a **city based on its population proportionally** — rewritten in **Java** with:
 
 * ✅ Telugu comments
