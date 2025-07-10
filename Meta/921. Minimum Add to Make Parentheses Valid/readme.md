@@ -110,3 +110,82 @@ public class Solution {
 ---
 
 Would you like a **stack-based simulation** or **graphical walkthrough** next?
+
+
+Great! Let's now generate:
+
+---
+
+## ✅ **JUnit Test Cases** for the Java solution
+
+We'll use the same class (`MinimumAddToMakeValidString`) and add a proper **JUnit 5 test suite** using `@Test` annotations.
+
+---
+
+### ✅ `MinimumAddToMakeValidStringTest.java`
+
+```java
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class MinimumAddToMakeValidStringTest {
+
+    MinimumAddToMakeValidString sol = new MinimumAddToMakeValidString();
+
+    @Test
+    public void testOnlyClosingBrackets() {
+        assertEquals("()()()", sol.minAddToMakeValid(")))"));
+    }
+
+    @Test
+    public void testOnlyOpeningBrackets() {
+        assertEquals("((()))", sol.minAddToMakeValid("((("));
+    }
+
+    @Test
+    public void testEmptyString() {
+        assertEquals("", sol.minAddToMakeValid(""));
+    }
+
+    @Test
+    public void testAlreadyValid() {
+        assertEquals("(())", sol.minAddToMakeValid("(())"));
+    }
+
+    @Test
+    public void testUnmatchedStartAndEnd() {
+        assertEquals("()()()((()))", sol.minAddToMakeValid(")))((("));
+    }
+
+    @Test
+    public void testNoParenthesesCharacters() {
+        assertEquals("abcxyz", sol.minAddToMakeValid("abcxyz"));
+    }
+
+    @Test
+    public void testComplexCase1() {
+        assertEquals("(()())()(())", sol.minAddToMakeValid("(()()))(("));
+    }
+
+    @Test
+    public void testComplexCaseWithLetters() {
+        assertEquals("((a)())()((xyz))", sol.minAddToMakeValid("((a)()))((xyz"));
+    }
+}
+```
+
+---
+
+## ✅ How to Run
+
+1. Make sure you're using **JUnit 5** in your Java project (`org.junit.jupiter`).
+2. Include both classes:
+
+   * `MinimumAddToMakeValidString.java`
+   * `MinimumAddToMakeValidStringTest.java`
+3. Run with your favorite IDE or from CLI:
+   `mvn test` or use `gradle test` if you're using Gradle.
+
+---
+
+Would you like me to show a **JUnit 4 compatible version** or convert this into **TestNG** format?
