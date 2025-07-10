@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to return the parentheses string itself after the minimum adds?
+
 Absolutely! Let's convert the **Python code of Leetcode 921 - Minimum Add to Make Parentheses Valid** into **Java**, and add:
 
 * ✅ **Telugu-style comments** (in English script)
