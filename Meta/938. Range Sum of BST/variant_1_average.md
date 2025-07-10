@@ -1,3 +1,8 @@
+# // VARIANT: What if you had to return the average of all the nodes within the
+# // lower and upper range? 
+# // Note sometimes you are expected to use integer divison for the average, other times
+# // it's floating point division.
+
 Here’s the **Java version** of the **Average of Range in BST** problem — a variant of the classic *Range Sum of BST*. This implementation uses **recursive DFS with pruning**, tracks both `sum` and `count`, and returns `average = sum / count`.
 
 ---
