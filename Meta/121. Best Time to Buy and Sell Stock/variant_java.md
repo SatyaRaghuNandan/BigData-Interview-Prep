@@ -1,3 +1,6 @@
+# // VARIANT: What if you had to return the minimum cost to buy a roundtrip flight?
+# // Note you cannot fly somewhere and back on the same day.
+
 Here’s the equivalent **Java code** for the Python function `find_cheapest_tickets`, followed by a breakdown of **time and space complexity** and inline comments for clarity.
 
 ---
