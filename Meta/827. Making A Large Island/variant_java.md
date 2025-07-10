@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to create an island that doesn't touch any other existing islands?
+
 Absolutely — you're dealing with a **variant of LeetCode 827**, and your question is very insightful:
 
 ---
