@@ -1,3 +1,4 @@
+# // VARIANT: What if you had to print to console the left and right side views?
 Here's the **Java version** of the variant you described (inspired by Leetcode 199 – Right Side View), with:
 
 ---
