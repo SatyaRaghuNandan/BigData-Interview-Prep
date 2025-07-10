@@ -1,3 +1,4 @@
+# // VARIANT: What if you had to solve the OG problem without any extra space complexity?
 Here's the **Java implementation** of your **space-optimized variant** of *"Minimum Remove to Make Valid Parentheses"*, translated from Python and explained with:
 
 * ✅ **Telugu comments** (in English script)
