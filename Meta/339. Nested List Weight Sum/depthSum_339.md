@@ -1,3 +1,7 @@
+# Original
+# # VARIANT: What if you had to define your own schema for NestedList and implement BFS?
+# # VARIANT: What if you had to define your own schema for NestedList and implement DFS?
+
 Here’s the **Java equivalent** of your custom DFS solution for computing the **depth-weighted sum** using a custom `Object`-like class structure (similar to Leetcode’s `NestedInteger`) — with **Telugu-style comments**, clean structure, and full setup:
 
 ---
