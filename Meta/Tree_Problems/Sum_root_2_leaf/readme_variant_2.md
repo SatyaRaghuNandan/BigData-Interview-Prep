@@ -1,3 +1,7 @@
+# // VARIANT: What if you had to ignore negative signs in your calculations until
+# // you reached a leaf node, and instead, only consider signage if a root-to-leaf path is
+# // a "negative path"?
+
 Excellent variant! You're solving a nuanced version of **Leetcode 129 (Sum Root to Leaf Numbers)**:
 
 ---
