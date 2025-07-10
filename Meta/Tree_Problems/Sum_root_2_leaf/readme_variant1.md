@@ -1,3 +1,5 @@
+# // VARIANT: What if you nodes could be larger than 9?
+
 Absolutely! You're working on a **variant of Leetcode 129** where:
 
 > 🔄 **Each node can now hold multi-digit values (like `42`, `911`, `2000`, not just `0-9`)**
