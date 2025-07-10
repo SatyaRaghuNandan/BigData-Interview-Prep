@@ -1,3 +1,5 @@
+# // VARIANT: What if you were given an N-ary Tree as the input, no longer a binary tree?
+
 Here's the **Java version** of your **N-ary Tree LCA solution (recursive approach)** with:
 
 * ✅ Clean structure
