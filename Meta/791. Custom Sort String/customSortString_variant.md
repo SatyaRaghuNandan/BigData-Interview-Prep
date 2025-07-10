@@ -1,3 +1,4 @@
+# // VARIANT: What if you had to optimize the time complexity of your solution?
 Great! You're working with a **variant of the "Custom Sort String"** problem where:
 
 ✅ The input `s` and `order` are guaranteed to contain only **lowercase English letters**, and
