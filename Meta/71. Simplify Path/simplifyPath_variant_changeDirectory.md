@@ -111,3 +111,72 @@ public class DirectoryChanger {
 * **Robust edge case support**
 
 Let me know if you want to extend this into a **mock filesystem** or simulate directory permissions or symlinks (`ln -s`)!
+
+
+
+Absolutely! Here's the logic broken down into **6 simple steps** in **easy English** — so you can easily remember and reuse it in interviews or practice:
+
+---
+
+### ✅ How to Simulate `cd` Command (Like Linux Terminal)
+
+---
+
+### ✅ **Step-by-Step Approach (Simple English)**
+
+#### **Step 1:**
+
+👉 If the `cd` path is **empty or null**, just **return the current path (`cwd`)**.
+
+> Because nothing changes if we type: `cd ""`
+
+---
+
+#### **Step 2:**
+
+👉 Create a **stack** to store folder names, one by one.
+
+> Stack helps us **"go back" (`..`) or "move forward"** easily like breadcrumbs.
+
+---
+
+#### **Step 3:**
+
+👉 If the `cd` path is **relative (doesn’t start with `/`)**,
+📌 Then **split the `cwd` path by `/`** and push folders into the stack.
+
+> Because we are changing **from current directory**, so we **start from there.**
+
+---
+
+#### **Step 4:**
+
+👉 Now split the `cd` path by `/` and handle each part:
+
+* If it's **empty or `.`** → ❌ Ignore it (means current dir)
+* If it's `..` → ⬅️ Go one folder back (pop from stack)
+* Else → ✅ It's a real folder name, so push it into the stack
+
+---
+
+#### **Step 5:**
+
+👉 After processing, your stack has the **correct folder path** — but in **reverse order** (last part on top)
+
+> So, reverse the stack into a list.
+
+---
+
+#### **Step 6:**
+
+👉 Join the folders using `/` and add `/` at the front → return the final path string!
+
+---
+
+### ✅ One-Line Summary
+
+> Use a **stack** to simulate folder navigation with `..` and `.`, and build the new path step by step!
+
+---
+
+Let me know if you'd like a visual example or dry run walkthrough.
