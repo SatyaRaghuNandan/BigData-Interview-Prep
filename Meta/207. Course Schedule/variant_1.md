@@ -1,4 +1,4 @@
-
+```python
 import java.util.*;
 
 public class CourseScheduleVariant {
@@ -38,3 +38,4 @@ public class CourseScheduleVariant {
         return visited == numCourses;
     }
 }
+```
