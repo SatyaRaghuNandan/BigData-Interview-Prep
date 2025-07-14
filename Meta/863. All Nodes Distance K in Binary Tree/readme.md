@@ -1,3 +1,128 @@
+Absolutely! Let’s build a **strong mental model** for this problem, give you a **memorization technique**, and then provide a **clean Java solution** with meaningful variable names and Telugu-style comments.
+
+---
+
+## ✅  Technique to Remember This Problem
+
+### 🎯 Think of this as:
+
+> "**Finding all nodes `k` edges away from a target node** – but trees don't let you go up, so convert it to a graph, then do BFS."
+
+---
+
+### 🧠 Memory Trick (3 Steps → "Graph + BFS = Distance")
+
+1. **Build Graph** – Connect `parent <-> child` like undirected edges
+2. **Start BFS** from the `target node`
+3. **Stop when distance == k**, collect all such nodes
+
+📌 **Nickname this problem** in your mind:
+
+> "🎯 Target Node → Distance K → Treat Tree as Graph"
+
+---
+
+## ✅ Optimized Java Solution with Telugu Comments
+
+```java
+import java.util.*;
+
+// ✅ TreeNode definition
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) { val = x; }
+}
+
+public class Solution {
+
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        // ✅ Step 1: Tree ni Graph ga convert cheyyali (parent<->child edges)
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        buildGraphFromTree(root, null, graph);
+
+        // ✅ Step 2: BFS ki setup – Queue, Visited, Result list
+        Queue<int[]> queue = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>();
+        List<Integer> result = new ArrayList<>();
+
+        queue.offer(new int[]{target.val, 0});
+        visited.add(target.val);
+
+        // ✅ Step 3: BFS traversal – distance == k aithe result lo add cheyyali
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int currentNode = current[0];
+            int currentDistance = current[1];
+
+            if (currentDistance == k) {
+                result.add(currentNode);
+                // ✅ Distance k ki reach ayyaka, next nodes process cheyyakoodadu
+                continue;
+            }
+
+            for (int neighbor : graph.getOrDefault(currentNode, new ArrayList<>())) {
+                if (!visited.contains(neighbor)) {
+                    visited.add(neighbor);
+                    queue.offer(new int[]{neighbor, currentDistance + 1});
+                }
+            }
+        }
+
+        return result;
+    }
+
+    // ✅ Tree ni Graph lo convert cheyyadam (undirected edges)
+    private void buildGraphFromTree(TreeNode current, TreeNode parent, Map<Integer, List<Integer>> graph) {
+        if (current == null) return;
+
+        int currentVal = current.val;
+
+        // ✅ Parent–Child connection add cheyyali
+        if (parent != null) {
+            int parentVal = parent.val;
+            graph.putIfAbsent(currentVal, new ArrayList<>());
+            graph.putIfAbsent(parentVal, new ArrayList<>());
+
+            graph.get(currentVal).add(parentVal);
+            graph.get(parentVal).add(currentVal);
+        }
+
+        // ✅ Recursive call for left and right children
+        buildGraphFromTree(current.left, current, graph);
+        buildGraphFromTree(current.right, current, graph);
+    }
+}
+```
+
+---
+
+## ⏱ Time & Space Complexity
+
+| Operation                       | Complexity | Explanation                   |
+| ------------------------------- | ---------- | ----------------------------- |
+| Tree → Graph                    | `O(N)`     | Visit every node once         |
+| BFS Traversal                   | `O(N)`     | In worst case visit all nodes |
+| Space (Graph + Queue + Visited) | `O(N)`     | One map + one set + one queue |
+
+✅ **Total Time = O(N)**
+✅ **Total Space = O(N)**
+
+---
+
+## 🧠 Summary to Remember
+
+* "Binary Tree lo upward travel ledu → convert to Graph"
+* "Target node nundi BFS cheyyali until distance K"
+* "K reach aithe, node ni result lo add cheyyali"
+
+> **Graph + BFS + Distance Tracking** – memorize this trio for solving "nodes at distance K" problems.
+
+---
+
+Would you like a diagram of how this looks for a small tree? I can visually explain the conversion and traversal.
+
+
 No worries! Let’s break down the **"All Nodes Distance K in Binary Tree"** problem clearly and step-by-step. This problem is very common in interviews, especially at companies like Meta, so it's worth understanding deeply.
 
 ---
