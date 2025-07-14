@@ -1,4 +1,4 @@
-// VARIANT: What if you had to merge 3 sorted integer lists? Duplicates in the merged list is allowed.
+# // VARIANT: What if you had to merge 3 sorted integer lists? Duplicates in the merged list is allowed.
 
 
 Here’s the **Java version** of the variant of Leetcode 21:
