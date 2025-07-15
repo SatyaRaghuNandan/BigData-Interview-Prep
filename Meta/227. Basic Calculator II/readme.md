@@ -252,3 +252,13 @@ Let me know if you want:
 
 Ready to go deeper anytime!
 
+Sure! Here's the approach in **6 plain English sentences**:
+
+1. We go through each character of the input string one by one.
+2. If the character is a digit, we build the current number by appending digits (to handle multi-digit numbers like "23").
+3. If we see an operator (`+`, `-`, `*`, `/`) or reach the end of the string, we process the **previous operator** stored before.
+4. For `+` and `-`, we **add the last number** to the result and save the new number (or its negative) as the `previousNumber`.
+5. For `*` and `/`, we update `previousNumber` by multiplying or dividing it with the current number (respecting operator precedence).
+6. After the loop ends, we add the final `previousNumber` to the result to get the full expression value.
+
+Let me know if you want a diagram or dry run too!
