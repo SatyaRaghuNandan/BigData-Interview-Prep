@@ -1,4 +1,6 @@
+
 ---
+
 ### 🔁 Interview Framing (How to Speak):
 
 > “The brute force approach checks each element and its neighbors in O(n) time.
