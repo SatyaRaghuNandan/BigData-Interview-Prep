@@ -280,7 +280,21 @@ public class CopyRandomBinaryTree {
 
 ---
 
+
+
+
+
+
+
+
+
 Would you like BFS-style version or unit-test (JUnit) setup as well?
 
 
 
+
+
+
+<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/d5d0b8b9-c92c-4d3c-8889-e0d39c3946e1" />
+
+<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/c58f852f-25c4-4de8-84cb-0550978a1f0c" />
