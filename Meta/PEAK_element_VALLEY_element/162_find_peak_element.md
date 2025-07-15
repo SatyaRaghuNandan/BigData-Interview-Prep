@@ -1,3 +1,15 @@
+---
+### 🔁 Interview Framing (How to Speak):
+
+> “The brute force approach checks each element and its neighbors in O(n) time.
+> But we can optimize it using binary search.
+> The insight is: if the slope is rising (`nums[mid] < nums[mid+1]`), then a peak must exist on the right.
+> If the slope is falling, then a peak must be on the left or at mid.
+> We shrink the window accordingly until `left == right`, which is guaranteed to be a peak.
+> This gives us O(log n) time and constant space.”
+
+---
+
 Absolutely! Below is the **Java implementation** of the **`findPeakElement`** problem (Leetcode 162) using the optimal **binary search approach**.
 
 ---
