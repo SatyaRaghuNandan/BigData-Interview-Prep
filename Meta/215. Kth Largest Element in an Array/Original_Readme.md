@@ -1,3 +1,70 @@
+### ✅ 6 Key Sentences Explaining the QuickSelect Approach
+
+1. **QuickSelect is a selection algorithm** used to find the Kth smallest or largest element in an unsorted array with average time complexity **O(n)**.
+2. In this approach, we convert the **Kth largest** problem into a **(n - k)th smallest** problem using `targetIndex = nums.length - k`.
+3. The `partition()` function rearranges elements such that all numbers **≤ pivot** come before it, and numbers **> pivot** go after it — similar to one iteration of QuickSort.
+4. After partitioning, the pivot is placed at its correct sorted index, and we recursively continue the search only on the side that contains our target index.
+5. This implementation ensures in-place rearrangement using a two-pointer technique and avoids sorting the entire array, making it efficient for large datasets.
+6. The base case of the recursion is when the left and right pointers meet, indicating that the desired element has been found.
+
+---
+
+### ✅ 5 Test Cases (Happy Path + Edge Cases)
+
+```java
+Solution sol = new Solution();
+```
+
+#### ✅ Test Case 1 – Happy Path (Standard input)
+
+```java
+int[] nums1 = {3, 2, 1, 5, 6, 4};
+int k1 = 2;
+// Expected Output: 5
+System.out.println(sol.findKthLargest(nums1, k1));
+```
+
+#### ✅ Test Case 2 – K = 1 (Largest element)
+
+```java
+int[] nums2 = {7, 10, 4, 3, 20, 15};
+int k2 = 1;
+// Expected Output: 20
+System.out.println(sol.findKthLargest(nums2, k2));
+```
+
+#### ✅ Test Case 3 – K = length (Smallest element)
+
+```java
+int[] nums3 = {7, 10, 4, 3, 20, 15};
+int k3 = 6;
+// Expected Output: 3
+System.out.println(sol.findKthLargest(nums3, k3));
+```
+
+#### ✅ Test Case 4 – All elements same
+
+```java
+int[] nums4 = {5, 5, 5, 5, 5};
+int k4 = 3;
+// Expected Output: 5
+System.out.println(sol.findKthLargest(nums4, k4));
+```
+
+#### ✅ Test Case 5 – Single element
+
+```java
+int[] nums5 = {42};
+int k5 = 1;
+// Expected Output: 42
+System.out.println(sol.findKthLargest(nums5, k5));
+```
+
+---
+
+Let me know if you'd like to test random arrays, negative numbers, or ask for a **Min Heap** solution comparison!
+
+
 Great! You're solving **Leetcode 215 – Find Kth Largest Element in an Array**, a classic and **frequent interview question**.
 
 ---
