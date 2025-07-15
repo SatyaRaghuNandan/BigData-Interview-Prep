@@ -99,44 +99,48 @@ class SolutionIterativeWithMap {
 ## ✅ Approach 3: Iterative with O(1) Space (Weaving)
 
 ```java
-class SolutionIterativeConstantSpace {
+class Solution {
     public Node copyRandomList(Node head) {
-        if (head == null) return null;
+        if (head == null) {
+            return null;
+        } 
 
-        // 🔵 Step 1: Weave the clone nodes → A → A' → B → B'
-        Node curr = head;
-        while (curr != null) {
-            Node clone = new Node(curr.val);
-            clone.next = curr.next;
-            curr.next = clone;
-            curr = clone.next;
+        Node current = head;
+
+        // ✅ Step 1: Clone nodes and interleave them with original list
+        while (current != null) {
+            Node cloneNode = new Node(current.val); // Current node ki clone create cheyyadam
+            cloneNode.next = current.next; // Clone node next ni original next ki point cheyyadam
+            current.next = cloneNode;      // Original node next ni clone ki point cheyyadam
+            current = cloneNode.next;      // Next original node ki move avvadam
         }
 
-        // 🔴 Step 2: Setup random pointers for clones
-        curr = head;
-        while (curr != null) {
-            if (curr.random != null) {
-                curr.next.random = curr.random.next;
+        // ✅ Step 2: Set random pointers of clone nodes
+        current = head;
+        while (current != null) {
+            if (current.random != null) {
+                current.next.random = current.random.next; // Clone node ki correct random pointer set cheyyadam
             }
-            curr = curr.next.next;
+            current = current.next.next; // Skip clone node, go to next original
         }
 
-        // 🟢 Step 3: Unweave the list → separate original and clone
-        curr = head;
-        Node cloneHead = head.next;
-        Node cloneCurr = cloneHead;
+        // ✅ Step 3: Separate clone list from original list
+        current = head;                  // Start from head again
+        Node cloneHead = head.next;      // First clone node as head
+        Node cloneCurrent = cloneHead;
 
-        while (curr != null) {
-            curr.next = curr.next.next;
-            cloneCurr.next = (cloneCurr.next != null) ? cloneCurr.next.next : null;
+        while (current != null) {
+            current.next = current.next.next; // Original list ni restore cheyyadam
+            cloneCurrent.next = (cloneCurrent.next != null) ? cloneCurrent.next.next : null; // Clone list fix cheyyadam
 
-            curr = curr.next;
-            cloneCurr = cloneCurr.next;
+            current = current.next;       // Move to next original
+            cloneCurrent = cloneCurrent.next; // Move to next clone
         }
 
-        return cloneHead;
+        return cloneHead; // Return head of cloned list
     }
 }
+
 ```
 
 ⏱️ **Time**: O(N)
