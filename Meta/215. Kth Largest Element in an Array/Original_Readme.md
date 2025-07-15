@@ -1,3 +1,174 @@
+Perfect! Let’s walk through **5 detailed test cases** for the `findKthLargest()` using **QuickSelect**, and do a **line-by-line dry run** like a **Meta interview verification**.
+
+We’ll treat it like a **compiler trace**, tracking variables:
+`left`, `right`, `pivotIndex`, `targetIndex`, `nums[]`, `pivot`, `i`, etc.
+
+---
+
+## ✅ Test Case 1 – Happy Path
+
+```java
+int[] nums = {3, 2, 1, 5, 6, 4};
+int k = 2; // Looking for 2nd largest → targetIndex = nums.length - k = 6 - 2 = 4
+```
+
+### 🔁 Initial Call:
+
+```java
+quickSelect(nums, 0, 5, 4)
+```
+
+### 🔹 First Partition:
+
+```java
+pivot = nums[5] = 4
+i = 0
+
+j=0 → nums[0]=3 ≤ 4 → swap(i=0, j=0) → i=1  
+j=1 → nums[1]=2 ≤ 4 → swap(i=1, j=1) → i=2  
+j=2 → nums[2]=1 ≤ 4 → swap(i=2, j=2) → i=3  
+j=3 → nums[3]=5 > 4 → skip  
+j=4 → nums[4]=6 > 4 → skip
+
+swap(i=3, right=5) → nums = {3,2,1,4,6,5}  
+pivotIndex = 3
+```
+
+### 🔁 Since pivotIndex < targetIndex (3 < 4):
+
+```java
+quickSelect(nums, 4, 5, 4)
+```
+
+### 🔹 Second Partition:
+
+```java
+pivot = nums[5] = 5
+i = 4
+
+j=4 → nums[4]=6 > 5 → skip
+
+swap(i=4, right=5) → nums = {3,2,1,4,5,6}  
+pivotIndex = 4
+```
+
+🎯 `pivotIndex == targetIndex` ⇒ return `nums[4] = 5`
+
+✅ **Final Answer**: `5`
+
+---
+
+## ✅ Test Case 2 – K = 1 (Largest Element)
+
+```java
+int[] nums = {7, 10, 4, 3, 20, 15};
+int k = 1 → targetIndex = 5
+```
+
+### 🔁 Call:
+
+```java
+quickSelect(nums, 0, 5, 5)
+```
+
+### 🔹 Partitioning (pivot = 15):
+
+All elements ≤ 15 get pushed left.
+
+After partition, pivotIndex = 4 → nums = {7,10,4,3,15,20}
+
+### 🔁 pivotIndex < targetIndex:
+
+```java
+quickSelect(nums, 5, 5, 5)
+```
+
+🎯 Base case hit → return `nums[5] = 20`
+
+✅ **Answer**: `20`
+
+---
+
+## ✅ Test Case 3 – K = length (Smallest Element)
+
+```java
+int[] nums = {7, 10, 4, 3, 20, 15};
+int k = 6 → targetIndex = 0
+```
+
+### 🔁 First Partition (pivot = 15):
+
+Elements ≤ 15: 7,10,4,3 → pushed left
+
+pivotIndex = 4
+→ nums = {7,10,4,3,15,20}
+
+Since pivotIndex > targetIndex → call left:
+
+```java
+quickSelect(nums, 0, 3, 0)
+```
+
+### Second Partition (pivot = 3):
+
+Only one element (3) ≤ 3 → ends at index 0
+
+pivotIndex = 0 → match
+
+✅ **Answer**: `3`
+
+---
+
+## ✅ Test Case 4 – All Elements Same
+
+```java
+int[] nums = {5, 5, 5, 5, 5};
+int k = 3 → targetIndex = 2
+```
+
+Every partition places the pivot exactly where expected (since all values = pivot).
+
+After few no-op partitions → pivotIndex = 2 matches → return `5`
+
+✅ **Answer**: `5`
+
+---
+
+## ✅ Test Case 5 – Single Element
+
+```java
+int[] nums = {42};
+int k = 1 → targetIndex = 0
+```
+
+### 🔁 Call:
+
+```java
+quickSelect(nums, 0, 0, 0)
+```
+
+→ `left == right` ⇒ return `nums[0] = 42`
+
+✅ **Answer**: `42`
+
+---
+
+## 🧠 What Interviewer Looks For in This Line-by-Line Trace:
+
+| Concept                                             | Expected                                     |
+| --------------------------------------------------- | -------------------------------------------- |
+| How you derive `targetIndex`                        | `nums.length - k`                            |
+| Can you simulate partition?                         | Yes — track `i`, `j`, and `pivot`            |
+| Do you know when recursion goes left vs right?      | Yes — based on `pivotIndex` vs `targetIndex` |
+| Can you identify base case early?                   | Yes — `left == right`                        |
+| Can you explain in-place swap and pointer movement? | Clearly track `i` and pivot movement         |
+
+---
+
+Let me know if you'd like a **side-by-side trace table** format or how to randomize pivot for better performance!
+
+
+
 ### ✅ 6 Key Sentences Explaining the QuickSelect Approach
 
 1. **QuickSelect is a selection algorithm** used to find the Kth smallest or largest element in an unsorted array with average time complexity **O(n)**.
