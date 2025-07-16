@@ -144,3 +144,144 @@ Would you like:
 * ✅ Version using custom `Interval` class?
 
 Let me know!
+
+
+
+You're getting the errors:
+
+```
+Cannot resolve method 'toList' in 'MergeIntervals_2Lists'
+Cannot resolve method 'equal' in 'MergeIntervals_2Lists'
+```
+
+because the methods `toList` and `equal` are **not defined** in your `MergeIntervals_2Lists` class, but you are trying to call them as if they exist.
+
+---
+
+### ✅ Fix: Add `toList` and `equal` methods to `MergeIntervals_2Lists` class
+
+Add the following two utility methods **inside the `MergeIntervals_2Lists` class**:
+
+```java
+public static List<int[]> toList(int[][] arr) {
+    List<int[]> res = new ArrayList<>();
+    for (int[] x : arr) {
+        res.add(x.clone());  // Clone to avoid aliasing
+    }
+    return res;
+}
+
+public static boolean equal(List<int[]> a, List<int[]> b) {
+    if (a.size() != b.size()) return false;
+    for (int i = 0; i < a.size(); i++) {
+        if (a.get(i)[0] != b.get(i)[0] || a.get(i)[1] != b.get(i)[1]) {
+            return false;
+        }
+    }
+    return true;
+}
+```
+
+---
+
+### ✅ Full Class Structure Suggestion
+
+Here’s a clean **outline of your final class**:
+
+```java
+public class MergeIntervals_2Lists {
+
+    public static void tryMerge(List<int[]> result, int[] current) {
+        if (result.isEmpty() || current[0] > result.get(result.size() - 1)[1]) {
+            result.add(current);
+        } else {
+            int[] last = result.get(result.size() - 1);
+            last[1] = Math.max(last[1], current[1]);
+        }
+    }
+
+    public static List<int[]> mergeTwoLists(int[][] first, int[][] second) {
+        List<int[]> result = new ArrayList<>();
+        int i = 0, j = 0;
+
+        while (i < first.length && j < second.length) {
+            int[] current = (first[i][0] <= second[j][0]) ? first[i++] : second[j++];
+            tryMerge(result, current);
+        }
+
+        while (i < first.length) {
+            tryMerge(result, first[i++]);
+        }
+
+        while (j < second.length) {
+            tryMerge(result, second[j++]);
+        }
+
+        return result;
+    }
+
+    public static List<int[]> toList(int[][] arr) {
+        List<int[]> res = new ArrayList<>();
+        for (int[] x : arr) res.add(x.clone());
+        return res;
+    }
+
+    public static boolean equal(List<int[]> a, List<int[]> b) {
+        if (a.size() != b.size()) return false;
+        for (int i = 0; i < a.size(); i++) {
+            if (a.get(i)[0] != b.get(i)[0] || a.get(i)[1] != b.get(i)[1])
+                return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        runTestsFromCpp();
+    }
+
+    public static void runTestsFromCpp() {
+        test(new int[][]{{3, 11}, {14, 15}, {18, 22}, {23, 24}, {25, 26}},
+             new int[][]{{2, 8}, {13, 20}},
+             new int[][]{{2, 11}, {13, 22}, {23, 24}, {25, 26}});
+
+        test(new int[][]{},
+             new int[][]{{2, 8}, {13, 20}},
+             new int[][]{{2, 8}, {13, 20}});
+
+        test(new int[][]{{1, 5}, {10, 15}, {20, 25}},
+             new int[][]{{5, 10}, {15, 20}},
+             new int[][]{{1, 25}});
+
+        test(new int[][]{{1, 5}, {11, 15}, {21, 25}},
+             new int[][]{{6, 10}, {16, 20}},
+             new int[][]{{1, 5}, {6, 10}, {11, 15}, {16, 20}, {21, 25}});
+
+        test(new int[][]{{1, 5}},
+             new int[][]{{1, 5}},
+             new int[][]{{1, 5}});
+
+        test(new int[][]{{1, 5}, {10, 15}, {20, 25}},
+             new int[][]{{2, 3}, {4, 5}, {12, 13}, {20, 27}},
+             new int[][]{{1, 5}, {10, 15}, {20, 27}});
+    }
+
+    private static void test(int[][] A, int[][] B, int[][] expected) {
+        List<int[]> result = mergeTwoLists(A, B);
+        List<int[]> expectedList = toList(expected);
+        boolean pass = equal(result, expectedList);
+
+        System.out.println("Input A   : " + Arrays.deepToString(A));
+        System.out.println("Input B   : " + Arrays.deepToString(B));
+        System.out.println("Expected  : " + Arrays.deepToString(expected));
+        System.out.println("Output    : " + Arrays.deepToString(result.toArray(new int[0][])));
+        System.out.println("✅ Pass?   : " + pass);
+        System.out.println("-------------------------------------");
+        assert pass : "Test failed!";
+    }
+}
+```
+
+Let me know if you want:
+
+* Sorting logic added for unsorted inputs.
+* Extended test cases including edge cases or randomized cases.
