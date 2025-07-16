@@ -1,3 +1,13 @@
+Here is the **6-line explanation** of the approach for `swimInWater`:
+
+1. We want to find the **minimum time `T`** such that we can reach from the top-left to the bottom-right cell, where the **water level is ≤ `T`**.
+2. Since the water level rises uniformly, we can **binary search on `T`**, from `grid[0][0]` to `n² - 1`.
+3. For each mid `T`, we use **DFS** to check if a path exists from `(0,0)` to `(n-1,n-1)` where **all cells are ≤ `T`**.
+4. If such a path exists, we try a **smaller `T`** (move left in binary search).
+5. Otherwise, we must **increase `T`** (move right in binary search).
+6. Finally, we return the smallest `T` for which a valid path exists — this is our answer.
+
+
 Below is the **Java code** for `Swim in Rising Water` (Leetcode 778) with:
 
 * ✅ **Clean naming conventions**
