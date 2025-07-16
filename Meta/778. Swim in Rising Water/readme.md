@@ -8,6 +8,10 @@ Here is the **6-line explanation** of the approach for `swimInWater`:
 6. Finally, we return the smallest `T` for which a valid path exists — this is our answer.
 
 
+
+
+----
+
 Below is the **Java code** for `Swim in Rising Water` (Leetcode 778) with:
 
 * ✅ **Clean naming conventions**
