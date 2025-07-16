@@ -1,3 +1,15 @@
+
+---
+
+## ✅ Summary in Plain English (5 Lines)
+
+1. You maintain a fixed-size queue using an array and circular indexing.
+2. Every new value replaces the oldest one in the array.
+3. The sum is updated by removing the old value and adding the new one.
+4. `head` keeps track of where to insert the new value.
+5. You return the average of the last `N` inserted values.
+
+---
 Great question — you're analyzing different **designs for calculating a Moving Average from a Data Stream**, a very popular **system design + sliding window** problem that often shows up in **Meta, Google, Amazon** interviews.
 
 Let’s break down **all 3 approaches**:
