@@ -132,3 +132,102 @@ Would you like next:
 * 🧪 Custom JUnit test cases
 
 Let me know, and I’ll build them step-by-step!
+
+
+Absolutely! Let's break it all down clearly.
+
+---
+
+## ✅ Reformatted Java Code (Clean & Readable)
+
+```java
+class Solution {
+    public int closestValue(TreeNode root, double target) {
+        int closest = root.val;
+
+        while (root != null) {
+            int currentVal = root.val;
+
+            // If current node is closer OR equally close but smaller
+            if (Math.abs(currentVal - target) < Math.abs(closest - target) || 
+               (Math.abs(currentVal - target) == Math.abs(closest - target) && currentVal < closest)) {
+                closest = currentVal;
+            }
+
+            // Binary Search style traversal
+            if (target < root.val) {
+                root = root.left;
+            } else {
+                root = root.right;
+            }
+        }
+
+        return closest;
+    }
+}
+```
+
+---
+
+## 🧠 Approach in Plain English (Step-by-Step)
+
+1. You're given a Binary Search Tree (BST) and a `target` (double).
+2. You want to find the value in the tree that is **numerically closest** to the target.
+3. Since it's a **BST**, at each node:
+
+   * If `target < node.val`, search in **left subtree**.
+   * Else search in **right subtree**.
+4. While traversing, always keep track of the **closest value seen so far**.
+5. If two values are equally close, pick the **smaller** one.
+
+---
+
+## ✅ Time and Space Complexity
+
+| Type              | Complexity      |
+| ----------------- | --------------- |
+| Time (Balanced)   | O(log N) = O(H) |
+| Time (Skewed)     | O(N)            |
+| Space (Iterative) | O(1)            |
+| Space (Recursive) | O(H) (stack)    |
+
+---
+
+## ❓ DFS vs BFS — Which is Better?
+
+| Type                      | Comment                                                                                                                                          |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| ✅ **DFS (Binary Search)** | Most efficient here due to BST property. You're making a directional decision at each step (left or right), eliminating half the tree each time. |
+| ❌ **BFS (Level Order)**   | You’d have to visit every node (even unpromising ones), so **not efficient** unless the tree is small or unbalanced badly.                       |
+
+➡️ **So: Always prefer DFS/Binary Search for BSTs.**
+
+---
+
+## 🏗️ Behavior in Balanced vs Skewed Trees
+
+### ✅ Balanced BST
+
+* **Height (H) = log N**
+* DFS will take **O(log N)** steps.
+* **Very fast** and memory-efficient.
+
+### ❌ Skewed BST (like Linked List)
+
+* **Height (H) = N**
+* DFS may degrade to **O(N)** time.
+* Still better than BFS because you don’t explore both branches.
+
+---
+
+## 📌 Summary
+
+* **Use DFS/Binary Search** for BSTs → optimal and fast.
+* Keep updating the closest value as you traverse.
+* Handle tie-breakers by choosing the **smaller** value.
+* Skewed trees may degrade performance, but DFS is still better than BFS here.
+
+---
+
+Let me know if you want a **recursive DFS version**, or want to support **multiple closest values** in case of ties.
+
