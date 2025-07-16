@@ -284,3 +284,114 @@ Only index 2 has non-zero weight → always returned
 ---
 
 If you'd like a **chart/visual**, unit test mockup, or **Python/Java class structure** summary, I can provide that as well.
+
+Yes! You're absolutely right to notice that even though this is **binary search**, we’re again using:
+
+* `while (left < right)`
+* `left = mid + 1`, `right = mid`
+
+Let’s break it down and explain **why** this works — and **why it’s not the usual `<=` style.**
+
+---
+
+## ✅ Problem Context: Weighted Random Index (Leetcode 528)
+
+You’re given an array of weights. Heavier weights should have **higher probability of being picked**.
+
+Example:
+
+```java
+weights = [1, 3]  
+→ Prefix sum = [1, 4]  
+→ Random range = [0, 4)
+```
+
+Let’s say `target = 2.5`.
+We want to **find the smallest index where `prefixSum[i] > target`**.
+
+---
+
+## ✅ What Are We Actually Searching?
+
+We’re doing a **lower bound search**:
+
+> "What’s the **smallest index i** where `prefixSum[i] >= target + ε`?"
+
+So this is a **boundary-finding problem**, not an exact match.
+
+---
+
+## ✅ Why `while (left < right)`?
+
+We’re **shrinking the window** until we land on the correct index.
+
+### 🔁 Binary Search Walkthrough:
+
+```java
+while (low < high) {
+    int mid = (low + high) / 2;
+
+    if (target > prefixSum[mid]) {
+        // Telugu: prefixSum[mid] target kanna takkuva → target right side lo undi
+        low = mid + 1;
+    } else {
+        // Telugu: prefixSum[mid] >= target → valid candidate, but we want smallest index
+        high = mid;
+    }
+}
+```
+
+It ends when:
+
+* `low == high`
+* This `low` is the **smallest index** where prefix sum is greater than target
+
+---
+
+## 🧠 Why Not Use `left <= right`?
+
+Because:
+
+* We’re not looking for **an exact value**
+* We want to **narrow down to the smallest index** satisfying a condition
+
+In `<=` style, you'd risk overshooting the position or doing unnecessary checks.
+
+---
+
+## 🔁 Compare with Classic Binary Search
+
+| Use Case                      | Style           | Goal                           |
+| ----------------------------- | --------------- | ------------------------------ |
+| Find exact `target`           | `left <= right` | Check mid for equality         |
+| Find **first index** ≥ target | `left < right`  | Shrink window to boundary      |
+| Find **peak or valley**       | `left < right`  | Use slope or monotonic clues   |
+| Find insert position          | `left < right`  | Insert before or after element |
+
+---
+
+## ✅ Time & Space
+
+* **Time**: O(log n)
+* **Space**: O(n) for `prefixSum` array
+
+---
+
+## 📌 In Summary (What to Say in Interview):
+
+> This is a lower bound problem — we want to find the first index where the cumulative weight exceeds the randomly chosen target.
+> So we use a binary search over prefix sums.
+> We use `left < right` and adjust bounds as:
+>
+> * If `prefixSum[mid] <= target`, go right
+> * Else, narrow to left
+>
+> This shrinks the range until we find the minimal valid index.
+
+---
+
+Would you like me to dry-run this on:
+
+```java
+weights = [1, 3, 2], target = 2.5?
+```
