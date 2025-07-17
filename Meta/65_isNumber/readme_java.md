@@ -1,3 +1,11 @@
+
+Sure! Here's the approach in **plain English** in 5–6 sentences:
+
+We first remove any extra spaces at the beginning or end of the string. Then, we scan each character one by one and track three key things: whether we've seen a **digit**, a **decimal point**, or an **exponent** (like `'e'` or `'E'`). If we see a digit, we mark that we’ve seen one. If we see a sign (`+` or `-`), it must either be at the very start or right after an exponent. A dot (`.`) is only allowed **once** and cannot appear **after** an exponent. When we see an exponent, we check that we've already seen digits before it, and we reset our digit flag because we now expect digits **after** the exponent too. If any character doesn’t follow these rules, we return false — otherwise, we return true only if we’ve seen at least one digit at the end.
+
+
+
+
 Here's the **Java implementation** of your Python solution to **check if a string is a valid number**, along with:
 
 ✅ Telugu-style comments
