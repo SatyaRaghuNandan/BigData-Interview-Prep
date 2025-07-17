@@ -1,3 +1,50 @@
+
+---
+
+## ✅ Approach 1: Brute Force (Pick From List Each Time)
+
+### ✅ Explanation in Plain English
+
+1. Every time `pick(target)` is called, you **search the entire array**.
+2. You collect all the indices where `nums[i] == target` into a list.
+3. After collecting, you randomly choose one index from the list.
+4. This guarantees uniform random selection because all valid indices are explicitly collected.
+5. It’s **simple to implement**, but has **O(N)** time per pick call.
+6. Suitable when number of queries is **low** or `nums` is **small**.
+7. No extra memory is used during object construction.
+
+---
+
+## ✅ Approach 2: HashMap Preprocessing (Index Caching)
+
+### ✅ Explanation in Plain English
+
+1. During initialization, build a **HashMap** where key = number, value = list of all its indices.
+2. When `pick(target)` is called, just fetch the list from the map.
+3. Randomly select one index from the list.
+4. Since pre-processing happens once, each pick is **very fast (O(1))**.
+5. Ideal when `pick()` will be called **many times**.
+6. **Downside**: Takes **extra memory** for the map, especially if the array is large or has many unique numbers.
+7. Good tradeoff for **time efficiency over space**.
+
+---
+
+## ✅ Approach 3: Reservoir Sampling
+
+### ✅ Explanation in Plain English
+
+1. Traverse the array once per `pick()` call.
+2. For every match `nums[i] == target`, keep a count of how many times you’ve seen it.
+3. With `1/count` probability, update the result to current index (`i`).
+4. This is called **Reservoir Sampling**, and ensures uniform probability.
+5. It **doesn’t use any extra memory**, just a counter and a result variable.
+6. Very **space efficient** and great when array is **large** or **immutable**.
+7. Takes **O(N)** time per pick, but **constant space**.
+
+---
+
+
+
 Excellent! Below is a detailed explanation of all **three approaches** in **Java**, with:
 
 * ✅ Telugu-style inline comments
