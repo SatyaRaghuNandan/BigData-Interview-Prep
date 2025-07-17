@@ -1,6 +1,134 @@
 # // VARIANT: What if you had to return the city that a person lives in? The input is given very differently.
 
 
+Sure! Here's the approach explained in **5–6 plain English bullet points**:
+
+* 🧮 First, we calculate a **running total (prefix sum)** of populations for each city — this helps us assign each city a proportional range based on its population.
+
+* 📦 We store each city name along with its cumulative population using a `Pair(city, prefixSum)` in a list.
+
+* 🎯 To pick a random city, we generate a random number between `0` and total population (like throwing a dart at the full population line).
+
+* 🔍 We then perform **binary search** on the prefix sum list to find the **first city whose cumulative population exceeds the random number**.
+
+* ✅ That city is returned — it has a higher chance of being picked if it has a larger population.
+
+* 🚀 This ensures cities are chosen **with probability proportional to their population**, efficiently using `O(log n)` time.
+
+
+
+Here's the **formatted and well-documented version** of your `CityAndPopulation_1` variant in **Java**, with **Telugu-style comments**, **time/space complexity analysis**, and a **comparison table with the original `pickIndex()` problem**.
+
+---
+
+### ✅ Formatted Code (City + Prefix Sums using List<Pair>)
+
+```java
+import java.util.*;
+
+public class CityAndPopulation_1 {
+
+    // 👇 Pair class lo oka city peru and aa varaku population sum ni store chestunnam
+    static class Pair {
+        String city;
+        int sum; // prefix sum till this city
+
+        Pair(String city, int sum) {
+            this.city = city;
+            this.sum = sum;
+        }
+    }
+
+    // 👇 List of prefix sums along with city names (city -> prefix sum)
+    private List<Pair> prefixSums = new ArrayList<>();
+
+    // 👇 Constructor – prefix sum array build chesthunnam
+    public CityAndPopulation_1(List<Pair> cityPopulations) {
+        for (Pair entry : cityPopulations) {
+            if (prefixSums.isEmpty()) {
+                // 🧮 First entry ni direct ga add cheyyali
+                prefixSums.add(new Pair(entry.city, entry.sum));
+            } else {
+                // 🔁 Last prefix sum + current population
+                int newSum = prefixSums.get(prefixSums.size() - 1).sum + entry.sum;
+                prefixSums.add(new Pair(entry.city, newSum));
+            }
+        }
+    }
+
+    // 👇 Test kosam wrapper – 0 ante random select, else override
+    public String pickIndexWrapper(int generatedPerson) {
+        return pickIndex(generatedPerson);
+    }
+
+    // 👇 Binary Search – person number ni base cheskoni city pick cheyyadam
+    public String pickIndex(int override) {
+        int totalPopulation = prefixSums.get(prefixSums.size() - 1).sum;
+
+        // 🧍 Person ni generate cheyyadam (random or override)
+        int person = (override == 0) 
+            ? new Random().nextInt(totalPopulation) 
+            : override;
+
+        int left = 0, right = prefixSums.size() - 1;
+
+        // 🔍 Binary search to find first prefixSum > person
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (person < prefixSums.get(mid).sum) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return prefixSums.get(left).city;
+    }
+}
+```
+
+---
+
+### ✅ Time and Space Complexity
+
+| Operation           | CityAndPopulation\_1 (Pair) | Original Solution (Array) |
+| ------------------- | --------------------------- | ------------------------- |
+| Constructor (build) | O(n) – one pass over input  | O(n)                      |
+| `pickIndex()`       | O(log n) – binary search    | O(log n)                  |
+| Space               | O(n) for `List<Pair>`       | O(n) for `int[] prefix`   |
+| Object Overhead     | Higher (Pair objects)       | Lower (raw int array)     |
+
+---
+
+### ✅ Why `List<Pair>` instead of `int[]`?
+
+* We’re **returning city names**, not just indexes.
+* Each city is tied to its **cumulative sum** (prefix sum).
+* We need both: `cityName` + `sum`. So one of:
+
+  * `List<Pair<city, sum>>` ✅ (clean, readable)
+  * or two arrays: `String[] cities` and `int[] prefix` ✅ (more efficient)
+
+---
+
+### ✅ How to Optimize?
+
+If you want **space savings**, use this:
+
+```java
+String[] cities;
+int[] prefixSums;
+```
+
+This avoids creating `Pair` objects (less heap usage, faster access), while preserving `O(n)` space.
+
+---
+
+Let me know if you want this version using two parallel arrays (cities + prefix), or if you'd like a test class with example cities and populations!
+
+
+
 Here is the **Java version** of your C++ code for the **city population picker using prefix sums and binary search**:
 
 ---
