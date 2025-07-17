@@ -1,3 +1,5 @@
+# // SECOND VARIANT: What if you had to return the number of dominoe pairs that add up to a target?
+
 Your C++ implementation `second_variant_two_sum_1()` handles a very interesting variant: **"How many domino pairs add up to a target sum?"** where each domino is a pair `(a, b)`, and we check if there exists another domino `(c, d)` such that:
 
 ```cpp
