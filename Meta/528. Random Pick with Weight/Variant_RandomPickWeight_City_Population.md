@@ -1,5 +1,108 @@
 # // VARIANT: What if you had to return the city that a person lives in? The input is given very differently.
 
+
+Here is the **Java version** of your C++ code for the **city population picker using prefix sums and binary search**:
+
+---
+
+### ✅ Java Equivalent with Comments
+
+```java
+import java.util.*;
+
+public class SolutionVariant528 {
+    private List<Pair> prefixSums = new ArrayList<>();
+
+    // Custom Pair class for city and prefix sum
+    static class Pair {
+        String city;
+        int sum;
+
+        Pair(String city, int sum) {
+            this.city = city;
+            this.sum = sum;
+        }
+    }
+
+    // Constructor that builds prefix sums
+    public SolutionVariant528(List<Pair> cityPopulations) {
+        for (Pair entry : cityPopulations) {
+            if (prefixSums.isEmpty()) {
+                prefixSums.add(new Pair(entry.city, entry.sum));
+            } else {
+                int newSum = prefixSums.get(prefixSums.size() - 1).sum + entry.sum;
+                prefixSums.add(new Pair(entry.city, newSum));
+            }
+        }
+    }
+
+    // Wrapper for testability (0 means use random)
+    public String pickIndexWrapper(int generatedPerson) {
+        return pickIndex(generatedPerson);
+    }
+
+    // Binary search to find city
+    public String pickIndex(int override) {
+        int totalPopulation = prefixSums.get(prefixSums.size() - 1).sum;
+        int person = (override == 0) ? new Random().nextInt(totalPopulation) : override;
+
+        int left = 0, right = prefixSums.size() - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (person < prefixSums.get(mid).sum) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return prefixSums.get(left).city;
+    }
+
+    // Test the solution
+    public static void main(String[] args) {
+        List<Pair> input = Arrays.asList(
+            new Pair("US", 300),
+            new Pair("VN", 100),
+            new Pair("BR", 200)
+        );
+
+        SolutionVariant528 solution = new SolutionVariant528(input);
+
+        assert solution.pickIndexWrapper(0).equals("US");
+        assert solution.pickIndexWrapper(150).equals("US");
+        assert solution.pickIndexWrapper(299).equals("US");
+
+        assert solution.pickIndexWrapper(300).equals("VN");
+        assert solution.pickIndexWrapper(375).equals("VN");
+        assert solution.pickIndexWrapper(399).equals("VN");
+
+        assert solution.pickIndexWrapper(400).equals("BR");
+        assert solution.pickIndexWrapper(420).equals("BR");
+        assert solution.pickIndexWrapper(599).equals("BR");
+
+        System.out.println("All assertions passed!");
+    }
+}
+```
+
+---
+
+### 🧠 Summary
+
+* `prefixSums`: Stores cumulative population count for each city.
+* `pickIndex(int override)`: Uses binary search to find the city where the given `person` index falls.
+* Time Complexity:
+
+  * Constructor: `O(n)`
+  * pickIndex(): `O(log n)`
+* Space Complexity: `O(n)` for prefixSums.
+
+Let me know if you want this modified to use `Map<String, Integer>` or converted to a cleaner utility form!
+
+
+
 Here's your requested implementation of the **Leetcode 528 variant** — where we select a **city based on its population proportionally** — rewritten in **Java** with:
 
 * ✅ Telugu comments
