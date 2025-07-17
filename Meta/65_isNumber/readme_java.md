@@ -1,3 +1,49 @@
+Absolutely! Here's a **bullet-point summary** to help you **easily remember** the core rules and flow of the solution for validating a number:
+
+---
+
+### ✅ **How to Remember the Solution: "Digit, Dot, Exponent — Follow the Rules"**
+
+#### 🔢 1. Track 3 Key Flags:
+
+* `seenDigit`: ✅ Have I seen at least one digit?
+* `seenDot`: ✅ Have I already seen a dot `.`?
+* `seenExponent`: ✅ Have I already seen an exponent `e` or `E`?
+
+---
+
+#### 🔁 2. Loop Through Each Character:
+
+* ✅ If it's a **digit** → mark `seenDigit = true`.
+* ➕ If it's `+` or `-` → must be **at index 0** or **right after `e`/`E`**.
+* 🔘 If it's `.`:
+
+  * Can't have seen another dot.
+  * Can't appear **after** `e` or `E`.
+* 🧪 If it's `e` or `E`:
+
+  * Must follow a digit (you can’t have `e` at the beginning).
+  * Only allowed once.
+  * Reset `seenDigit = false` → now expect digits **after** `e`.
+* ❌ If it’s anything else → invalid character → return false.
+
+---
+
+#### 🏁 3. Final Check:
+
+* Return `true` **only if** `seenDigit` is still true at the end.
+
+  * This ensures you don’t end with something like `"e"` or `"1e+"`.
+
+---
+
+### 🧠 Easy Mnemonic:
+
+> **"D-D-E Rule"** → **Digit**, **Dot**, **Exponent** — track them, validate position, and return true only if digits are valid throughout.
+
+Let me know if you want a diagram or regex to help reinforce this visually!
+
+
 
 Sure! Here's the approach in **plain English** in 5–6 sentences:
 
