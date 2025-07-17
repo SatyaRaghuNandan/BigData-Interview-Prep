@@ -195,3 +195,77 @@ if it's a single call map solution is objectively worse
 
 
 ![image](https://github.com/user-attachments/assets/31602720-ce9d-475e-817f-d78caccfc00d)
+
+
+
+
+---
+
+## ✅ Test Cases (Happy Path + Edge Cases)
+
+### Test Case 1:
+
+```java
+Input: nums = [1, 2, 3, 3, 3], target = 3
+Expected: Randomly return 2, 3, or 4 with equal probability
+```
+
+* All approaches should return one of these 3 indices with \~equal chance over time.
+
+---
+
+### Test Case 2:
+
+```java
+Input: nums = [5, 5, 5, 5, 5], target = 5
+Expected: Any index from 0 to 4, uniformly at random
+```
+
+* Check whether uniformity is maintained across repeated picks.
+
+---
+
+### Test Case 3:
+
+```java
+Input: nums = [10], target = 10
+Expected: Always return 0
+```
+
+* Only one match, all approaches must return 0.
+
+---
+
+### Test Case 4:
+
+```java
+Input: nums = [1, 2, 3], target = 4
+Expected: Error or safe handling (based on implementation)
+```
+
+* Edge case: target doesn't exist → return -1 or throw exception or handle gracefully.
+
+---
+
+### Test Case 5:
+
+```java
+Input: nums = [], target = 1
+Expected: Handle empty array gracefully
+```
+
+* Should not crash; either return -1 or handle properly (as per your app logic).
+
+---
+
+## ✅ Summary Table
+
+| Approach             | Time per `pick()` | Space Usage | Use Case Preference                      |
+| -------------------- | ----------------- | ----------- | ---------------------------------------- |
+| Brute Force          | O(N)              | O(1)        | Fewer queries, simple, no precomputation |
+| HashMap (Preprocess) | O(1)              | O(N)        | Frequent queries, faster response        |
+| Reservoir Sampling   | O(N)              | O(1)        | Large arrays, minimal memory usage       |
+
+---
+
+Let me know if you want performance simulations or uniformity tests using Java/Python!
