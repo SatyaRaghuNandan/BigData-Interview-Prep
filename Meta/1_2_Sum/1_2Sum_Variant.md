@@ -1,3 +1,5 @@
+# // VARIANT: What if you had to return T/F if you find at least one pair of numbers that add up to the target?
+
 Here is your C++ **first variant** of the `twoSum()` problem — where instead of returning the **indices**, you're only checking whether **any two numbers add up to the target**, and return `true` or `false`.
 
 Below are the:
