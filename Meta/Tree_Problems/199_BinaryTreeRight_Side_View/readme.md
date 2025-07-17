@@ -195,16 +195,16 @@ class Solution4 {
 
 ```
 
-// 🏁 Summary Table:
-//
-// | Approach                     | Time | Space | Notes                                |
-// | ---------------------------- | ---- | ----- | ------------------------------------ |
-// | BFS (Two Queues)             | O(N) | O(W)  | Simple, clean separation of levels   |
-// | BFS (One Queue + Sentinel)   | O(N) | O(W)  | Elegant level boundary marking       |
-// | BFS (One Queue + Level Size) | O(N) | O(W)  | Most practical + clean               |
-// | DFS (Recursive, right-first) | O(N) | O(H)  | Recursive, great if tree is not deep |
+ 🏁 Summary Table:
 
-// ✅ Interview Recommendation:
-// - Go with Approach 3 (One Queue + Level Size) or Approach 4 (Recursive DFS)
-// - BFS is safer for deep trees (avoids recursion limit)
-// - DFS gives a nice recursive flavor and shows control over tree traversal order
+ | Approach                     | Time | Space | Notes                                |
+ | ---------------------------- | ---- | ----- | ------------------------------------ |
+ | BFS (Two Queues)             | O(N) | O(W)  | Simple, clean separation of levels   |
+ | BFS (One Queue + Sentinel)   | O(N) | O(W)  | Elegant level boundary marking       |
+ | BFS (One Queue + Level Size) | O(N) | O(W)  | Most practical + clean               |
+ | DFS (Recursive, right-first) | O(N) | O(H)  | Recursive, great if tree is not deep |
+
+ ✅ Interview Recommendation:
+ - Go with Approach 3 (One Queue + Level Size) or Approach 4 (Recursive DFS)
+ - BFS is safer for deep trees (avoids recursion limit)
+ - DFS gives a nice recursive flavor and shows control over tree traversal order
