@@ -177,3 +177,75 @@ class MedianFinder {
 * Best approach for streaming data and dynamic medians.
 
 Let me know if you'd like to see a **TreeMap / AVL Tree (multiset)** version (allows deletions too)!
+
+
+Great questions! Let's break down both:
+
+---
+
+### ❓ **1. Why does this question need a `Queue` (specifically PriorityQueue)?**
+
+#### ✅ Reason: We need efficient access to **min** and **max** values — and that’s exactly what a `PriorityQueue` (Heap) gives us.
+
+* `PriorityQueue` in Java is a **Min-Heap by default**.
+* `new PriorityQueue<>(Collections.reverseOrder())` gives you a **Max-Heap**.
+
+We use **two heaps** (priority queues) to split the data:
+
+* One heap gives you the **maximum of the smaller half** (`maxHeap`).
+* The other gives you the **minimum of the larger half** (`minHeap`).
+
+👉 So, in **O(1)** time, we can access the two middle elements (max of left, min of right)
+👉 And in **O(log n)** time, we can insert a new number and still maintain the heap property.
+
+---
+
+### ❓ **2. Why does it have to be balanced?**
+
+#### ✅ Reason: To **accurately calculate the median** from a dynamic stream of numbers.
+
+We want to find the **middle value(s)** efficiently, and that only works if the data is divided **evenly** into two halves:
+
+#### 🎯 Two Scenarios:
+
+* If total count is **even**, median = average of middle two numbers.
+* If total count is **odd**, median = middle number (which must be the top of `maxHeap`).
+
+#### 💡 Why balance matters:
+
+If the heaps are **not balanced**, the median calculation becomes incorrect:
+
+* `maxHeap` should always have **equal** or **one more** element than `minHeap`.
+* This way:
+
+  * You can get the **median directly from tops** of the heaps.
+  * And your insertions won’t skew the halves.
+
+---
+
+### 📊 Visualization:
+
+Example: Stream = \[2, 5, 3, 8, 7]
+
+| Step | MaxHeap (Left Side) | MinHeap (Right Side) | Median  |
+| ---- | ------------------- | -------------------- | ------- |
+| 2    | \[2]                | \[]                  | 2       |
+| 5    | \[2]                | \[5]                 | (2+5)/2 |
+| 3    | \[3,2]              | \[5]                 | 3       |
+| 8    | \[3,2]              | \[5,8]               | (3+5)/2 |
+| 7    | \[5,2,3]            | \[7,8]               | 5       |
+
+Notice how we **rebalance** after each insertion to ensure size conditions.
+
+---
+
+### ✅ TL;DR Summary
+
+| Concept          | Why Needed                                                           |
+| ---------------- | -------------------------------------------------------------------- |
+| **Queue / Heap** | To get min/max values quickly (needed for median)                    |
+| **Balancing**    | To ensure the two halves of the stream are equally split or off by 1 |
+| **Efficiency**   | `addNum()` in O(log n), `findMedian()` in O(1)                       |
+
+Would you like to visualize it using a tree or see it animated with example inputs?
+
