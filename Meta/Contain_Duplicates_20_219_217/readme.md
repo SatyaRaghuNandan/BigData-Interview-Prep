@@ -1,3 +1,49 @@
+Sure! Here's the **approach for each problem** in **5 bullet points** (plain English, quick to remember 👇):
+
+---
+
+## ✅ **20. Valid Parentheses – Stack Approach**
+
+1. Use a **stack** to keep track of opening brackets: `(`, `{`, `[`.
+2. Use a **map** to define valid pairs like `)` → `(`, `}` → `{`, etc.
+3. Loop through each character in the string:
+
+   * If it's an opening bracket, **push** it onto the stack.
+   * If it's a closing bracket, check if it matches the **top of the stack**.
+4. If it doesn’t match or stack is empty, return **false**.
+5. At the end, if the stack is **empty**, return true; else false.
+
+> 🎯 Use Stack + Map → Opening push, Closing match and pop.
+
+---
+
+## ✅ **217. Contains Duplicate – Simple Set**
+
+1. Create an empty **Set** to track seen numbers.
+2. Loop through the array.
+3. For each number, check if it’s already in the Set.
+4. If yes, return **true** (duplicate found).
+5. If not, add the number to the Set. Return false at the end.
+
+> 🎯 Simple linear scan with Set to catch any duplicate.
+
+---
+
+## ✅ **219. Contains Duplicate II – Sliding Window Set**
+
+1. Create an empty **Set** to act as a window of size `k`.
+2. Loop through the array with index `i`.
+3. If `nums[i]` is already in the Set, return **true**.
+4. Add `nums[i]` to the Set.
+5. If window size exceeds `k`, remove `nums[i - k]` from the Set.
+
+> 🎯 Keep window of last `k` elements in Set; check if new element exists.
+
+---
+
+Let me know if you want these in Telugu-style notes or as diagrams for quick revision 🧠✨
+
+
 Let's break down the **difference** between the three problems first:
 
 ---
