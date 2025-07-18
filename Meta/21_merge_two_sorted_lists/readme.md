@@ -1,3 +1,150 @@
+Here's a **full breakdown** of your code with:
+
+* ✅ Approach (Plain English – Bullet Format)
+* ✅ Code with Telugu comments
+* ✅ ⏱️ Time and Space Complexity
+* ✅ 📘 Test Cases + Dry Run examples
+
+---
+
+### ✅ **Approach: Merge Two Sorted Linked Lists**
+
+We are given two **sorted linked lists** and we want to merge them into **one sorted list**.
+
+🔹 **Step-by-step plan**:
+
+1. **Create a dummy node** to simplify list building.
+2. Use a **`current` pointer** to build the result list.
+3. Compare `list1.val` and `list2.val` in a `while` loop:
+
+   * Pick the smaller value and move that list forward.
+4. Once one list is exhausted, **append the rest** of the other list.
+5. Return the merged list starting from `dummy.next`.
+
+---
+
+### ✅ Java Code with Telugu Comments
+
+```java
+class Solution {
+    public ListNode mergeTwoLists(ListNode listNode1, ListNode listNode2) {
+        // Step 1: Dummy node create cheyyadam for easy merging
+        ListNode dummy = new ListNode(-1);
+        ListNode current = dummy;
+
+        ListNode list1 = listNode1;
+        ListNode list2 = listNode2;
+
+        // Step 2: Both lists lo values compare cheyyadam
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) { // list1 val chinna unte adi next lo add cheyyadam
+                current.next = list1;
+                list1 = list1.next; // list1 ni next ki move cheyyadam
+            } else {
+                current.next = list2;
+                list2 = list2.next; // list2 ni next ki move cheyyadam
+            }
+            current = current.next; // result list ni update cheyyadam
+        }
+
+        // Step 3: Oka list ayipoyaka migilina nodes ni attach cheyyadam
+        if (list1 != null) {
+            current.next = list1;
+        } else {
+            current.next = list2;
+        }
+
+        // Step 4: Dummy node next nunchi actual result return cheyyadam
+        return dummy.next;
+    }
+}
+```
+
+---
+
+### ✅ Time and Space Complexity
+
+| Complexity   | Explanation                                                        |
+| ------------ | ------------------------------------------------------------------ |
+| ⏱️ **Time**  | `O(n + m)` where `n` is length of list1 and `m` is length of list2 |
+| 💾 **Space** | `O(1)` — No extra space, just pointers reused. In-place merge      |
+
+---
+
+### ✅ Test Cases
+
+#### Test Case 1:
+
+```java
+list1 = [1, 2, 4]
+list2 = [1, 3, 4]
+
+Output: [1, 1, 2, 3, 4, 4]
+```
+
+#### Test Case 2:
+
+```java
+list1 = []
+list2 = [0]
+
+Output: [0]
+```
+
+#### Test Case 3:
+
+```java
+list1 = [2, 3, 5]
+list2 = [1, 4, 6]
+
+Output: [1, 2, 3, 4, 5, 6]
+```
+
+#### Test Case 4:
+
+```java
+list1 = []
+list2 = []
+
+Output: []
+```
+
+---
+
+### 🔄 Dry Run (Small Example)
+
+#### Input:
+
+```
+list1 = [1,3], list2 = [2,4]
+```
+
+#### Iteration:
+
+| list1.val | list2.val | Action            | Result     |
+| --------- | --------- | ----------------- | ---------- |
+| 1         | 2         | pick 1 from list1 | \[1]       |
+| 3         | 2         | pick 2 from list2 | \[1,2]     |
+| 3         | 4         | pick 3 from list1 | \[1,2,3]   |
+| -         | 4         | pick rest list2   | \[1,2,3,4] |
+
+---
+
+### ❓ Why `list1.val < list2.val` not `<=`?
+
+Good question!
+Either works — but:
+
+* If you use `<`, you **prefer `list2`** when values are equal.
+* If you use `<=`, you **prefer `list1`** when values are equal.
+
+**Both give correct result**, but node order for equal values may differ slightly. Since it's not specified, `<` is fine.
+
+---
+
+Let me know if you want the **recursive version** or want this extended to **merge K sorted lists** (Leetcode 23).
+
+
 Here’s the **Java version** of your C++ code for merging two sorted linked lists (Leetcode 21):
 
 ---
