@@ -1,3 +1,99 @@
+Absolutely! Let’s do both:
+
+---
+
+### ✅ **Approach (Plain English - 6 Sentences)**
+
+1. We are doing a **vertical traversal** of a binary tree, grouping nodes by their **horizontal column index**.
+2. To maintain **top-to-bottom order**, we use **BFS (level-order traversal)**, which naturally processes nodes row by row.
+3. While traversing, we assign a **column number** to each node: root is column `0`, left child `-1`, right child `+1`.
+4. We maintain a **map of column → list of node values**, and we keep track of **minColumn** and **maxColumn** during traversal.
+5. After the BFS is done, we iterate from `minColumn` to `maxColumn` to collect the final vertical order.
+6. This avoids sorting keys, keeps the code clean, and runs in linear time and space.
+
+---
+
+### ✅ **Java Solution (BFS with Column Tracking)**
+
+With **Telugu comments** and **complexity analysis**:
+
+```java
+/**
+ * Definition for a binary tree node.
+ */
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) {
+        val = x;
+    }
+}
+
+class Solution {
+
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        // Output list to return final result
+        List<List<Integer>> output = new ArrayList<>();
+
+        // Base case: if root is null, return empty output
+        if (root == null) return output;
+
+        // ✅ Map to store column number → list of values
+        Map<Integer, List<Integer>> columnMap = new HashMap<>();
+
+        // ✅ Queue for BFS traversal: pair of (node, column)
+        Queue<Pair<TreeNode, Integer>> queue = new LinkedList<>();
+        queue.offer(new Pair<>(root, 0));
+
+        // ✅ Track column boundaries for result collection
+        int minColumn = 0;
+        int maxColumn = 0;
+
+        while (!queue.isEmpty()) {
+            Pair<TreeNode, Integer> current = queue.poll();
+            TreeNode node = current.getKey();
+            int column = current.getValue();
+
+            // ✅ Column ki values add cheyyadam
+            columnMap.computeIfAbsent(column, k -> new ArrayList<>()).add(node.val);
+
+            // ✅ Column range update cheyyadam
+            minColumn = Math.min(minColumn, column);
+            maxColumn = Math.max(maxColumn, column);
+
+            // ✅ Left and Right children ni BFS lo add cheyyadam
+            if (node.left != null) {
+                queue.offer(new Pair<>(node.left, column - 1));
+            }
+            if (node.right != null) {
+                queue.offer(new Pair<>(node.right, column + 1));
+            }
+        }
+
+        // ✅ Final ga minColumn nunchi maxColumn varaku output build cheyyadam
+        for (int i = minColumn; i <= maxColumn; i++) {
+            output.add(columnMap.get(i));
+        }
+
+        return output;
+    }
+}
+```
+
+---
+
+### ⏱ **Time & Space Complexity**
+
+| Metric | Value  | Notes                                                    |
+| ------ | ------ | -------------------------------------------------------- |
+| Time   | `O(N)` | Each node visited once during BFS, column access is O(1) |
+| Space  | `O(N)` | Map + Queue together can hold up to N nodes              |
+
+---
+
+Would you also like a **dry-run example** with a small tree to visualize column assignments?
+
+
 Great question — **Meta interviews** favor **clarity, optimality, and trade-off awareness**. Let's break down all 3 solutions and then give you **recommendations on how to present your approach effectively** during an interview.
 
 ---
