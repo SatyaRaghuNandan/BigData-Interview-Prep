@@ -16,379 +16,176 @@ Sure! Here's the approach explained in **5–6 plain English bullet points**:
 * 🚀 This ensures cities are chosen **with probability proportional to their population**, efficiently using `O(log n)` time.
 
 
-
-Here's the **formatted and well-documented version** of your `CityAndPopulation_1` variant in **Java**, with **Telugu-style comments**, **time/space complexity analysis**, and a **comparison table with the original `pickIndex()` problem**.
+Here's a complete breakdown of your `CityPicker` solution along with improvements as per your request.
 
 ---
 
-### ✅ Formatted Code (City + Prefix Sums using List<Pair>)
+## ✅ **Approach (Plain English in 5–6 Bullet Points)**
+
+1. **Prefix Sum Construction:**
+   For each city’s population, we calculate the cumulative sum so that higher population cities have a wider range assigned to them in a 1D number line.
+
+2. **Random Number Generation:**
+   We randomly pick a number between `1` and the total population. This random number represents a point on the cumulative number line.
+
+3. **Binary Search on Prefix Array:**
+   Using binary search, we locate which city this point falls into by finding the first prefix sum that is **greater than or equal to** the target.
+
+4. **City Selection:**
+   Once we find the correct index in the prefix array, we return the city at that index.
+
+5. **Higher Population = Higher Chance:**
+   Since bigger population cities have a larger range in the prefix sum array, they are more likely to be picked.
+
+6. **Repeatable API:**
+   You can repeatedly call `pickCity()` to simulate weighted random selection of cities based on population.
+
+---
+
+## ✅ Time and Space Complexity
+
+| Operation    | Time Complexity | Space Complexity |
+| ------------ | --------------- | ---------------- |
+| Constructor  | O(n)            | O(n)             |
+| `pickCity()` | O(log n)        | O(1)             |
+
+* **n = number of cities**
+
+---
+
+## ✅ Rewritten Version (with Custom Binary Search instead of `Arrays.binarySearch`)
 
 ```java
-import java.util.*;
+package LC_528_RandomPickWithWeight;
 
-public class CityAndPopulation_1 {
+import java.util.Random;
 
-    // 👇 Pair class lo oka city peru and aa varaku population sum ni store chestunnam
-    static class Pair {
-        String city;
-        int sum; // prefix sum till this city
+class CityPicker {
+    private final String[] cities;
+    private final int[] prefixSums;
+    private final Random rand;
 
-        Pair(String city, int sum) {
-            this.city = city;
-            this.sum = sum;
+    public CityPicker(String[] cities, int[] population) {
+        this.cities = cities;
+        this.prefixSums = new int[population.length];
+        this.rand = new Random();
+
+        // Construct prefix sums
+        prefixSums[0] = population[0];
+        for (int i = 1; i < population.length; i++) {
+            prefixSums[i] = prefixSums[i - 1] + population[i];
         }
     }
 
-    // 👇 List of prefix sums along with city names (city -> prefix sum)
-    private List<Pair> prefixSums = new ArrayList<>();
-
-    // 👇 Constructor – prefix sum array build chesthunnam
-    public CityAndPopulation_1(List<Pair> cityPopulations) {
-        for (Pair entry : cityPopulations) {
-            if (prefixSums.isEmpty()) {
-                // 🧮 First entry ni direct ga add cheyyali
-                prefixSums.add(new Pair(entry.city, entry.sum));
-            } else {
-                // 🔁 Last prefix sum + current population
-                int newSum = prefixSums.get(prefixSums.size() - 1).sum + entry.sum;
-                prefixSums.add(new Pair(entry.city, newSum));
-            }
-        }
-    }
-
-    // 👇 Test kosam wrapper – 0 ante random select, else override
-    public String pickIndexWrapper(int generatedPerson) {
-        return pickIndex(generatedPerson);
-    }
-
-    // 👇 Binary Search – person number ni base cheskoni city pick cheyyadam
-    public String pickIndex(int override) {
-        int totalPopulation = prefixSums.get(prefixSums.size() - 1).sum;
-
-        // 🧍 Person ni generate cheyyadam (random or override)
-        int person = (override == 0) 
-            ? new Random().nextInt(totalPopulation) 
-            : override;
-
-        int left = 0, right = prefixSums.size() - 1;
-
-        // 🔍 Binary search to find first prefixSum > person
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-
-            if (person < prefixSums.get(mid).sum) {
-                right = mid - 1;
-            } else {
-                left = mid + 1;
-            }
-        }
-
-        return prefixSums.get(left).city;
-    }
-}
-```
-
----
-
-### ✅ Time and Space Complexity
-
-| Operation           | CityAndPopulation\_1 (Pair) | Original Solution (Array) |
-| ------------------- | --------------------------- | ------------------------- |
-| Constructor (build) | O(n) – one pass over input  | O(n)                      |
-| `pickIndex()`       | O(log n) – binary search    | O(log n)                  |
-| Space               | O(n) for `List<Pair>`       | O(n) for `int[] prefix`   |
-| Object Overhead     | Higher (Pair objects)       | Lower (raw int array)     |
-
----
-
-### ✅ Why `List<Pair>` instead of `int[]`?
-
-* We’re **returning city names**, not just indexes.
-* Each city is tied to its **cumulative sum** (prefix sum).
-* We need both: `cityName` + `sum`. So one of:
-
-  * `List<Pair<city, sum>>` ✅ (clean, readable)
-  * or two arrays: `String[] cities` and `int[] prefix` ✅ (more efficient)
-
----
-
-### ✅ How to Optimize?
-
-If you want **space savings**, use this:
-
-```java
-String[] cities;
-int[] prefixSums;
-```
-
-This avoids creating `Pair` objects (less heap usage, faster access), while preserving `O(n)` space.
-
----
-
-Let me know if you want this version using two parallel arrays (cities + prefix), or if you'd like a test class with example cities and populations!
-
-
-
-Here is the **Java version** of your C++ code for the **city population picker using prefix sums and binary search**:
-
----
-
-### ✅ Java Equivalent with Comments
-
-```java
-import java.util.*;
-
-public class SolutionVariant528 {
-    private List<Pair> prefixSums = new ArrayList<>();
-
-    // Custom Pair class for city and prefix sum
-    static class Pair {
-        String city;
-        int sum;
-
-        Pair(String city, int sum) {
-            this.city = city;
-            this.sum = sum;
-        }
-    }
-
-    // Constructor that builds prefix sums
-    public SolutionVariant528(List<Pair> cityPopulations) {
-        for (Pair entry : cityPopulations) {
-            if (prefixSums.isEmpty()) {
-                prefixSums.add(new Pair(entry.city, entry.sum));
-            } else {
-                int newSum = prefixSums.get(prefixSums.size() - 1).sum + entry.sum;
-                prefixSums.add(new Pair(entry.city, newSum));
-            }
-        }
-    }
-
-    // Wrapper for testability (0 means use random)
-    public String pickIndexWrapper(int generatedPerson) {
-        return pickIndex(generatedPerson);
-    }
-
-    // Binary search to find city
-    public String pickIndex(int override) {
-        int totalPopulation = prefixSums.get(prefixSums.size() - 1).sum;
-        int person = (override == 0) ? new Random().nextInt(totalPopulation) : override;
-
-        int left = 0, right = prefixSums.size() - 1;
-
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (person < prefixSums.get(mid).sum) {
-                right = mid - 1;
-            } else {
-                left = mid + 1;
-            }
-        }
-
-        return prefixSums.get(left).city;
-    }
-
-    // Test the solution
-    public static void main(String[] args) {
-        List<Pair> input = Arrays.asList(
-            new Pair("US", 300),
-            new Pair("VN", 100),
-            new Pair("BR", 200)
-        );
-
-        SolutionVariant528 solution = new SolutionVariant528(input);
-
-        assert solution.pickIndexWrapper(0).equals("US");
-        assert solution.pickIndexWrapper(150).equals("US");
-        assert solution.pickIndexWrapper(299).equals("US");
-
-        assert solution.pickIndexWrapper(300).equals("VN");
-        assert solution.pickIndexWrapper(375).equals("VN");
-        assert solution.pickIndexWrapper(399).equals("VN");
-
-        assert solution.pickIndexWrapper(400).equals("BR");
-        assert solution.pickIndexWrapper(420).equals("BR");
-        assert solution.pickIndexWrapper(599).equals("BR");
-
-        System.out.println("All assertions passed!");
-    }
-}
-```
-
----
-
-### 🧠 Summary
-
-* `prefixSums`: Stores cumulative population count for each city.
-* `pickIndex(int override)`: Uses binary search to find the city where the given `person` index falls.
-* Time Complexity:
-
-  * Constructor: `O(n)`
-  * pickIndex(): `O(log n)`
-* Space Complexity: `O(n)` for prefixSums.
-
-Let me know if you want this modified to use `Map<String, Integer>` or converted to a cleaner utility form!
-
-
-
-Here's your requested implementation of the **Leetcode 528 variant** — where we select a **city based on its population proportionally** — rewritten in **Java** with:
-
-* ✅ Telugu comments
-* ✅ Multiple approaches (Binary Search with Prefix Sum + Linear Scan)
-* ✅ Time and Space Complexity
-
----
-
-## ✅ Problem Recap
-
-> Given a list of `(city, population)`, pick a city randomly such that the probability of picking a city is proportional to its population.
-
----
-
-## ✅ Approach 1: Prefix Sum + Binary Search (Efficient - `O(log n)` pick)
-
-### 🔧 Java Code with Telugu Comments
-
-```java
-import java.util.*;
-
-public class CityPicker {
-    private final List<String> cities = new ArrayList<>();
-    private final List<Integer> prefixSums = new ArrayList<>();
-    private final Random rand = new Random();
-    private int totalPopulation;
-
-    // 🏗️ Constructor: Prefix Sum prepare cheyyadam
-    public CityPicker(List<Pair<String, Integer>> cityPopulations) {
-        totalPopulation = 0;
-
-        for (Pair<String, Integer> entry : cityPopulations) {
-            String city = entry.getKey();
-            int population = entry.getValue();
-
-            totalPopulation += population;
-            cities.add(city);  // city names list lo store cheyyadam
-            prefixSums.add(totalPopulation);  // cumulative sum prepare cheyyadam
-        }
-    }
-
-    // 🔁 Random ga person pick cheyyali, and aa person ekkada padtado choodali
     public String pickCity() {
-        int person = rand.nextInt(totalPopulation);  // 0 to total - 1
-        int index = binarySearch(person);
-        return cities.get(index);
+        int totalPopulation = prefixSums[prefixSums.length - 1];
+        int target = rand.nextInt(totalPopulation) + 1;  // target is [1, totalPopulation]
+
+        int index = binarySearch(target);
+        return cities[index];
     }
 
-    // 🔍 Binary Search for person index in prefix sum
-    private int binarySearch(int person) {
-        int left = 0, right = prefixSums.size() - 1;
+    // Custom binary search to find the smallest index where prefixSums[index] >= target
+    private int binarySearch(int target) {
+        int left = 0;
+        int right = prefixSums.length - 1;
 
-        while (left <= right) {
+        while (left < right) {
             int mid = left + (right - left) / 2;
 
-            if (person < prefixSums.get(mid)) {
-                right = mid - 1;
-            } else {
+            if (prefixSums[mid] < target) {
                 left = mid + 1;
+            } else {
+                right = mid;
             }
         }
 
         return left;
     }
+}
+```
 
-    // 🚀 Test code
+---
+
+## ✅ Test Cases with Explanation
+
+```java
+public class CityPickerTest {
     public static void main(String[] args) {
-        List<Pair<String, Integer>> input = Arrays.asList(
-            new Pair<>("US", 300),
-            new Pair<>("VN", 100),
-            new Pair<>("BR", 200)
-        );
+        testBasicScenario();
+        testSingleCity();
+        testEqualPopulation();
+        testLargePopulationGap();
+        testEdgePopulations();
+    }
 
-        CityPicker picker = new CityPicker(input);
+    private static void testBasicScenario() {
+        String[] cities = {"A", "B", "C"};
+        int[] population = {1, 3, 2};  // Prefix: [1, 4, 6]
 
-        // Pick 10 samples
-        Map<String, Integer> freq = new HashMap<>();
-        for (int i = 0; i < 10000; i++) {
-            String city = picker.pickCity();
-            freq.put(city, freq.getOrDefault(city, 0) + 1);
+        CityPicker picker = new CityPicker(cities, population);
+
+        // Run 10 samples
+        System.out.println("Basic Scenario:");
+        for (int i = 0; i < 10; i++) {
+            System.out.println(picker.pickCity());
         }
+    }
 
-        System.out.println("City pick frequencies:");
-        for (Map.Entry<String, Integer> entry : freq.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+    private static void testSingleCity() {
+        String[] cities = {"Solo"};
+        int[] population = {100};
+
+        CityPicker picker = new CityPicker(cities, population);
+        System.out.println("\nSingle City Scenario:");
+        for (int i = 0; i < 5; i++) {
+            System.out.println(picker.pickCity());  // Should always be "Solo"
+        }
+    }
+
+    private static void testEqualPopulation() {
+        String[] cities = {"X", "Y", "Z"};
+        int[] population = {5, 5, 5};  // Equal weight
+
+        CityPicker picker = new CityPicker(cities, population);
+        System.out.println("\nEqual Population Scenario:");
+        for (int i = 0; i < 10; i++) {
+            System.out.println(picker.pickCity());
+        }
+    }
+
+    private static void testLargePopulationGap() {
+        String[] cities = {"Small", "Medium", "Mega"};
+        int[] population = {1, 2, 100};  // Mega dominates
+
+        CityPicker picker = new CityPicker(cities, population);
+        System.out.println("\nLarge Population Gap Scenario:");
+        for (int i = 0; i < 10; i++) {
+            System.out.println(picker.pickCity());  // Expect mostly "Mega"
+        }
+    }
+
+    private static void testEdgePopulations() {
+        String[] cities = {"Tiny", "Giant"};
+        int[] population = {1, Integer.MAX_VALUE - 1};  // Test near-integer overflow
+
+        CityPicker picker = new CityPicker(cities, population);
+        System.out.println("\nEdge Case Scenario:");
+        for (int i = 0; i < 5; i++) {
+            System.out.println(picker.pickCity());  // Likely always "Giant"
         }
     }
 }
 ```
 
-🧱 You'll need a `Pair` class if you're not using JavaFX or javafx.util:
-
-```java
-class Pair<K, V> {
-    private K key;
-    private V value;
-
-    public Pair(K k, V v) {
-        this.key = k;
-        this.value = v;
-    }
-
-    public K getKey() { return key; }
-    public V getValue() { return value; }
-}
-```
-
 ---
 
-## ✅ Approach 2: Linear Scan (Simpler but Slower - `O(n)` pick)
+## 🔑 How to Remember This
 
-```java
-public String pickCityLinear() {
-    int person = rand.nextInt(totalPopulation);
-    int sum = 0;
+* Use **prefix sum** for weighted representation.
+* **Random number** on cumulative scale (1 to total sum).
+* Binary search to locate correct **bucket** (city).
+* Wider the bucket → more likely the pick.
 
-    for (int i = 0; i < prefixSums.size(); i++) {
-        sum += (i == 0 ? prefixSums.get(i) : prefixSums.get(i) - prefixSums.get(i - 1));
-        if (person < prefixSums.get(i)) {
-            return cities.get(i);
-        }
-    }
+Let me know if you'd like to **visualize the prefix buckets** or generate a histogram for large sample sizes!
 
-    return null;
-}
-```
-
-✅ Use `pickCityLinear()` if you don't want to use binary search but this is **less efficient**.
-
----
-
-## 📊 Time & Space Complexity
-
-| Operation        | PrefixSum + BinarySearch | Linear Scan |
-| ---------------- | ------------------------ | ----------- |
-| Constructor      | `O(n)`                   | `O(n)`      |
-| pickCity()       | `O(log n)`               | `O(n)`      |
-| Space Complexity | `O(n)`                   | `O(n)`      |
-
----
-
-## 🧠 Real-World Interview Talking Points
-
-🎤 Say this:
-
-> “I precompute the **prefix sum of population**, and then generate a **random person number** to binary search where they fall. This ensures that the probability of landing in a city is exactly proportional to its population. For large lists, this approach is both time and memory efficient.”
-
----
-
-## ✅ Possible Extensions (Interview Bonus Ideas)
-
-| Extension                     | Notes                                               |
-| ----------------------------- | --------------------------------------------------- |
-| Add/Remove cities dynamically | Use TreeMap or Segment Trees                        |
-| Floating-point weights        | Use `double` prefix sums                            |
-| Track frequency of picks      | Add a `Map<String, Integer>` counter                |
-| Weighted round-robin          | Use a Heap to cycle cities based on remaining quota |
-
----
-
-Let me know if you'd like this as an **API class**, or extended to support **dynamic insert/delete** (e.g., real-time dashboards or load balancing)!
