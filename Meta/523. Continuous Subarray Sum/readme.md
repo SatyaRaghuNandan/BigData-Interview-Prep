@@ -1,3 +1,64 @@
+Absolutely! Here's the **structured explanation** for the **original problem** (`checkSubarraySum`) with the phrasing you requested:
+
+---
+
+## ✅ Problem:
+
+> Given an integer array `nums` and an integer `k`, check if the array has a **continuous subarray** of at least **size 2** whose **elements sum up to a multiple of `k`** (i.e., `sum % k == 0`).
+
+---
+
+## 🐌 Brute Force Approach (Naive):
+
+1. Iterate through all possible subarrays of length ≥ 2.
+2. For each subarray, calculate the sum and check if `sum % k == 0`.
+3. This requires nested loops: outer loop for start index, inner loop for end index.
+4. **Time Complexity** is **O(n²)** — too slow for large inputs.
+5. **Space Complexity** is **O(1)** since we use just a few variables.
+
+---
+
+## ✅ We can optimize this solution
+
+We notice that if the **remainder (`mod`) of prefix sum** repeats, then the subarray between those two indices is divisible by `k`.
+
+---
+
+## 🚀 This is the optimized solution:
+
+```java
+int prefixMod = 0;
+Map<Integer, Integer> modSeen = new HashMap<>();
+modSeen.put(0, -1); // Edge case: handles subarrays starting from index 0
+```
+
+Then loop through the array:
+
+* Keep a running mod: `prefixMod = (prefixMod + nums[i]) % k`
+* If this `prefixMod` was seen before at index `j`, and `i - j >= 2`, then the subarray `(j+1 .. i)` is valid.
+
+---
+
+## 🔧 We reduced time and space complexity like this:
+
+| Metric           | Brute Force | Optimized Solution |
+| ---------------- | ----------- | ------------------ |
+| Time Complexity  | O(n²)       | ✅ O(n)             |
+| Space Complexity | O(1)        | ✅ O(k)             |
+
+* We store **first occurrence of each mod value** in a HashMap (`modSeen`)
+* We only loop **once**, and use **prefix sum mod trick** to detect divisible subarrays efficiently.
+
+---
+
+### 🧠 Remember:
+
+If the **same mod** reappears in `prefixSum % k`, the elements **in between** form a valid subarray divisible by `k`.
+
+Let me know if you'd like this turned into a **whiteboard-style explanation** or with **Telugu-style comments** in the code!
+
+
+
 You're looking at a classic prefix sum + modular arithmetic problem:
 
 ---
