@@ -111,3 +111,114 @@ For `nums = [4,5,0,-2,-3,1]` and `k = 5`:
 ---
 
 Let me know if you'd like a **visual trace**, **interview-ready explanation**, or a **Python version with Telugu comments**.
+
+
+Excellent! Let's walk through **5 hand-picked test cases** for `subarraysDivByK` and then do a **full debug-style dry run** of one case, **line by line** with variable tracking — just like a compiler/debugger.
+
+---
+
+## ✅ Function: `subarraysDivByK(int[] nums, int k)`
+
+---
+
+### 🔢 **Test Cases Summary**
+
+| Test Case # | `nums`                 | `k` | Expected Output | Why                                |
+| ----------- | ---------------------- | --- | --------------- | ---------------------------------- |
+| TC1         | `[4, 5, 0, -2, -3, 1]` | 5   | `7`             | Multiple subarrays divisible by 5  |
+| TC2         | `[5]`                  | 5   | `1`             | Single element divisible by `k`    |
+| TC3         | `[1, 2, 3, 4, 5]`      | 3   | `4`             | Mix of positive integers           |
+| TC4         | `[-1, 2, 9]`           | 2   | `2`             | Includes negative number           |
+| TC5         | `[7, -5, 5, -7]`       | 5   | `4`             | Alternating signs, mix of prefixes |
+
+---
+
+### 🧪 Let’s do Full Debug of **Test Case 1**
+
+#### 🔍 Input: `nums = [4, 5, 0, -2, -3, 1]`, `k = 5`
+
+---
+
+#### 🔧 Initial State:
+
+```java
+int prefixMod = 0;
+int result = 0;
+int[] modGroups = new int[5]; // [0, 0, 0, 0, 0]
+modGroups[0] = 1; // [1, 0, 0, 0, 0]
+```
+
+---
+
+### 🔄 Loop Iteration Debug Table:
+
+| i | num | prefixMod formula                     | prefixMod | modGroups Before | result | modGroups After  |
+| - | --- | ------------------------------------- | --------- | ---------------- | ------ | ---------------- |
+| 0 | 4   | (0 + 4 % 5 + 5) % 5 = 4               | 4         | \[1, 0, 0, 0, 0] | 0      | \[1, 0, 0, 0, 1] |
+| 1 | 5   | (4 + 5 % 5 + 5) % 5 = (4 + 0 + 5)%5=4 | 4         | \[1, 0, 0, 0, 1] | 1      | \[1, 0, 0, 0, 2] |
+| 2 | 0   | (4 + 0 + 5) % 5 = 9 % 5 = 4           | 4         | \[1, 0, 0, 0, 2] | 3      | \[1, 0, 0, 0, 3] |
+| 3 | -2  | (4 + (-2) + 5) % 5 = 7 % 5 = 2        | 2         | \[1, 0, 0, 0, 3] | 3      | \[1, 0, 1, 0, 3] |
+| 4 | -3  | (2 + (-3) + 5) % 5 = 4 % 5 = 4        | 4         | \[1, 0, 1, 0, 3] | 6      | \[1, 0, 1, 0, 4] |
+| 5 | 1   | (4 + 1 + 5) % 5 = 10 % 5 = 0          | 0         | \[1, 0, 1, 0, 4] | 7      | \[2, 0, 1, 0, 4] |
+
+---
+
+### ✅ Final Values
+
+```java
+result = 7;
+modGroups = [2, 0, 1, 0, 4];
+```
+
+✅ **Return value** = `7`
+
+---
+
+### 🧠 Explanation
+
+* We count how many subarrays had prefix sum remainders that canceled out with earlier ones.
+* `modGroups` tracks how many times each remainder appeared.
+* Every time a remainder is repeated, we add `modGroups[prefixMod]` to result.
+
+---
+
+### 🧪 Remaining Test Case Outputs (Quick)
+
+#### ✅ TC2: `[5]`, k=5
+
+* prefixMod: (0 + 5 + 5) % 5 = 0
+* match found in `modGroups[0]` → `result = 1`
+
+✅ Output: `1`
+
+---
+
+#### ✅ TC3: `[1, 2, 3, 4, 5]`, k=3
+
+Prefix mods: \[1, 0, 0, 1, 0]
+modGroups = \[3, 2, 0] → Total = `4` valid subarrays
+
+✅ Output: `4`
+
+---
+
+#### ✅ TC4: `[-1, 2, 9]`, k=2
+
+Prefix mods: \[1, 1, 0]
+modGroups = \[1, 2] → Output = `2`
+
+✅ Output: `2`
+
+---
+
+#### ✅ TC5: `[7, -5, 5, -7]`, k=5
+
+Prefix mods: \[2, 2, 2, 0]
+modGroups = \[1, 0, 3] → Output = `4`
+
+✅ Output: `4`
+
+---
+
+Would you like me to **generate a diagram** or walk through another test case step-by-step like a whiteboard session?
+
