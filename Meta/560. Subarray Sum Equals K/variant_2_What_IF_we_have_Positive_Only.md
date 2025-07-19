@@ -1,3 +1,6 @@
+# // VARIANT: What if you had to optimize the space complexity in the case you're only given
+# // positive integers in the array?
+
 You're working with a **space-optimized variant of Leetcode 560: Subarray Sum Equals K**, which assumes the input array contains **only positive integers**.
 
 ---
