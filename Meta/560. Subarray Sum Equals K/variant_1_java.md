@@ -1,3 +1,6 @@
+# // VARIANT: What if you had to return true or false if there exists at least one
+# // subarray that equals K?
+
 Absolutely! You're referring to a **variant** of Leetcode **560 – Subarray Sum Equals K**, but instead of **counting** the number of subarrays, this version asks:
 
 > 🔄 **Variant**:
