@@ -1,5 +1,13 @@
 Perfect! You're referring to the classic **"Subarray Sum Equals K"** problem (Leetcode 560), and you’ve got the **right optimized code and explanation**.
 
+
+
+What does the Map Store
+
+1. Key → prefix sum
+
+1. Value → how many times that prefix sum occurred
+
 Now, as per your preferred structure, here’s the **complete breakdown** with exact phrases you requested:
 
 ---
