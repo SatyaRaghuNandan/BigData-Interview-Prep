@@ -233,3 +233,104 @@ To keep `prefixMod` in range `[0, k-1]`.
 ---
 
 Would you like a version that returns **all such subarrays** or **longest such subarray**?
+
+
+Fantastic follow-up! These are two of the most important yet subtle points in understanding the **prefix mod** technique for this problem. Let me break both down **clearly and visually**.
+
+---
+
+## 🔶 Question 1:
+
+### ❓ *Why is this condition not handled in the original question?*
+
+You asked:
+
+> "Why doesn't the original question return the indices or subarray?"
+
+### ✅ Answer:
+
+Because the original problem **only asks** whether **such a subarray exists** — not to **return the subarray or indices**.
+
+> Problem:
+> 👉 “Return true if the array has a **subarray of at least size 2** whose **sum is a multiple of `k`**”
+
+So, it's **just a boolean check**.
+
+📌 But internally, we **can track indices** (as we did in the variant), which is **very useful for debugging, extension, or interviews.**
+
+---
+
+## 🔶 Question 2:
+
+### ❓ *Why is `modSeen.put(0, -1)` added? Why `-1`?*
+
+### ✅ Answer:
+
+This is the **most important trick** in the whole logic.
+
+---
+
+### 💡 Let's understand it with an example:
+
+Suppose:
+
+```java
+nums = [2, 4]
+k = 6
+```
+
+#### Step-by-step:
+
+* prefixMod = 2
+* prefixMod = (2 + 4) % 6 = **6 % 6 = 0**
+
+If we didn’t pre-initialize:
+
+```java
+modSeen.put(0, -1)
+```
+
+we would never find a valid match for `prefixMod = 0`.
+
+But since we did:
+
+```java
+prefixMod == 0 → Seen at index -1 → currentIndex = 1
+→ (1 - (-1)) = 2 → subarray from index 0 to 1
+```
+
+✔️ So `nums[0..1] = [2, 4]` → sum = 6 → valid!
+
+---
+
+### 🔍 Why index **-1**?
+
+It helps us simulate a **prefix sum of 0** **before** the array starts.
+
+This allows:
+
+* `sum(nums[0..i]) % k == 0` to be handled cleanly.
+* Because `(i - (-1)) >= 2` becomes valid when `i >= 1`.
+
+---
+
+### ✅ Summary:
+
+| Line of Code             | Meaning                                                                     |
+| ------------------------ | --------------------------------------------------------------------------- |
+| `modSeen.put(0, -1);`    | Pretend sum=0 before array starts                                           |
+| Allows checking `[0..i]` | For subarrays starting at index 0                                           |
+| Without this line        | We'd miss valid subarrays like `[0, 1]` where total sum is divisible by `k` |
+
+---
+
+### 📌 Interview Tip:
+
+If you're explaining this in an interview, say:
+
+> “We add `0 → -1` to handle subarrays that start from index 0 and sum to a multiple of `k`. The `-1` acts like a virtual prefix before the array began.”
+
+---
+
+Let me know if you want a **graphical picture** or memory map of how this works!
+
