@@ -133,3 +133,103 @@ You **don't need to keep the actual sum** — we only care about the **remainder
 ---
 
 Would you like a **failing test case** dry-run to understand when it returns `false`?
+
+
+Excellent question! You're asking for a **variant** of the original problem:
+
+> ✅ **Instead of just returning `true` or `false`, return the subarray indices** `[startIndex, endIndex]` such that the **sum of subarray is a multiple of `k`** and **length ≥ 2**.
+
+Let’s start with:
+
+---
+
+### ✅ Modified Problem Statement
+
+Given:
+
+```java
+int[] nums
+int k
+```
+
+Find any **subarray `[start, end]`** with:
+
+* `end - start + 1 >= 2`
+* `sum(nums[start..end]) % k == 0`
+
+---
+
+### ✅ Java Code (Modified Version)
+
+```java
+class Solution {
+    public int[] findSubarrayDivByK(int[] nums, int k) {
+        Map<Integer, Integer> modSeen = new HashMap<>();
+        modSeen.put(0, -1);  // To handle subarrays starting from index 0
+        int prefixMod = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            prefixMod = (prefixMod + nums[i]) % k;
+            if (prefixMod < 0) prefixMod += k; // Handle negative mods
+
+            if (modSeen.containsKey(prefixMod)) {
+                int prevIndex = modSeen.get(prefixMod);
+                if (i - prevIndex >= 2) {
+                    return new int[]{prevIndex + 1, i}; // Return the actual subarray indices
+                }
+            } else {
+                modSeen.put(prefixMod, i);
+            }
+        }
+
+        return new int[0]; // If no such subarray exists
+    }
+}
+```
+
+---
+
+### ✅ Example Dry Run
+
+```java
+nums = [23, 2, 4, 6, 7]
+k = 6
+```
+
+**Step-by-step**:
+
+| i | nums\[i] | prefixMod | modSeen      | Action         |
+| - | -------- | --------- | ------------ | -------------- |
+| 0 | 23       | 5         | {0:-1}       | Put (5, 0)     |
+| 1 | 2        | 1         | {0:-1, 5:0}  | Put (1, 1)     |
+| 2 | 4        | 5         | Seen @ 0 → ✅ | Return \[1, 2] |
+
+So the subarray is:
+
+```java
+nums[1..2] = [2, 4] → sum = 6 → 6 % 6 == 0
+```
+
+---
+
+### ✅ Output:
+
+```java
+[1, 2]
+```
+
+---
+
+### ✅ Bonus: Handle Negative Numbers
+
+We safely do:
+
+```java
+if (prefixMod < 0) prefixMod += k;
+```
+
+To keep `prefixMod` in range `[0, k-1]`.
+
+---
+
+Would you like a version that returns **all such subarrays** or **longest such subarray**?
