@@ -142,3 +142,117 @@ Let me know if you'd like:
 * A **Java main method** to test this
 * A **visual explanation**
 * Or a **variation** like returning actual subarray indices!
+* 
+
+
+Excellent question! You're trying to understand **when the frequency in `map.getOrDefault(sum, 0) + 1` becomes more than 1** — i.e., **when a prefix sum repeats**.
+
+Let’s build an example where this happens.
+
+---
+
+## ✅ Key Concept:
+
+```java
+map.put(sum, map.getOrDefault(sum, 0) + 1);
+```
+
+This means:
+
+* If the prefix `sum` has **already occurred**, increment its frequency.
+* If not, start it with frequency 1.
+
+So the frequency becomes **2, 3, etc.** when the **same `sum` appears more than once** as we traverse the array.
+
+---
+
+## 🔍 Example:
+
+Let’s use this example:
+
+```java
+nums = [1, 2, -1, 1], k = 3
+```
+
+We’ll simulate the algorithm step-by-step, showing where **`sum` repeats**.
+
+---
+
+### 🔁 Step-by-Step Walkthrough:
+
+#### Initial state:
+
+```java
+sum = 0
+count = 0
+map = { 0 → 1 }
+```
+
+---
+
+### i = 0 → nums\[0] = 1
+
+```java
+sum = 0 + 1 = 1
+sum - k = 1 - 3 = -2 → not in map
+map.put(1, 1)
+```
+
+🧠 map: `{0=1, 1=1}`
+
+---
+
+### i = 1 → nums\[1] = 2
+
+```java
+sum = 1 + 2 = 3
+sum - k = 3 - 3 = 0 → ✅ map[0] = 1 → count = 1
+map.put(3, 1)
+```
+
+🧠 map: `{0=1, 1=1, 3=1}`
+
+---
+
+### i = 2 → nums\[2] = -1
+
+```java
+sum = 3 + (-1) = 2
+sum - k = 2 - 3 = -1 → not in map
+map.put(2, 1)
+```
+
+🧠 map: `{0=1, 1=1, 3=1, 2=1}`
+
+---
+
+### i = 3 → nums\[3] = 1
+
+```java
+sum = 2 + 1 = 3
+sum - k = 3 - 3 = 0 → ✅ map[0] = 1 → count = 2
+map.put(3, map.getOrDefault(3, 0) + 1) → map.put(3, 2)
+```
+
+✅ **Here, `sum = 3` occurred for the second time!** So `map.getOrDefault(3, 0) + 1 = 2`
+
+🧠 Final map: `{0=1, 1=1, 3=2, 2=1}`
+
+---
+
+## ✅ Final Observations:
+
+* The value `map[3]` became **2** because `prefixSum = 3` was seen **twice**.
+* So, the `+1` logic helped us **track multiple subarrays** that result in the same `prefixSum`.
+
+---
+
+## ✅ Valid Subarrays in this Example:
+
+* `[1, 2]` → sum = 3
+* `[2, -1, 1]` → sum = 2 → +1 = 3 ✅
+
+---
+
+Let me know if you want a case where `sum` hits **frequency 3 or more** as well!
+
