@@ -100,3 +100,153 @@ Let me know if you'd like:
 * Dry run with sample input,
 * Debug output at each step,
 * Python version with same structure.
+
+Great! Let’s **go through Test Case 1 step-by-step**, like a **debugger/compiler** showing the value of every important variable at each step.
+
+---
+
+### ✅ **Test Case 1**
+
+```java
+Input: nums = [1, -1, 5, -2, 3], k = 3  
+Expected Output: 4
+```
+
+---
+
+### 🔍 **Initial Setup**
+
+| Variable                | Value          |
+| ----------------------- | -------------- |
+| `prefixSum`             | 0              |
+| `longestSubarrayLength` | 0              |
+| `prefixIndexMap`        | {} (empty map) |
+
+---
+
+### 🔁 Loop Over Each Element in `nums`:
+
+#### 🔸 i = 0 → nums\[0] = 1
+
+```java
+prefixSum = 0 + 1 = 1
+```
+
+| Check                        | Result   |
+| ---------------------------- | -------- |
+| prefixSum == k?              | 1 == 3 ❌ |
+| prefixSum - k = -2 → in map? | ❌        |
+
+✅ Store 1 in map → `prefixIndexMap.put(1, 0)`
+
+| Variables Snapshot |
+| ------------------ |
+| `prefixSum` = 1    |
+| `map = {1: 0}`     |
+| `longest = 0`      |
+
+---
+
+#### 🔸 i = 1 → nums\[1] = -1
+
+```java
+prefixSum = 1 + (-1) = 0
+```
+
+| Check                        | Result   |
+| ---------------------------- | -------- |
+| prefixSum == k?              | 0 == 3 ❌ |
+| prefixSum - k = -3 → in map? | ❌        |
+
+✅ Store 0 in map → `prefixIndexMap.put(0, 1)`
+
+| Variables Snapshot   |
+| -------------------- |
+| `prefixSum` = 0      |
+| `map = {1: 0, 0: 1}` |
+| `longest = 0`        |
+
+---
+
+#### 🔸 i = 2 → nums\[2] = 5
+
+```java
+prefixSum = 0 + 5 = 5
+```
+
+| Check                       | Result   |
+| --------------------------- | -------- |
+| prefixSum == k?             | 5 == 3 ❌ |
+| prefixSum - k = 2 → in map? | ❌        |
+
+✅ Store 5 in map → `prefixIndexMap.put(5, 2)`
+
+| Variables Snapshot         |
+| -------------------------- |
+| `prefixSum` = 5            |
+| `map = {1: 0, 0: 1, 5: 2}` |
+| `longest = 0`              |
+
+---
+
+#### 🔸 i = 3 → nums\[3] = -2
+
+```java
+prefixSum = 5 + (-2) = 3
+```
+
+| Check                       | Result                                    |
+| --------------------------- | ----------------------------------------- |
+| prefixSum == k?             | 3 == 3 ✅ → longest = i+1 = 4              |
+| prefixSum - k = 0 → in map? | ✅ index = 1 → subarray length = 3 - 1 = 2 |
+
+📌 Update: `longest = max(4, 2) = 4`
+✅ Store 3 in map → `prefixIndexMap.put(3, 3)`
+
+| Variables Snapshot               |
+| -------------------------------- |
+| `prefixSum` = 3                  |
+| `map = {1: 0, 0: 1, 5: 2, 3: 3}` |
+| `longest = 4`                    |
+
+---
+
+#### 🔸 i = 4 → nums\[4] = 3
+
+```java
+prefixSum = 3 + 3 = 6
+```
+
+| Check                       | Result                                    |
+| --------------------------- | ----------------------------------------- |
+| prefixSum == k?             | 6 == 3 ❌                                  |
+| prefixSum - k = 3 → in map? | ✅ index = 3 → subarray length = 4 - 3 = 1 |
+
+📌 `longest = max(4, 1) = 4` (no change)
+✅ Store 6 in map → `prefixIndexMap.put(6, 4)`
+
+| Variables Snapshot                     |
+| -------------------------------------- |
+| `prefixSum` = 6                        |
+| `map = {1: 0, 0: 1, 5: 2, 3: 3, 6: 4}` |
+| `longest = 4`                          |
+
+---
+
+### ✅ Final Output: `4`
+
+---
+
+### 🚀 Summary Debug Trace:
+
+| i | nums\[i] | prefixSum | prefixSum - k | Map Hit? | longestSubarray |
+| - | -------- | --------- | ------------- | -------- | --------------- |
+| 0 | 1        | 1         | -2            | ❌        | 0               |
+| 1 | -1       | 0         | -3            | ❌        | 0               |
+| 2 | 5        | 5         | 2             | ❌        | 0               |
+| 3 | -2       | 3         | 0             | ✅        | **4**           |
+| 4 | 3        | 6         | 3             | ✅        | 4               |
+
+---
+
+Would you like me to do the same debug trace for other test cases (e.g. Test Case 2)?
